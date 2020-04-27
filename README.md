@@ -9,6 +9,8 @@ Working: decodes array of audio file urls and loads each sample onto the next pa
 
 To-Do: -allow user to upload each pads sound through a button on pad 
 
+then,
+
 --------when pad is clicked open second area containing different effects that can be added to each sample 
 
 ----------- volume, delay, reverb, eq, pitch? 
