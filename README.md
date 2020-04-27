@@ -6,13 +6,11 @@ Web Audio API / AudioContext
 
 Working: pass local audio file into loadAudioFile("../local/path") and sound will play on every pad each time it is clicked 
 
-To-Do: -figure out how to assign a specifc pad a specific sound 
+To-Do: -allow user to upload each pads sound through a button on pad 
 
------then, allow user to upload each pads sound through a button on pad 
+--------when pad is clicked open second area containing different effects that can be added to each sample 
 
--when pad is clicked open second area containing different effects that can be added to each sample 
-
-- volume, delay, reverb, eq, pitch?, 
+----------- volume, delay, reverb, eq, pitch? 
 
 ... 
 
