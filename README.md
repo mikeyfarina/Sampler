@@ -4,7 +4,8 @@ A drum pad / sample sequencer / sound editor
 
 Web Audio API / AudioContext 
 
-Working: pass local audio file into loadAudioFile("../local/path") and sound will play on every pad each time it is clicked 
+Working: decodes array of audio file urls and loads each sample onto the next pad, after clicking the start button
+
 
 To-Do: -allow user to upload each pads sound through a button on pad 
 
