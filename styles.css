@@ -1,0 +1,76 @@
+p {
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+  background-color: #89c9ff;
+}
+button:focus {
+  outline: 0;
+}
+.start-button {
+  height: 40px;
+  width: 40px;
+  background-color: white;
+  margin-right: 3%;
+  margin-bottom: 51.5rem;
+}
+.drum-machine {
+  background-color: #e8e8e8;
+  padding: 1.5rem 2rem;
+  font-family: "Helvetica Neue";
+  border: 2px black solid;
+}
+.drum-machine__screen {
+  font-family: "digital-7";
+  background-color: #4880ff;
+  color: #c3e3ff;
+  font-weight: normal;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+.drum-machine__screen__title {
+  font-size: 75px;
+  margin-bottom: 1rem;
+}
+.drum-machine__screen__subtitle {
+  font-size: 35px;
+}
+ul.drum-machine__pads {
+  list-style: none;
+  padding: 0;
+  margin-top: auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+}
+ul.drum-machine__pads li {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  box-shadow: 2px 5px 4px rgba(0, 0, 0, 0.2);
+}
+ul.drum-machine__pads li button {
+  width: 100%;
+  height: 100%;
+  background: #c4c4c4;
+  border: none;
+}
+ul.drum-machine__pads li:active {
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+.drum-machine__pads__label {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  font-size: 25px;
+  color: #4a4a4a;
+}
