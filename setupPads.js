@@ -1,4 +1,5 @@
 import {drumPads, context} from "./constants.js";
+
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
   for (let i = 0; i < bufferList.length; i++) {

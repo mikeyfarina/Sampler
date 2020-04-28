@@ -1,4 +1,5 @@
-import { context } from "../constants";
+import {context} from "./constants.js";
+import "regenerator-runtime/runtime";
 
 export default function loadAllUrls(urlList) {
   console.log("urlList ", urlList);
@@ -21,15 +22,14 @@ function loadSampleFromUrl(url) {
     request.responseType = "arraybuffer";
 
     request.onload = () => {
-      console.log("onload called", url);
       context.decodeAudioData(
         request.response,
-        buffer => {
+        (buffer) => {
           console.log("decoded...", buffer, url);
           resolve(buffer);
         },
-        error => {
-          console.log("decoding error");
+        (error) => {
+          console.log(error, url);
           reject(error);
         }
       );
