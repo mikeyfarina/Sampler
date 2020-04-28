@@ -26,6 +26,7 @@ function loadSampleFromUrl(url) {
         request.response,
         (buffer) => {
           console.log("decoded...", buffer, url);
+          buffer.name = /[a-z]+/.exec(url)[0];
           resolve(buffer);
         },
         (error) => {
@@ -35,12 +36,7 @@ function loadSampleFromUrl(url) {
       );
     };
 
-    request.onprogress = () => {
-      console.log("onprogress", request.status, url);
-    };
-
     request.onerror = function(error) {
-      console.log("onerror error");
       reject(error);
     };
 

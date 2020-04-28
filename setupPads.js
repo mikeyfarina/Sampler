@@ -4,6 +4,10 @@ export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
   for (let i = 0; i < bufferList.length; i++) {
     console.log('assigning... ', bufferList[i] + " to " + i);
+
+    let drumPadLabel = drumPads[i].querySelector("p.drum-machine__pads__label");
+    drumPadLabel.innerText = bufferList[i].name;
+
     let sound = context.createBufferSource();
     sound.buffer = bufferList[i];
     drumPads[i].addEventListener("click", function() {
@@ -19,3 +23,4 @@ function playSound(sound) {
   source.connect(context.destination);
   source.start(0);
 }
+

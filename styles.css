@@ -18,11 +18,12 @@ button:focus {
   outline: 0;
 }
 .start-button {
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   background-color: white;
   margin-right: 3%;
   margin-bottom: 5.5rem;
+  font-size:10px;
 }
 .drum-machine {
   background-color: #e8e8e8;

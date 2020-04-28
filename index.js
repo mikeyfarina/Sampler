@@ -4,9 +4,10 @@ import {startButton} from "./constants.js";
 import {samplesLoaded} from "./setupPads.js";
 
 startButton.addEventListener("click", function(){
-  console.log("clicked start");
   init();
-  //if (samplesLoaded) startButton.innerText ="loaded";
+  startButton.disabled = true;
+  startButton.innerText = "ready";
+
 });
 
 /*
