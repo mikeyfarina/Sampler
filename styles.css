@@ -40,7 +40,7 @@ button:focus {
   margin-bottom: 1.5rem;
 }
 .drum-machine__screen__title {
-  font-size: 75px;
+  font-size: 83px;
   margin-bottom: 1rem;
 
   overflow: hidden;
@@ -48,7 +48,7 @@ button:focus {
   white-space: nowrap;
 }
 .drum-machine__screen__subtitle {
-  font-size: 35px;
+  font-size: 30px;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,19 +67,22 @@ ul.drum-machine__pads li {
   position: relative;
   width: 200px;
   height: 200px;
-  box-shadow: 2px 5px 4px rgba(0, 0, 0, 0.2);
-  border-radius: .3rem;
 }
-ul.drum-machine__pads li button {
+ul.drum-machine__pads li button{
   width: 100%;
   height: 100%;
   background: #c4c4c4;
-  border: none;
+  border:none;
   border-radius: .3rem;
+  box-shadow: 4px 3px 5px rgba(0, 0, 0, 0.2);
 }
-ul.drum-machine__pads li:active {
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+ul.drum-machine__pads li button:active{
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
+/*
+  background: radial-gradient(ellipse at center,
+    #deefff 25%,#c4c4c4 100%);
+*/
 }
 .drum-machine__pads__label {
   position: absolute;
@@ -88,3 +91,19 @@ ul.drum-machine__pads li:active {
   font-size: 25px;
   color: #4a4a4a;
 }
+.js-upload-button input {
+  display:none;
+}
+.js-upload-button{
+  position: absolute;
+  top: 0.5em;right: .5em;
+
+  padding: .5em 1em;
+  border-radius: 25px;
+
+  background-color: #7C7C7C;
+  color:white;
+  font-size:8px;
+  cursor: pointer;
+}
+/*:not(:focus-within)*/

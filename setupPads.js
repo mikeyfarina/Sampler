@@ -5,12 +5,11 @@ export function assignSoundsToPads(bufferList) {
   for (let i = 0; i < bufferList.length; i++) {
     console.log('assigning... ', bufferList[i] + " to " + i);
 
-    let drumPadLabel = drumPads[i].querySelector("p.drum-machine__pads__label");
-    drumPadLabel.innerText = bufferList[i].name;
+    makeLabel(drumPads[i], bufferList[i].name);
 
     let sound = context.createBufferSource();
     sound.buffer = bufferList[i];
-    drumPads[i].addEventListener("click", function() {
+    drumPads[i].addEventListener("mousedown", function(e) {
       playSound(sound);
     });
   }
@@ -24,3 +23,7 @@ function playSound(sound) {
   source.start(0);
 }
 
+function makeLabel(drumPad, name){
+  let label = drumPad.querySelector("p.drum-machine__pads__label");
+  label.innerText = name;
+}
