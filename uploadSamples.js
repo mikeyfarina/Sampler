@@ -1,31 +1,49 @@
-import {drumPads, uploadButtons} from "./constants.js";
-import loadAllUrls from "./BufferLoader.js";
-
+import {drumPads, uploadButton, context, fileInput} from "./constants.js";
+import {playSound} from "./setupPads.js";
+import loadAllUrls from "./BufferLoader.js"
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
 
-uploadButtons.forEach(el => {
-  el.addEventListener("mousedown", e => {
-    console.log("clicked", this);
-    e.stopPropagation();
+uploadButton.addEventListener("mousedown", e => {
+  let parentPad = e.target.parentNode.parentNode
+  console.log("uploading", e, "e.target.parentNode", parentPad);
+  e.stopPropagation();
+  fileInput.addEventListener("change", (event) =>{
+    readFile(event).then(buffer => {
+      loadSoundToPad(buffer, parentPad);
+    });
   });
 });
 
-/*
-let fileInput = document.querySelector('input[type="file"]');
-fileInput.addEventListener(
-  "change",
-  function(e) {
+function readFile({target}) {
+  return new Promise((resolve, reject)=>{
+    //pass file into blob
+    let fileData = new Blob([target.files[0]]);
     let reader = new FileReader();
-    reader.onload = function(e) {
-      initSound(this.result);
-    };
-    reader.readAsArrayBuffer(this.files[0]);
-  },
-  false
-);
-*/
+    reader.readAsArrayBuffer(fileData);
+    reader.onload = function(){
+      context.decodeAudioData(reader.result,
+      (buffer)=>{
+        console.log("file",reader.result,"name", target.files[0].name);
+        buffer.name = target.files[0].name;
+        resolve(buffer);
+      },
+      (error)=>{
+        reject(error);
+      });
+    }
+  });
+}
+
+function loadSoundToPad(sample, parent){
+  console.log("lSTP buffer:",sample," parent:", parent);
+  parent.addEventListener("mousedown", ()=>{
+    playSound(sample);
+  });
+}
+
+
 //drag and drop
 //event listeners for drag and drop
 /*
