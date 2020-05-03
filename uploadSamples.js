@@ -1,21 +1,30 @@
-import {drumPads, uploadButton, context, fileInput} from "./constants.js";
-import {playSound} from "./setupPads.js";
+import {drumPads, uploadButton, context, fileInput,} from "./constants.js";
+import {makeSource} from "./setupPads.js";
 import loadAllUrls from "./BufferLoader.js"
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
 
 uploadButton.addEventListener("mousedown", e => {
-  let parentPad = e.target.parentNode.parentNode
+  //when upload button is clicked
+  let parentPad = e.target.parentNode;
+  let parentInput = parentPad.querySelector(".audio-file");
   console.log("uploading", e, "e.target.parentNode", parentPad);
   e.stopPropagation();
-  fileInput.addEventListener("change", (event) =>{
-    readFile(event).then(buffer => {
+  parentInput.addEventListener("change", (ev) => {
+    uploadFile(ev).then((buffer)=>{
       loadSoundToPad(buffer, parentPad);
     });
   });
 });
 
+export function uploadFile(event){
+  return new Promise((resolve)=>{
+    readFile(event).then(buffer => {
+      resolve(buffer);
+    });
+  });
+}
 function readFile({target}) {
   return new Promise((resolve, reject)=>{
     //pass file into blob
@@ -26,7 +35,7 @@ function readFile({target}) {
       context.decodeAudioData(reader.result,
       (buffer)=>{
         console.log("file",reader.result,"name", target.files[0].name);
-        buffer.name = target.files[0].name;
+        buffer.name = /[^\s]+/.exec(target.files[0].name);
         resolve(buffer);
       },
       (error)=>{
@@ -38,9 +47,19 @@ function readFile({target}) {
 
 function loadSoundToPad(sample, parent){
   console.log("lSTP buffer:",sample," parent:", parent);
-  parent.addEventListener("mousedown", ()=>{
-    playSound(sample);
-  });
+  let addSampleToParentPad = ()=>{
+    console.log("playing", sample);
+    let sampleSource = makeSource(sample);
+    sampleSource.source.start(0);
+  }
+  //make pad play sound on click
+  parent.addEventListener("mousedown", addSampleToParentPad);
+
+  //
+  parent.querySelector(".audio-file").addEventListener("change", ()=>{
+    console.log("removed event listener");
+    parent.removeEventListener("mousedown", addSampleToParentPad);
+  })
 }
 
 
