@@ -6,6 +6,7 @@ import {makeSource} from "./setupPads.js";
 // and pass to the API.
 
 export function setupUploadButtons(){
+  console.log("setupUploadButtons");
   [].forEach.call(uploadButtons, (el)=>{
     el.addEventListener("mousedown", (ev) => {
       //when upload button is clicked
