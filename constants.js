@@ -15,8 +15,8 @@ const context = new AudioContext();
 const drumPads = document.querySelectorAll(".drum-machine__pads button");
 const drumMachine = document.querySelector(".drum-machine");
 const startButton = document.querySelector(".start-button");
-const uploadButton = document.querySelector(".js-upload-button");
-const fileInput = document.querySelector('.audio-file');
+const uploadButtons = document.querySelectorAll(".js-upload-button");
+const fileInputs = document.querySelectorAll('.audio-file');
 
 export {samplesToLoad, drumPads, drumMachine,
-  context, startButton, uploadButton, fileInput};
+  context, startButton, uploadButtons, fileInputs};
