@@ -1,3 +1,4 @@
+import "./styles.css";
 import {init} from "./setup.js";
 import {startButton} from "./constants.js";
 

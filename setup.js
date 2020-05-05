@@ -1,4 +1,3 @@
-import "./styles.css";
 import {loadSamples} from "./loadSamples.js";
 import {setupUploadButtons} from "./uploadSamples.js";
 import {startButton} from "./constants.js";
