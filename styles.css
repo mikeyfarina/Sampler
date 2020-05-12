@@ -26,8 +26,10 @@ button:focus {
   font-size:10px;
 }
 .drum-machine {
+
+  width:40%;
   background-color: #e8e8e8;
-  padding: 2vh 1.5vw;
+  padding: 1.5vw 1.5vw;
   font-family: "Helvetica Neue";
   border: 4px #c4c4c4 solid;
 }
@@ -57,6 +59,7 @@ button:focus {
 }
 ul.drum-machine__pads {
   list-style: none;
+
   padding: 0;
   margin-top: auto;
 
@@ -65,14 +68,11 @@ ul.drum-machine__pads {
   grid-gap: 1.2vw;
 }
 ul.drum-machine__pads li {
-  max-width:200px;
   position: relative;
 }
 ul.drum-machine__pads li button{
   width: 100%;
   height: 0;
-
-
   padding-top: 100%;
   background: #c4c4c4;
   border:none;
