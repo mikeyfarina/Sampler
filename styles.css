@@ -1,3 +1,7 @@
+@font-face{
+  font-family:'super smash tv';
+  src: url("./fonts/sstv.ttf");
+}
 p {
   margin: 0;
   padding: 0;
@@ -34,16 +38,16 @@ button:focus {
   border: 4px #c4c4c4 solid;
 }
 .drum-machine__screen {
-  font-family: "digital-7";
+  font-family: "super smash tv";
   background-color: #4880ff;
-  color: #c3e3ff;
+  color: white;
   font-weight: normal;
   padding: 1vw 1.5vw;
   margin-bottom: 1.5vw;
 
 }
 .drum-machine__screen__title {
-  font-size: 4.5vw;
+  font-size: 4vw;
   margin-bottom: 1vw;
 
   overflow: hidden;
