@@ -132,17 +132,16 @@ and (max-device-width : 480px) {
     width:100vw;
   }
   .drum-machine__screen{
-    padding-top: 13vw;
-    padding-bottom:4vw;
+    padding-top: 10vw;
+    padding-bottom:6vw;
 
-    margin-bottom: 1%;
+    margin-bottom: 5%;
   }
   .drum-machine__screen__title{
     font-size:15vw;
   }
   .drum-machine__screen__subtitle{
     font-size:5vw;
-    padding-bottom:1vw
   }
   ul.drum-machine__pads{
     height:75%;
