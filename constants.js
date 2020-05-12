@@ -17,6 +17,9 @@ const drumMachine = document.querySelector(".drum-machine");
 const startButton = document.querySelector(".start-button");
 const uploadButtons = document.querySelectorAll(".js-upload-button");
 const fileInputs = document.querySelectorAll('.audio-file');
+const screenTitle = document.querySelector('.drum-machine__screen__title');
+const screenSubtitle = document.querySelector('.drum-machine__screen__subtitle');
 
 export {samplesToLoad, drumPads, drumMachine,
-  context, startButton, uploadButtons, fileInputs};
+  context, startButton, uploadButtons, fileInputs,
+  screenTitle, screenSubtitle};

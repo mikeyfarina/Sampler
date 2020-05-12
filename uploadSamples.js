@@ -54,16 +54,20 @@ function readFile({target}) {
 
 function loadSoundToPad(sample, parentPad, parentInput){
   console.log("lSTP buffer:",sample," parent:", parentPad);
-  let addSampleToParentPad = ()=>{
+  let addSampleToParentPad = (e)=>{
+    //stop propagation to prevent sample from playing twice on mobile
+    e.stopPropagation();e.preventDefault();
     console.log("playing", sample.name);
     let sampleSource = makeSource(sample);
     sampleSource.source.start(0);
   }
   //make pad play sound on click
   parentPad.addEventListener("mousedown", addSampleToParentPad);
+  parentPad.addEventListener("touchstart", addSampleToParentPad);
   //
   parentInput.addEventListener("change", ()=>{
     parentPad.removeEventListener("mousedown", addSampleToParentPad);
+    parentPad.removeEventListener("touchstart", addSampleToParentPad);
   })
 }
 
