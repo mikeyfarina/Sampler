@@ -1,6 +1,6 @@
 @font-face{
   font-family:'super smash tv';
-  src: url("/fonts/sstv.ttf");
+  src: url("fonts/sstv.ttf");
 }
 p {
   margin: 0;
