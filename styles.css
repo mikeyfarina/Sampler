@@ -124,14 +124,19 @@ ul.drum-machine__pads li button:active{
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
+  body{
+    background:#e8e8e8;
+  }
   .start-button{
     display:none;
   }
   .drum-machine{
-    height:100vh;
+    height:100%;
     width:100vw;
+    border:none;
   }
   .drum-machine__screen{
+    width:94vw;
     padding-top: 10vw;
     padding-bottom:6vw;
 
@@ -153,6 +158,8 @@ and (max-device-width : 480px) {
   ul.drum-machine__pads li button{
     width:100%;
     height:100%;
+
+    box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .drum-machine__pads__label{
