@@ -124,6 +124,10 @@ ul.drum-machine__pads li button:active{
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
+  html,
+  body {
+    height: 99vh;
+  }
   body{
     background:#e8e8e8;
   }

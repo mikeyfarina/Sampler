@@ -6,12 +6,14 @@ export function init(){
   loadSamples();
   setupUploadButtons();
   screenSubtitle.innerHTML = "ready to play";
+  quickHideAddressBar();
+}
 
-  window.addEventListener("load",function() {
-    // Set a timeout...
-    setTimeout(function(){
-      // Hide the address bar!
-      window.scrollTo(0, 1);
-    }, 0);
-  });
+function quickHideAddressBar() {
+  setTimeout(function() {
+    if(window.pageYOffset !== 0) return;
+    window.scrollTo(0, window.pageYOffset + 1);
+
+  }, 1000);
+
 }
