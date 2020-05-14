@@ -115,19 +115,15 @@ ul.drum-machine__pads li button:active{
 
   background-color: #7C7C7C;
   color:white;
-  font-size:.15vw;
+  font-size:.5vw;
   cursor: pointer;
 }
 /*:not(:focus-within)*/
 
 /* Smartphones (portrait) ----------- */
 @media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-  html,
-  body {
-    height: 99vh;
-  }
+and (min-width : 320px)
+and (max-width : 1024px) {
   body{
     background:#e8e8e8;
   }
@@ -135,25 +131,23 @@ and (max-device-width : 480px) {
     display:none;
   }
   .drum-machine{
-    height:99vh;
-    width:100vw;
+    max-height:100vh;
+    width:100%;
+
     border:none;
   }
   .drum-machine__screen{
-    width:94vw;
-    padding-top: 10vw;
-    padding-bottom:6vw;
+
+    padding-top: 3%;
+    padding-bottom: 2%;
 
     margin-bottom: 5%;
   }
   .drum-machine__screen__title{
-    font-size:15vw;
+    font-size:10vw;
   }
   .drum-machine__screen__subtitle{
     font-size:5vw;
-  }
-  ul.drum-machine__pads{
-    height:75%;
   }
   ul.drum-machine__pads li{
     max-width: 99%;
@@ -172,5 +166,27 @@ and (max-device-width : 480px) {
     font-size:1.8vw;
     padding:.5vw 1vw;
     top:.8vw; right:.5vw;
+  }
+}
+
+/* to make pads vertically fill phone screens
+   and to adjust the size of the upload buttons*/
+@media only screen
+and (min-width : 320px)
+and (max-width : 480px) {
+
+  ul.drum-machine__pads{
+      height: 75vh;
+  }
+  ul.drum-machine__pads li button{
+    width:100%;
+    height:100%;
+
+    box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  .js-upload-button{
+    font-size:2.5vw;
+    padding: 1vw 1vw;
+    border-radius: 5px;
   }
 }

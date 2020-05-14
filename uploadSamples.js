@@ -4,32 +4,45 @@ import {makeSource} from "./setupPads.js";
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
-
+let touched;
 export function setupUploadButtons(){
   console.log("setupUploadButtons");
-  [].forEach.call(uploadButtons, (el)=>{
-    el.addEventListener("mousedown", (ev) => {
-      //when upload button is clicked
-      let parentPad = ev.target.parentNode;
-      let parentInput = parentPad.querySelector(".audio-file");
 
-      ev.stopPropagation();
-      parentInput.addEventListener("change", (ev) => {
-        uploadFile(ev).then((buffer)=>{
-          console.log("loading " +  buffer.name + " to pad");
-          loadSoundToPad(buffer, parentPad, parentInput);
-          parentPad.querySelector("p.drum-machine__pads__label").innerText = buffer.name;
-        });
-      }, {once: true});
+  [].forEach.call(uploadButtons, (el)=>{
+    //when upload button is clicked
+    let touched;
+    el.addEventListener("mousedown", (ev) => {
+      if (!touched){
+        console.log("clicked upload button");
+        configFileChange(ev);
+      }
+    });
+
+    el.addEventListener("touchstart", (ev) => {
+      touched = true;
+      console.log("touched upload button");
+      configFileChange(ev);
     });
   });
 }
 
-function uploadFile(event){
-  return new Promise((resolve)=>{
-    readFile(event).then(buffer => {
-      resolve(buffer);
-    });
+function configFileChange(ev){
+  let parentPad = ev.target.parentNode;
+  let parentInput = parentPad.querySelector(".audio-file");
+
+  console.log("pp", parentPad, "pi", parentInput);
+
+  parentInput.addEventListener("change", (event) => {
+    uploadFile(event, parentPad, parentInput, ev);
+  });
+}
+
+function uploadFile(event, parentPad, parentInput, ev){
+  readFile(event).then((buffer)=>{
+    loadSoundToPad(buffer, parentPad, parentInput);
+
+     //label
+    parentPad.querySelector("p.drum-machine__pads__label").innerText = buffer.name;
   });
 }
 
@@ -53,22 +66,24 @@ function readFile({target}) {
 }
 
 function loadSoundToPad(sample, parentPad, parentInput){
-  console.log("lSTP buffer:",sample," parent:", parentPad);
+  console.log("loading " +  sample.name + " to ", parentPad);
+
   let addSampleToParentPad = (e)=>{
     //stop propagation to prevent sample from playing twice on mobile
     e.stopPropagation();e.preventDefault();
     console.log("playing", sample.name);
     let sampleSource = makeSource(sample);
     sampleSource.source.start(0);
+
   }
   //make pad play sound on click
   parentPad.addEventListener("mousedown", addSampleToParentPad);
   parentPad.addEventListener("touchstart", addSampleToParentPad);
-  //
+  //remove event listener if file is changed
   parentInput.addEventListener("change", ()=>{
     parentPad.removeEventListener("mousedown", addSampleToParentPad);
     parentPad.removeEventListener("touchstart", addSampleToParentPad);
-  })
+  });
 }
 
 //drag and drop

@@ -4,16 +4,17 @@ import {screen} from "./constants.js";
 
 let initialized = false;
 
+//for mobile devices
 screen.addEventListener("touchstart", (e)=>{
-  console.log("touchstart init");
   e.preventDefault();
   if (!initialized){
    init();
    initialized = true;
   }
 }, {once: true});
+
+//for mouse events
 screen.addEventListener("click", ()=>{
-  console.log("click init");
   if (!initialized){
     init();
     initialized = true;
