@@ -7,8 +7,10 @@
 * decodes array of audio file urls and loads each sample onto the next pad after clicking the start screen
 * allows user to upload each pads sound through a button on pad
 
-## todo: 
+## Currently:
 * currently adapting screen and functionality to mobile devices
+
+## todo: 
   
 * SEQUENCER
 
