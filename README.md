@@ -5,16 +5,16 @@
 ## Web Audio API
 
 ## Working: 
-# decodes array of audio file urls and loads each sample onto the next pad after clicking the start screen
-# allows user to upload each pads sound through a button on pad
+* decodes array of audio file urls and loads each sample onto the next pad after clicking the start screen
+* allows user to upload each pads sound through a button on pad
 
 ## todo: 
-# currently adapting screen and functionality to mobile devices
+* currently adapting screen and functionality to mobile devices
   
-# SEQUENCER
+* SEQUENCER
 
-# Effects section
-  # when pad is clicked open second area containing different effects that can be added to each sample 
-    # volume, delay, reverb, eq, pitch? 
+* Effects section
+  * when pad is clicked open second area containing different effects that can be added to each sample 
+    * volume, delay, reverb, eq, pitch? 
 
-# Audio file wavelength editor (SliceX)
+* Audio file wavelength editor (SliceX)
