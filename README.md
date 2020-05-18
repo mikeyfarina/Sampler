@@ -8,7 +8,7 @@
 * allows user to upload each pads sound through a button on pad
 
 ## Currently:
-* currently adapting screen and functionality to mobile devices
+* adapting screen and functionality to mobile devices
 
 ## todo: 
   
