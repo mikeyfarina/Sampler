@@ -26,7 +26,7 @@ button:focus {
   max-width:60vh;
 
   background-color: #e8e8e8;
-  padding: 2vw 1.5vw;
+  padding: 2vw 2.5vw;
   font-family: "Helvetica Neue";
   border: 4px #c4c4c4 solid;
 }
@@ -39,6 +39,7 @@ button:focus {
   font-weight: normal;
   padding: 3%;
   margin-bottom: 1.5vw;
+  border-radius: .2rem;
 }
 
 .drum-machine__screen__title {
@@ -69,9 +70,7 @@ ul.drum-machine__pads {
 ul.drum-machine__pads li button{
   position: relative;
   width:100%;
-  max-width:100%;
 
-  height: 0;
   padding-top: 100%;
 
   background: #c4c4c4;
@@ -107,7 +106,7 @@ ul.drum-machine__pads li button:active{
   top: 0;right: 0;
 
   padding: .4vw .6vw;
-  border-radius: .2vh 1vh;
+  border-radius: .2vh .4rem;
 
   background-color: #7C7C7C;
   color:white;
@@ -145,7 +144,6 @@ and (max-width : 1024px) {
     font-size:4vw;
   }
   ul.drum-machine__pads{
-    max-width:100%;
     margin:3%;
     grid-gap:1.5vw;
   }
@@ -153,7 +151,6 @@ and (max-width : 1024px) {
     max-width: 99%;
   }
   ul.drum-machine__pads li button{
-    min-width:100%;
     height:100%;
     box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
   }
@@ -168,7 +165,6 @@ and (max-width : 1024px) {
     font-size:1.2vh;
     border-radius: 2px .4rem;
     padding:1vh 2vw;
-    /*box-shadow: 0px 0px 0px .7em rgba(0, 0, 0, 0.3);*/
     top: 0; right:0;
   }
 }
@@ -208,8 +204,8 @@ and (min-width : 320px)
 and (max-width : 480px) {
   .drum-machine__screen{
     padding:3%;
-    margin-top:5%;
-    margin-bottom:7%;
+    margin-top:6%;
+    margin-bottom:4%;
   }
   .drum-machine__screen__title{
     font-size:12vw;
@@ -221,9 +217,6 @@ and (max-width : 480px) {
     height: 75vh;
   }
   ul.drum-machine__pads li button{
-    width:100%;
-    height:100%;
-
     box-shadow: 3px 1px 3px rgba(0, 0, 0, 0.2);
   }
   .drum-machine__pads__label{
