@@ -12,13 +12,14 @@ export function setupUploadButtons(){
     //when upload button is clicked
     let touched;
     el.addEventListener("mousedown", (ev) => {
+      ev.stopPropagation();
       if (!touched){
         console.log("clicked upload button");
         configFileChange(ev);
       }
     });
-
     el.addEventListener("touchstart", (ev) => {
+      ev.stopPropagation();
       touched = true;
       console.log("touched upload button");
       configFileChange(ev);
@@ -33,8 +34,9 @@ function configFileChange(ev){
   console.log("pp", parentPad, "pi", parentInput);
 
   parentInput.addEventListener("change", (event) => {
+    console.log("Added listener to input");
     uploadFile(event, parentPad, parentInput, ev);
-  });
+  }, {once: true});
 }
 
 function uploadFile(event, parentPad, parentInput, ev){

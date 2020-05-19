@@ -21,31 +21,26 @@ body {
 button:focus {
   outline: 0;
 }
-.start-button {
-  padding-top:.3vw;
-  width: 5%;
-  background-color: white;
-  margin-right: 3%;
-  margin-bottom: 5.5rem;
-  font-size:10px;
-}
+
 .drum-machine {
   max-height:95%;
   width:40%;
   background-color: #e8e8e8;
-  padding: 1.3vw 1.5vw;
+  padding: 2vh 1.5vw;
   font-family: "Helvetica Neue";
   border: 4px #c4c4c4 solid;
 }
+
 .drum-machine__screen {
+  max-height: 15%;
   font-family: "super smash tv";
   background-color: #4880ff;
   color: white;
   font-weight: normal;
   padding: 1vw 1.5vw;
   margin-bottom: 1.5vw;
-
 }
+
 .drum-machine__screen__title {
   font-size: 4vw;
   margin-bottom: 1vw;
@@ -66,21 +61,20 @@ ul.drum-machine__pads {
 
   padding: 0;
   margin-top: auto;
+  max-height:75%;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1.2vw;
-}
-ul.drum-machine__pads li {
-  position: relative;
+  grid-gap: 1vw;
 }
 ul.drum-machine__pads li button{
+  position: relative;
   width: 100%;
   height: 0;
   padding-top: 100%;
   background: #c4c4c4;
   border:none;
-  border-radius: .3rem;
+  border-radius: .4rem;
   box-shadow: 4px 3px 5px rgba(0, 0, 0, 0.2);
 }
 ul.drum-machine__pads li button:active{
@@ -133,21 +127,24 @@ and (max-width : 1024px) {
   .drum-machine{
     max-height:100vh;
     width:100%;
-
+    padding:0;
     border:none;
   }
   .drum-machine__screen{
+    padding: 5%;
 
-    padding-top: 3%;
-    padding-bottom: 2%;
-
-    margin-bottom: 5%;
+    margin:3%;
+    margin-bottom: 6%;
   }
   .drum-machine__screen__title{
-    font-size:10vw;
+    font-size:9vw;
   }
   .drum-machine__screen__subtitle{
-    font-size:5vw;
+    font-size:4.5vw;
+  }
+  ul.drum-machine__pads{
+    margin:3%;
+    grid-gap:1.5vw;
   }
   ul.drum-machine__pads li{
     max-width: 99%;
@@ -155,38 +152,45 @@ and (max-width : 1024px) {
   ul.drum-machine__pads li button{
     width:100%;
     height:100%;
-
     box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .drum-machine__pads__label{
-    font-size:5vw;
+    font-size:4vw;
+    text-overflow: ellipsis;
   }
   .js-upload-button{
-    font-size:1.8vw;
-    padding:.5vw 1vw;
-    top:.8vw; right:.5vw;
+    background:rgba(0, 0, 0, 0.25);
+    color:white;
+    font-size:1.2em;
+    border-radius: 2px .4rem;
+    padding:1vh 2vw;
+    /*box-shadow: 0px 0px 0px .7em rgba(0, 0, 0, 0.3);*/
+    top: 0; right:0;
   }
 }
-
-/* to make pads vertically fill phone screens
+/*@media only screen
+and (min-height : )
+/* to make pads horizontally fill phone screens
    and to adjust the size of the upload buttons*/
 @media only screen
 and (min-width : 320px)
 and (max-width : 480px) {
 
   ul.drum-machine__pads{
-      height: 75vh;
+    height: 75vh;
   }
   ul.drum-machine__pads li button{
     width:100%;
     height:100%;
 
-    box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  .drum-machine__pads__label{
+    font-size:5vw;
+    text-overflow: ellipsis;
   }
   .js-upload-button{
-    font-size:2.5vw;
-    padding: 1vw 1vw;
-    border-radius: 5px;
+    font-size:.8em;
   }
 }
