@@ -1,18 +1,19 @@
-import {drumPads, context, fileInputs} from "./constants.js";
-import {uploadFile} from "./uploadSamples.js";
+import { drumPads, context, fileInputs } from "./constants.js";
+import { uploadFile } from "./uploadSamples.js";
 let source;
 
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
 
   for (let i = 0; i < bufferList.length; i++) {
-    console.log('assigning', bufferList[i].name + " to pad " + i);
+    console.log("assigning", bufferList[i].name + " to pad " + i);
 
     makeLabel(drumPads[i], bufferList[i].name);
 
     let makeSourceFromBufferAndPlay = (e) => {
       //stop propagation to prevent sample from playing twice on mobile
-      e.stopPropagation();e.preventDefault();
+      e.stopPropagation();
+      e.preventDefault();
       let bufferSource = makeSource(bufferList[i]);
       console.log("playing", bufferSource);
       bufferSource.source.start(0);
@@ -20,20 +21,30 @@ export function assignSoundsToPads(bufferList) {
 
     drumPads[i].addEventListener("mousedown", makeSourceFromBufferAndPlay);
     drumPads[i].addEventListener("touchstart", makeSourceFromBufferAndPlay);
-              //chage to i, after adding all buttons
-    fileInputs[i].addEventListener("change", ()=>{
-      console.log("removed default sample from pad")
-      drumPads[i].removeEventListener("mousedown", makeSourceFromBufferAndPlay);
-      drumPads[i].removeEventListener("touchstart", makeSourceFromBufferAndPlay);
-    }, {once: true})
+    //chage to i, after adding all buttons
+    fileInputs[i].addEventListener(
+      "change",
+      () => {
+        console.log("removed default sample from pad");
+        drumPads[i].removeEventListener(
+          "mousedown",
+          makeSourceFromBufferAndPlay
+        );
+        drumPads[i].removeEventListener(
+          "touchstart",
+          makeSourceFromBufferAndPlay
+        );
+      },
+      { once: true }
+    );
   }
 }
 
-export function makeSource(buffer){
+export function makeSource(buffer) {
   source = context.createBufferSource();
   source.buffer = buffer;
   source.connect(context.destination);
-  return {source: source};
+  return { source: source };
 }
 
 /*
@@ -49,7 +60,7 @@ export function playSound(sound) {
 }
 */
 
-function makeLabel(drumPad, name){
+function makeLabel(drumPad, name) {
   let label = drumPad.querySelector("p.drum-machine__pads__label");
   label.innerText = name;
 }
