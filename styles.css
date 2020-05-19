@@ -194,6 +194,9 @@ and (max-width : 1024px) {
     min-height: 60vh;
     padding:3%;
   }
+  .drum-machine__pads__label{
+    font-size:4vh;
+  }
 }
 /*@media only screen
 and (min-height : )
