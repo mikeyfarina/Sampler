@@ -10,18 +10,21 @@ export function assignSoundsToPads(bufferList) {
 
     makeLabel(drumPads[i], bufferList[i].name);
 
-    let makeSourceFromBufferAndPlay = () => {
+    let makeSourceFromBufferAndPlay = (e) => {
+      //stop propagation to prevent sample from playing twice on mobile
+      e.stopPropagation();e.preventDefault();
       let bufferSource = makeSource(bufferList[i]);
       console.log("playing", bufferSource);
       bufferSource.source.start(0);
     };
 
     drumPads[i].addEventListener("mousedown", makeSourceFromBufferAndPlay);
-
+    drumPads[i].addEventListener("touchstart", makeSourceFromBufferAndPlay);
               //chage to i, after adding all buttons
     fileInputs[i].addEventListener("change", ()=>{
       console.log("removed default sample from pad")
       drumPads[i].removeEventListener("mousedown", makeSourceFromBufferAndPlay);
+      drumPads[i].removeEventListener("touchstart", makeSourceFromBufferAndPlay);
     }, {once: true})
   }
 }

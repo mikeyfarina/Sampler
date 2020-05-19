@@ -1,3 +1,7 @@
+@font-face{
+  font-family:'super smash tv';
+  src: url("./fonts/sstv.ttf");
+}
 p {
   margin: 0;
   padding: 0;
@@ -10,45 +14,44 @@ body {
   align-items: center;
   justify-content: center;
 
-  height: 100vh;
-  width: 100vw;
+  height: 99vh;
+
   background-color: #89c9ff;
 }
 button:focus {
   outline: 0;
 }
-.start-button {
-  height: 50px;
-  width: 50px;
-  background-color: white;
-  margin-right: 3%;
-  margin-bottom: 5.5rem;
-  font-size:10px;
-}
+
 .drum-machine {
+  max-width:60vh;
+
   background-color: #e8e8e8;
-  padding: 1.5rem 2rem;
+  padding: 2vw 2.5vw;
   font-family: "Helvetica Neue";
   border: 4px #c4c4c4 solid;
 }
+
 .drum-machine__screen {
-  font-family: "digital-7";
+  max-height: 15%;
+  font-family: "super smash tv";
   background-color: #4880ff;
-  color: #c3e3ff;
+  color: white;
   font-weight: normal;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  padding: 3%;
+  margin-bottom: 1.5vw;
+  border-radius: .2rem;
 }
+
 .drum-machine__screen__title {
-  font-size: 83px;
-  margin-bottom: 1rem;
+  font-size: 3vw;
+  margin-bottom: .2em;
 
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .drum-machine__screen__subtitle {
-  font-size: 30px;
+  font-size: 2vw;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,29 +59,31 @@ button:focus {
 }
 ul.drum-machine__pads {
   list-style: none;
+
   padding: 0;
   margin-top: auto;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1rem;
-}
-ul.drum-machine__pads li {
-  position: relative;
-  width: 200px;
-  height: 200px;
+  grid-gap: 1vw;
 }
 ul.drum-machine__pads li button{
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width:100%;
+
+  padding-top: 100%;
+
   background: #c4c4c4;
   border:none;
-  border-radius: .3rem;
+  border-radius: .4rem;
   box-shadow: 4px 3px 5px rgba(0, 0, 0, 0.2);
 }
 ul.drum-machine__pads li button:active{
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
+
+  -webkit-transform: translateY(-1px);
+
 /*
   background: radial-gradient(ellipse at center,
     #deefff 25%,#c4c4c4 100%);
@@ -90,7 +95,7 @@ ul.drum-machine__pads li button:active{
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  font-size: 25px;
+  font-size: 1.5vw;
   color: #4a4a4a;
 }
 .js-upload-button input {
@@ -98,14 +103,127 @@ ul.drum-machine__pads li button:active{
 }
 .js-upload-button{
   position: absolute;
-  top: 0.5em;right: .5em;
+  top: 0;right: 0;
 
-  padding: .5em 1em;
-  border-radius: 25px;
+  padding: .4vw .6vw;
+  border-radius: .2vh .4rem;
 
   background-color: #7C7C7C;
   color:white;
-  font-size:8px;
+  font-size:.8em;
   cursor: pointer;
 }
-/*:not(:focus-within)*/
+
+/* Smartphones (portrait) ----------- */
+@media only screen
+and (min-width : 320px)
+and (max-width : 1024px) {
+  body{
+    background:#e8e8e8;
+  }
+  .start-button{
+    display:none;
+  }
+  .drum-machine{
+    max-width:100%;
+    width:70vh;
+    min-height:100%;
+    padding:0;
+    border:none;
+
+  }
+  .drum-machine__screen{
+    padding:5%;
+    margin:3%;
+    margin-bottom: 6%;
+  }
+  .drum-machine__screen__title{
+    font-size:8vw;
+  }
+  .drum-machine__screen__subtitle{
+    font-size:4vw;
+  }
+  ul.drum-machine__pads{
+    margin:3%;
+    grid-gap:1.5vw;
+  }
+  ul.drum-machine__pads li{
+    max-width: 99%;
+  }
+  ul.drum-machine__pads li button{
+    height:100%;
+    box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .drum-machine__pads__label{
+    font-size:4vw;
+    text-overflow: ellipsis;
+  }
+  .js-upload-button{
+    background:rgba(0, 0, 0, 0.25);
+    color:white;
+    font-size:1.2vh;
+    border-radius: 2px .4rem;
+    padding:1vh 2vw;
+    top: 0; right:0;
+  }
+}
+/*vertical calibration*/
+@media only screen
+and (min-height : 300px)
+and (max-height : 900px)
+and (min-width : 320px)
+and (max-width : 1024px) {
+  .drum-machine{
+    max-height: 100vh;
+    width:70vh;
+    padding:2vh;
+  }
+  .drum-machine__screen{
+    padding:3%;
+    margin-top:2%;
+    margin-bottom:0;
+  }
+  .drum-machine__screen__title{
+    font-size:8vh;
+  }
+  .drum-machine__screen__subtitle{
+    font-size:4vh;
+  }
+  .drum-machine__pads{
+    min-height: 60vh;
+    padding:3%;
+  }
+}
+/*@media only screen
+and (min-height : )
+/* to make pads horizontally fill phone screens
+   and to adjust the size of the upload buttons*/
+@media only screen
+and (min-width : 320px)
+and (max-width : 480px) {
+  .drum-machine__screen{
+    padding:3%;
+    margin-top:6%;
+    margin-bottom:4%;
+  }
+  .drum-machine__screen__title{
+    font-size:12vw;
+  }
+  .drum-machine__screen__subtitle{
+    font-size:6vw;
+  }
+  ul.drum-machine__pads{
+    height: 75vh;
+  }
+  ul.drum-machine__pads li button{
+    box-shadow: 3px 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  .drum-machine__pads__label{
+    font-size:5vw;
+    text-overflow: ellipsis;
+  }
+  .js-upload-button{
+    font-size:.8em;
+  }
+}
