@@ -45,7 +45,7 @@ button:focus {
 
 .drum-machine__screen__title {
   font-size: 3vw;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.5rem;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -96,7 +96,7 @@ ul.drum-machine__pads li button:active {
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  font-size: 1.5vw;
+  font-size: 3vh;
   color: #4a4a4a;
 }
 
@@ -142,11 +142,11 @@ ul.drum-machine__pads li button:active {
   }
 
   .drum-machine__screen__title {
-    font-size: 8vw;
+    font-size: 5.5vh;
   }
 
   .drum-machine__screen__subtitle {
-    font-size: 4vw;
+    font-size: 3.5vh;
   }
 
   ul.drum-machine__pads {
@@ -164,7 +164,7 @@ ul.drum-machine__pads li button:active {
   }
 
   .drum-machine__pads__label {
-    font-size: 4vw;
+    font-size: 3vh;
     text-overflow: ellipsis;
   }
 

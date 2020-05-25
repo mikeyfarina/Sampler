@@ -9,10 +9,11 @@ screen.addEventListener(
   "touchstart",
   (e) => {
     e.preventDefault();
-    if (!initialized) {
-      init();
-      initialized = true;
+    if (initialized) {
+      return;
     }
+    init();
+    initialized = true;
   },
   { once: true }
 );
@@ -21,10 +22,11 @@ screen.addEventListener(
 screen.addEventListener(
   "click",
   () => {
-    if (!initialized) {
-      init();
-      initialized = true;
+    if (initialized) {
+      return;
     }
+    init();
+    initialized = true;
   },
   { once: true }
 );

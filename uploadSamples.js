@@ -13,10 +13,11 @@ export function setupUploadButtons() {
     let touched;
     el.addEventListener("mousedown", (ev) => {
       ev.stopPropagation();
-      if (!touched) {
-        console.log("clicked upload button");
-        configFileChange(ev);
+      if (touched) {
+        return;
       }
+      console.log("clicked upload button");
+      configFileChange(ev);
     });
     el.addEventListener("touchstart", (ev) => {
       ev.stopPropagation();

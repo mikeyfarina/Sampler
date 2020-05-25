@@ -44,7 +44,7 @@ export function makeSource(buffer) {
   source = context.createBufferSource();
   source.buffer = buffer;
   source.connect(context.destination);
-  return { source: source };
+  return { source };
 }
 
 /*
