@@ -1,4 +1,4 @@
-import {context} from "./constants.js";
+import { context } from "./constants.js";
 import "regenerator-runtime/runtime";
 
 export default function loadAllUrls(urlList) {
@@ -36,7 +36,7 @@ function loadSampleFromUrl(url) {
       );
     };
 
-    request.onerror = function(error) {
+    request.onerror = function (error) {
       reject(error);
     };
 
