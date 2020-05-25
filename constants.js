@@ -21,6 +21,14 @@ const screen = document.querySelector('.drum-machine__screen');
 const screenTitle = document.querySelector('.drum-machine__screen__title');
 const screenSubtitle = document.querySelector('.drum-machine__screen__subtitle');
 
+/* sequencer */
+const trackOne = document.querySelectorAll(".sequencer__track-one__button");
+const beatSelector = document.querySelector(".beat-selector");
+const tempoSlider = document.getElementById("tempo");
+const tempoDisplay = document.getElementById("tempo-value");
+
+
 export {samplesToLoad, drumPads, drumMachine,
   context, startButton, uploadButtons, fileInputs,
-  screenTitle, screenSubtitle, screen};
+  screenTitle, screenSubtitle, screen, trackOne,
+  beatSelector, tempoSlider, tempoDisplay};

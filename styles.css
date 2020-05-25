@@ -230,3 +230,49 @@ and (max-width : 480px) {
     font-size:.8em;
   }
 }
+
+/* sequencer styling */
+
+.sequencer__controls__play-button{
+  display:inline-grid;
+  margin-right:20%;
+  padding: 5%;
+  font-size:20px;
+  border: 4px #c4c4c4 solid;
+}
+.sequencer__controls__tempo{
+  display:inline-grid;
+}
+.tempo-info{
+  font-size:1.5rem;
+}
+.sequencer__controls{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  align-items:center;
+}
+#tempo{
+  width:80%;
+}
+input[type="range"]{
+  height:100%;
+  background-color:black;
+}
+.sequencer{
+  background-color:#e8e8e8;
+  margin-left:5%;
+  padding: 3%;
+  border: 4px #c4c4c4 solid;
+}
+
+.sequencer__track-one{
+  max-width:100%;
+  width:100%;
+  grid-template-columns: repeat(16,1fr);
+}
+.sequencer__track-one__button{
+  background-color:black;
+
+  margin-top:5%;
+  font-size:3vw;
+}
