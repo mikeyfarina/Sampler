@@ -30,19 +30,16 @@ let listOfSamples;
 
 export function setUpSequencer(){
     let playButton = document.querySelector('.sequencer__controls__play-button');
-    console.log("trackone",trackOne);
-
-    console.log("playButton", playButton);
     playButton.addEventListener("click", play);
 
 
     loadAllUrls(samplesToLoad)
     .then((buffer)=>{
       listOfSamples = buffer;
-      console.log('listOfSamples', listOfSamples);
     });
-    console.log("listofsamples", listOfSamples);
-    
+
+    createSequencerTracksFromPadsWithSamples();
+
     // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
     window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame ||
@@ -56,7 +53,12 @@ export function setUpSequencer(){
     })();
 
     requestAnimFrame(draw); // start the drawing loop.
+}
 
+function createSequencerTracksFromPadsWithSamples(){
+  //create a track div
+
+  //create 16 buttons on a track
 }
 
 function nextNote() {
