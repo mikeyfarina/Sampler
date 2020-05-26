@@ -282,7 +282,7 @@ input[type="range"]{
   width:100%;
   grid-template-columns: repeat(16,1fr);
 }
-/**/
+
 .sequencer__display__track-one__button{
   background-color:lightslategray;
 
