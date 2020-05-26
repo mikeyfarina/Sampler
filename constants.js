@@ -23,7 +23,7 @@ const screenSubtitle = document.querySelector(
 );
 
 /* sequencer */
-const trackOne = document.querySelectorAll(".sequencer__track-one__button");
+const trackOneBeats = document.querySelectorAll(".sequencer__display__track-one__button");
 const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
@@ -40,7 +40,7 @@ export {
   screenTitle, 
   screenSubtitle, 
   screen, 
-  trackOne,
+  trackOneBeats,
   beatSelector, 
   tempoSlider, 
   tempoDisplay

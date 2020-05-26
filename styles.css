@@ -277,13 +277,13 @@ input[type="range"]{
   border: 4px #c4c4c4 solid;
 }
 
-.sequencer__track-one{
+.sequencer__display__track-one{
   max-width:100%;
   width:100%;
   grid-template-columns: repeat(16,1fr);
 }
-.sequencer__track-one__button{
-  background-color:black;
+.sequencer__display__track-one__button{
+  background-color:lightslategray;
 
   margin-top:5%;
   font-size:3vw;

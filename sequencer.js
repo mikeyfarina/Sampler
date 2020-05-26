@@ -1,4 +1,4 @@
-import {context, trackOne, beatSelector, 
+import {context, trackOneBeats, beatSelector, 
     tempoSlider, tempoDisplay} from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import {makeSource} from "./setupPads.js";
@@ -136,7 +136,7 @@ function draw() {
     if (last16thNoteDrawn != currentNote) {
         last16thNoteDrawn = currentNote;
         for (let i=0; i<16; i++) {
-          trackOne[i].style.background = ( currentNote == i ) ?
+          trackOneBeats[i].style.background = ( currentNote == i ) ?
               ((currentNote%4 == 0)?"red":"blue") : "black";
       }
     }
