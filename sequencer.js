@@ -1,4 +1,4 @@
-import {context, trackOneBeats, beatSelector, 
+import {context, metronomeBeats, beatSelector, 
     tempoSlider, tempoDisplay} from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import {makeSource} from "./setupPads.js";
@@ -27,13 +27,18 @@ const samplesToLoad = [
 ];
 
 let listOfSamples;
+let seqTracks;
+
+
 
 export function setUpSequencer(){
   let playButton = document.querySelector('.sequencer__controls__play-button');
-  console.log("trackone",trackOneBeats);
+  console.log("metronomeBeats",metronomeBeats);
 
   console.log("playButton", playButton);
-  playButton.addEventListener("click", play);
+  playButton.addEventListener("click", (ev)=>{
+    play(ev);
+  });
 
 
   loadAllUrls(samplesToLoad)
@@ -108,7 +113,7 @@ function scheduler() {
   timerID = window.setTimeout( scheduler, lookahead );
 }
 
-function play() {
+function play(ev) {
   console.log("play called");
 
   isPlaying = !isPlaying;
@@ -117,16 +122,18 @@ function play() {
     current16thNote = 0;
     nextNoteTime = context.currentTime;
     scheduler();  // kick off scheduling
-    return "stop";
+    ev.target.innerText = "stop";
   } else {
     window.clearTimeout( timerID );
-    return "play";
+    ev.target.innerText = "play";
   }
 }
 
 function draw() {
   let currentNote = last16thNoteDrawn;
   let currentTime = context.currentTime;
+
+  seqTracks = document.querySelectorAll(".sequencer__display__track");
 
   while (notesInQueue.length && notesInQueue[0].time < currentTime) {
     currentNote = notesInQueue[0].note;
@@ -136,10 +143,14 @@ function draw() {
   // We only need to draw if the note has moved.
   if (last16thNoteDrawn != currentNote) {
     last16thNoteDrawn = currentNote;
+    for (let track of seqTracks){  
+      for (let i=0; i<16; i++) {
+        metronomeBeats[i].style.color = ( currentNote == i ) ?
+        (( currentNote % 4 == 0 ) ? "red" : "blue" ) : "black"; 
 
-    for (let i=0; i<16; i++) {
-      trackOneBeats[i].style.background = ( currentNote == i ) ?
-        (( currentNote % 4 == 0 ) ? "red" : "blue" ) : "lightslategray"; 
+        track.children[i+1].style.color = ( currentNote == i ) ?
+          (( currentNote % 4 == 0 ) ? "red" : "blue" ) : "black"; 
+      }
     }
   }
 
