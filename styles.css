@@ -263,6 +263,9 @@ ul.drum-machine__pads li button:active {
   grid-template-columns: repeat(3,1fr);
   align-items:center;
 }
+.beat-selector{
+  height:85%;
+}
 #tempo{
   width:80%;
 }
@@ -276,16 +279,28 @@ input[type="range"]{
   padding: 3%;
   border: 4px #c4c4c4 solid;
 }
-
-.sequencer__display__track-one{
-  max-width:100%;
-  width:100%;
-  grid-template-columns: repeat(16,1fr);
+.sequencer__display{
+  height:75%;
+}
+.sequencer__display__track{
+  display:grid;
+  grid-template-columns: repeat(17,1fr);
 }
 
-.sequencer__display__track-one__button{
-  background-color:lightslategray;
+.sequencer__display__track__name{
+  height:100%;
+}
 
+.sequencer__display__track__button{
+  background-color:lightslategray;
   margin-top:5%;
-  font-size:3vw;
+  font-size:2vw;
+}
+.sequencer__display__track__metronome{
+  display:grid;
+  grid-template-columns: repeat(17,1fr);
+
+  padding:2.5% 0;
+  margin: 2.5% 0;
+  border:1px solid black;
 }

@@ -13,6 +13,7 @@ const context = new AudioContext();
 
 const drumPads = document.querySelectorAll(".drum-machine__pads button");
 const drumMachine = document.querySelector(".drum-machine");
+const padLabels = document.querySelectorAll(".drum-machine__pads__label");
 const startButton = document.querySelector(".start-button");
 const uploadButtons = document.querySelectorAll(".js-upload-button");
 const fileInputs = document.querySelectorAll(".audio-file");
@@ -23,7 +24,7 @@ const screenSubtitle = document.querySelector(
 );
 
 /* sequencer */
-const trackOneBeats = document.querySelectorAll(".sequencer__display__track-one__button");
+const trackOneBeats = document.querySelectorAll(".sequencer__display__track__button");
 const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
@@ -33,6 +34,7 @@ export {
   samplesToLoad, 
   drumPads, 
   drumMachine,
+  padLabels,
   context, 
   startButton, 
   uploadButtons, 

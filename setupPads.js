@@ -1,6 +1,7 @@
 import { drumPads, context, fileInputs } from "./constants.js";
 import { uploadFile } from "./uploadSamples.js";
 let source;
+let loadedPadsWithSamples =[]
 
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
@@ -37,7 +38,12 @@ export function assignSoundsToPads(bufferList) {
       },
       { once: true }
     );
+
+    //create an object consisting of the html pad element
+    //and the name of the buffer loaded onto the pad
+    createObjectWithPadInfo(drumPads[i], bufferList[i]);
   }
+  return loadedPadsWithSamples;
 }
 
 export function makeSource(buffer) {
@@ -47,20 +53,14 @@ export function makeSource(buffer) {
   return { source };
 }
 
-/*
-export function playSound(sound) {
-  let source = context.createBufferSource();
-  console.log("playing sound", sound);
-  source.buffer = sound;
-  source.connect(context.destination);
-  source.start(0);
-  source.onended = function(){
-    console.log("onended,", source.buffer, context.destination);
-  }
-}
-*/
-
 function makeLabel(drumPad, name) {
   let label = drumPad.querySelector("p.drum-machine__pads__label");
   label.innerText = name;
+}
+
+function createObjectWithPadInfo(drumPad, buffer){
+  console.log("creating padinfo object");
+  let padObject = { drumPad, buffer, bufferName: buffer.name  };
+  loadedPadsWithSamples.push(padObject);
+  console.log("pushed object into array\n\n");
 }
