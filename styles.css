@@ -288,12 +288,14 @@ input[type="range"]{
 }
 
 .sequencer__display__track__name{
+  text-align: center;
+  padding-top:40%;
   height:100%;
 }
 
 .sequencer__display__track__button{
   background-color:lightslategray;
-  margin-top:5%;
+  margin:10% 3%;
   font-size:2vw;
 }
 .sequencer__display__track__metronome{

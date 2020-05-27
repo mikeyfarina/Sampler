@@ -59,21 +59,24 @@ export function setUpSequencer(){
 }
 
 function nextNote() {
-  tempo = tempoSlider.value;
-  tempoDisplay.innerText = tempo;
+  tempo = tempoSlider.value;            //always updating the tempo
+  tempoDisplay.innerText = tempo;       //and note resolution 
   noteResolution = beatSelector.selectedIndex;
+
   // Advance current note and time by a 16th note...
-  let secondsPerBeat = 60.0 / tempo;  // Notice this picks up the CURRENT
-                    // tempo value to calculate beat length.
+  let secondsPerBeat = 60.0 / tempo;
   nextNoteTime += 0.25 * secondsPerBeat;  // Add beat length to last beat time
 
-  current16thNote++;  // Advance the beat number, wrap to zero
+  current16thNote++;  // Advance the beat number, wrap to zer0
   if (current16thNote == 16) {
     current16thNote = 0;
   }
 }
-function scheduleNote( beatNumber, time, listOfLoadedSamples ) {
+
+function scheduleNote( beatNumber, time ) {
+  //get note res
   noteResolution = beatSelector.selectedIndex;
+
   // push the note on the queue, even if we're not playing.
   notesInQueue.push( { note: beatNumber, time: time } );
 
@@ -83,11 +86,11 @@ function scheduleNote( beatNumber, time, listOfLoadedSamples ) {
     return; // we're not playing non-quarter 8th notes
 
   if ( !(beatNumber % 16) || !(beatNumber % 8) ) // beat 0 == low pitch
-    playSample(listOfLoadedSamples[2]);
+    playSample(listOfSamples[2]);
   else if (beatNumber % 4)  // quarter notes = medium pitch
-    playSample(listOfLoadedSamples[0]);
+    playSample(listOfSamples[0]);
   else                      // other 16th notes = high pitch
-    playSample(listOfLoadedSamples[1]);
+    playSample(listOfSamples[1]);
 }
 
 function playSample(buffer){
@@ -99,7 +102,7 @@ function scheduler() {
   // while there are notes that will need to play before the next interval,
   // schedule them and advance the pointer.
   while (nextNoteTime < context.currentTime + scheduleAheadTime ) {
-    scheduleNote( current16thNote, nextNoteTime, listOfSamples );
+    scheduleNote( current16thNote, nextNoteTime);
     nextNote();
   }
   timerID = window.setTimeout( scheduler, lookahead );
