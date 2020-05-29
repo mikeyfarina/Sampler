@@ -1,7 +1,11 @@
 import loadAllUrls from "./BufferLoader.js";
 import { assignSoundsToPads } from "./setupPads.js";
 import { samplesToLoad } from "./constants.js";
+let padsLoadedWithSamples;
 
 export function loadSamples() {
-  loadAllUrls(samplesToLoad).then(assignSoundsToPads);
+  return new Promise((resolve, reject)=>{
+    resolve(loadAllUrls(samplesToLoad).then(assignSoundsToPads));
+    reject("error");
+  });
 }
