@@ -153,6 +153,13 @@ function draw() {
       for (let i=0; i<16; i++) {
         seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
           (( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c"; 
+        if (currentNote == i){
+          (currentNote % 4 == 0) ?
+            seqTracks[0].children[i+1].style.background = "#4880ff" :
+           seqTracks[0].children[i+1].style.background = "white";
+        } else {
+          seqTracks[0].children[i+1].style.background = "#7c7c7c";
+        }
       }
   }
   // set up to draw again
