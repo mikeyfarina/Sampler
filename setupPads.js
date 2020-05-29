@@ -60,7 +60,9 @@ function makeLabel(drumPad, name) {
 
 function createObjectWithPadInfo(drumPad, buffer){
   console.log("creating padinfo object");
-  let padObject = { drumPad, buffer, bufferName: buffer.name  };
+  let padObject = {drumPad, buffer};
   loadedPadsWithSamples.push(padObject);
   console.log("pushed object into array\n\n");
 }
+
+export {loadedPadsWithSamples};

@@ -274,10 +274,12 @@ input[type="range"]{
   background-color:black;
 }
 .sequencer{
-  background-color:#e8e8e8;
+  font-family: "super smash tv";
+  color: #4a4a4a;
+  background-color:#c4c4c4;
   margin-left:5%;
   padding: 3% 2%;
-  border: 4px #c4c4c4 solid;
+  border: 4px #7c7c7c solid;
   max-width:60vw;
 }
 .sequencer__display{
@@ -297,16 +299,11 @@ input[type="range"]{
 }
 
 .sequencer__display__track__button{
-  background-color:lightslategray;
+  background-color:#7c7c7c;
   font-size:1.5vw;
   margin-top:25%;
   padding-top:40%;
 }
-.sequencer__display__track__metronome{
-  display:grid;
-  grid-template-columns: 10% repeat(16,1fr);
-
-  padding:2.5% 0;
-  margin: 2.5% 0;
-  border:1px solid black;
+.clicked{
+  color:yellow;
 }
