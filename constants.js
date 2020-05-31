@@ -24,27 +24,23 @@ const screenSubtitle = document.querySelector(
 );
 
 /* sequencer */
-let metronomeBeats = document.querySelector(".sequencer__display__track__metronome").querySelectorAll(".sequencer__display__track__button");
 const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
 
-
 export {
-  samplesToLoad, 
-  drumPads, 
+  samplesToLoad,
+  drumPads,
   drumMachine,
   padLabels,
-  context, 
-  startButton, 
-  uploadButtons, 
+  context,
+  startButton,
+  uploadButtons,
   fileInputs,
-  screenTitle, 
-  screenSubtitle, 
-  screen, 
-  metronomeBeats,
-  beatSelector, 
-  tempoSlider, 
-  tempoDisplay
+  screenTitle,
+  screenSubtitle,
+  screen,
+  beatSelector,
+  tempoSlider,
+  tempoDisplay,
 };
-
