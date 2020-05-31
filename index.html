@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+  <head>
     <title>Sampler</title>
     <meta charset="UTF-8" />
     <meta
@@ -107,29 +107,35 @@
         </li>
       </ul>
     </div>
-    
-		<div class="sequencer">
-			<div class="sequencer__controls">
-				<button class="sequencer__controls__play-button">
-					play
-				</button>
-				<div class="sequencer__controls__tempo">
-					<div class="tempo-info">
-						<span>tempo: </span>
-						<span id="tempo-value">120  </span>
-					</div>
-					<input type="range" min="30" max="200" 
-					step="1" value="120" class="slider" id="tempo">
-				</div>
-				<select class="beat-selector">
-					<option>1/16 notes</option>
-					<option>1/8 notes</option>
-					<option>1/4 notes</option>
-				</select>
+
+    <div class="sequencer">
+      <div class="sequencer__controls">
+        <button class="sequencer__controls__play-button">
+          play
+        </button>
+        <div class="sequencer__controls__tempo">
+          <div class="tempo-info">
+            <span>tempo: </span>
+            <span id="tempo-value">120 </span>
+          </div>
+          <input
+            type="range"
+            min="30"
+            max="200"
+            step="1"
+            value="120"
+            class="slider"
+            id="tempo"
+          />
+        </div>
+        <select class="beat-selector">
+          <option>1/16 notes</option>
+          <option>1/8 notes</option>
+          <option>1/4 notes</option>
+        </select>
       </div>
-      <div class="sequencer__display">
-      </div>
-		</div>
-		<script src="index.js"></script>
-	</body>
+      <div class="sequencer__display"></div>
+    </div>
+    <script src="index.js"></script>
+  </body>
 </html>

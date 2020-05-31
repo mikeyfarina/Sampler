@@ -1,7 +1,7 @@
 import { drumPads, context, fileInputs } from "./constants.js";
 import { uploadFile } from "./uploadSamples.js";
 let source;
-let loadedPadsWithSamples =[]
+let loadedPadsWithSamples = [];
 
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
@@ -58,11 +58,11 @@ function makeLabel(drumPad, name) {
   label.innerText = name;
 }
 
-function createObjectWithPadInfo(drumPad,buffer){
+function createObjectWithPadInfo(drumPad, buffer) {
   console.log("creating padinfo object");
-  let padObject = {trackName: buffer.name, trackBuffer: buffer};
+  let padObject = { trackName: buffer.name, trackBuffer: buffer };
   loadedPadsWithSamples.push(padObject);
   console.log("pushed object into array\n\n");
 }
 
-export {loadedPadsWithSamples};
+export { loadedPadsWithSamples };

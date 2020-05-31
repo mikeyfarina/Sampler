@@ -1,4 +1,4 @@
-import { uploadButtons, context, } from "./constants.js";
+import { uploadButtons, context } from "./constants.js";
 import { makeSource } from "./setupPads.js";
 import { replaceTrack } from "./setupSeqTracks.js";
 
@@ -47,15 +47,15 @@ function configFileChange(ev) {
 
 function uploadFile(event, parentPad, parentInput) {
   readFile(event).then((buffer) => {
-
     let bufferName = buffer.name;
-    let newTrack = {trackName: buffer.name, trackBuffer: buffer};
+    let newTrack = { trackName: buffer.name, trackBuffer: buffer };
     console.log(newTrack);
     replaceTrack(newTrack, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
     //label
-    parentPad.querySelector("p.drum-machine__pads__label").innerText =
-      bufferName;
+    parentPad.querySelector(
+      "p.drum-machine__pads__label"
+    ).innerText = bufferName;
   });
 }
 

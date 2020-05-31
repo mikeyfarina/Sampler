@@ -28,10 +28,9 @@ const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
 
-
 export {
-  samplesToLoad, 
-  drumPads, 
+  samplesToLoad,
+  drumPads,
   drumMachine,
   padLabels,
   context,
@@ -43,6 +42,5 @@ export {
   screen,
   beatSelector,
   tempoSlider,
-  tempoDisplay
+  tempoDisplay,
 };
-
