@@ -5,15 +5,15 @@ import { screenSubtitle } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
 
 export function init() {
-  loadSamples().then((arrayOfLoadedPads)=>{
-    arrayOfLoadedPads.forEach(function(pad) {
+  loadSamples().then((arrayOfLoadedPads) => {
+    setUpSequencer();
+    arrayOfLoadedPads.forEach(function (pad) {
       replaceTrack(pad);
     });
   });
   setupUploadButtons();
   screenSubtitle.innerHTML = "ready to play";
   quickHideAddressBar();
-  setUpSequencer();
 }
 
 function quickHideAddressBar() {
