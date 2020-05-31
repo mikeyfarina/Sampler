@@ -92,7 +92,7 @@ function scheduleNote( beatNumber, time) {
     );
     
     console.log("to", trackObject);
-    let trackInfo = trackObject.find(o => o.trackBuffer.name === name);
+    let trackInfo = trackObject.find(o => o.trackName === name);
     console.log("loop trackInfo",trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")){

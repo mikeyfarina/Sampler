@@ -48,7 +48,7 @@ function configFileChange(ev) {
 function uploadFile(event, parentPad, parentInput) {
   readFile(event).then((buffer) => {
     let bufferName = buffer.name;
-    let newTrack = {trackName: bufferName, trackBuffer: buffer}
+    let newTrack = {trackName: buffer.name, buffer}
     replaceTrack(newTrack, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
     //label
