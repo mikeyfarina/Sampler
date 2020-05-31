@@ -58,9 +58,9 @@ function makeLabel(drumPad, name) {
   label.innerText = name;
 }
 
-function createObjectWithPadInfo(drumPad, buffer){
+function createObjectWithPadInfo(drumPad,buffer){
   console.log("creating padinfo object");
-  let padObject = {drumPad, buffer};
+  let padObject = {trackName: buffer.name, trackBuffer: buffer};
   loadedPadsWithSamples.push(padObject);
   console.log("pushed object into array\n\n");
 }
