@@ -151,8 +151,8 @@ function draw() {
               ? "#4880ff"
               : "white"
             : i < 4 || (i >= 8 && i < 12)
-            ? "gray"
-            : "#4880ff";
+            ? "#c4c4c4"
+            : "#7c7c7c";
         /*
         if (currentNote == i){
           if (note.classList.contains("clicked")){  
