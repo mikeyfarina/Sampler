@@ -1,5 +1,6 @@
-import { drumPads, uploadButtons, context, fileInputs } from "./constants.js";
+import { uploadButtons, context, } from "./constants.js";
 import { makeSource } from "./setupPads.js";
+import { replaceTrack } from "./setupSeqTracks.js";
 
 //upload file
 // User selects file, read it as an ArrayBuffer
@@ -38,19 +39,21 @@ function configFileChange(ev) {
     "change",
     (event) => {
       console.log("Added listener to input");
-      uploadFile(event, parentPad, parentInput, ev);
+      uploadFile(event, parentPad, parentInput);
     },
     { once: true }
   );
 }
 
-function uploadFile(event, parentPad, parentInput, ev) {
+function uploadFile(event, parentPad, parentInput) {
   readFile(event).then((buffer) => {
+    let bufferName = buffer.name;
+    let newTrack = {trackName: bufferName, trackBuffer: buffer}
+    replaceTrack(newTrack, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
-
     //label
     parentPad.querySelector("p.drum-machine__pads__label").innerText =
-      buffer.name;
+      bufferName;
   });
 }
 

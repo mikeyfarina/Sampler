@@ -87,17 +87,20 @@ function scheduleNote( beatNumber, time) {
       "contains(\"clicked\").classList.contains(\"clicked\"): ",
       trackButtons[beatNumber].classList.contains("clicked"),
       trackButtons[beatNumber],
-      name
+      name,
+      " \n"
     );
-
-    let trackInfo = trackObject.find(o => o.trackName === name);
+    
+    console.log("to", trackObject);
+    let trackInfo = trackObject.find(o => o.trackBuffer.name === name);
     console.log("loop trackInfo",trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")){
       console.log("!! playing buffer", trackInfo.trackBuffer);
-      let buffer = trackInfo.trackBuffer;
-      playSample(buffer);
+
+      playSample(trackInfo.trackBuffer);
     }
+
   });
 
   //if ( !(beatNumber % 16) || !(beatNumber % 8) ) // beat 0 == low pitch
@@ -147,7 +150,6 @@ function draw() {
   seqTracks = document.querySelectorAll(".sequencer__display__track");
 
   while (notesInQueue.length && notesInQueue[0].time < currentTime) {
-    console.log("draw while ", notesInQueue.length, notesInQueue[0]);
     currentNote = notesInQueue[0].note;
     notesInQueue.splice(0,1);   // remove note from queue
   }
@@ -157,16 +159,34 @@ function draw() {
     last16thNoteDrawn = currentNote;
     for(let track of seqTracks){
       for (let i=0; i<16; i++) {
+        let note = track.children[i+1];
         //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
           //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c"; 
+        note.style.background = (currentNote == i) ?
+            (((note.classList.contains("clicked"))) ?  
+              "yellow" :
+              (currentNote % 4 == 0) ? 
+                "#4880ff" : "white"
+            ) : 
+            ((i < 4 || i >= 8 && i < 12)) ? 
+              "gray" : "teal"
+/*
         if (currentNote == i){
-          (currentNote % 4 == 0) ?
-            track.children[i+1].style.background = "#4880ff" 
-          : track.children[i+1].style.background = "white";
-
+          if (note.classList.contains("clicked")){  
+            note.style.background = "yellow";
+          } else if (currentNote % 4 == 0) {  //cursor if 1/4 beat
+            note.style.background = "#4880ff";
+          } else {
+            note.style.background = "white"; // cursor if not 1/4 beat
+          }
         } else {
-          track.children[i+1].style.background = "#7c7c7c";
+          if (i < 4 || i >= 8 && i < 12){
+            note.style.background = "gray";
+          } else {
+            note.style.background = "teal";
+          }
         }
+        */
       }
     }
   }
