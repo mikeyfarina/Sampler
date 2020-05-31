@@ -49,8 +49,6 @@ export function setUpSequencer(){
 }
 
 function nextNote() {
-  console.log("next note");
-
   tempo = tempoSlider.value;            //always updating the tempo
   tempoDisplay.innerText = tempo;       //and note resolution 
   noteResolution = beatSelector.selectedIndex;
@@ -66,13 +64,12 @@ function nextNote() {
 }
 
 function scheduleNote( beatNumber, time) {
-  console.log("scheduleNote log");
+  console.log("schedule beat ", beatNumber);
   //get note res
   noteResolution = beatSelector.selectedIndex;
 
   // push the note on the queue, even if we're not playing.
   notesInQueue.push( { note: beatNumber, time } );
-  console.log("scheduling note ", beatNumber , notesInQueue);
 
   if ( (noteResolution==1) && (beatNumber%2))
     return; // we're not playing non-8th 16th notes
@@ -82,22 +79,13 @@ function scheduleNote( beatNumber, time) {
   [].forEach.call(seqTracks, (track)=>{
     let trackButtons = track.querySelectorAll(".sequencer__display__track__button");
     let name = track.querySelector("span").innerText;
-
-    console.log(
-      "contains(\"clicked\").classList.contains(\"clicked\"): ",
-      trackButtons[beatNumber].classList.contains("clicked"),
-      trackButtons[beatNumber],
-      name,
-      " \n"
-    );
     
-    console.log("to", trackObject);
     let trackInfo = trackObject.find(o => o.trackName === name);
-    console.log("loop trackInfo",trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")){
-      console.log("!! playing buffer", trackInfo.trackBuffer);
-
+      console.log(
+        `!! playing ${trackInfo.trackBuffer.name} on beat ${beatNumber}\n`, trackInfo.trackBuffer
+      );
       playSample(trackInfo.trackBuffer);
     }
 
@@ -169,7 +157,7 @@ function draw() {
                 "#4880ff" : "white"
             ) : 
             ((i < 4 || i >= 8 && i < 12)) ? 
-              "gray" : "teal"
+              "gray" : "#4880ff"
 /*
         if (currentNote == i){
           if (note.classList.contains("clicked")){  

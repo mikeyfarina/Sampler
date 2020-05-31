@@ -2,11 +2,11 @@ import {loadSamples} from "./loadSamples.js";
 import {setupUploadButtons} from "./uploadSamples.js";
 import {screenSubtitle} from "./constants.js";
 import {setUpSequencer} from "./sequencer.js";
-import {createSequencerTracksFromPadsWithSamples} from "./setupSeqTracks.js";
+import {createTracksFromLoadedPads} from "./setupSeqTracks.js";
 
 
 export function init() {
-  loadSamples().then(createSequencerTracksFromPadsWithSamples);
+  loadSamples().then(createTracksFromLoadedPads);
   setupUploadButtons();
   screenSubtitle.innerHTML = "ready to play";
   quickHideAddressBar();
