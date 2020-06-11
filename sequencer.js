@@ -157,16 +157,42 @@ function draw() {
         let note = track.children[i + 1];
         //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
         //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
-        note.style.background =
-          currentNote == i
-            ? note.classList.contains("clicked")
-              ? "yellow"
-              : currentNote % 4 == 0
-                ? "#4880ff"
-                : "white"
-            : i < 4 || (i >= 8 && i < 12)
-              ? "#c4c4c4"
-              : "#7c7c7c";
+        if (currentNote == i) {
+          if (note.classList.contains("clicked")) { // if clicked
+            note.style.background = "yellow";
+          } else if (currentNote % 4 == 0) {  // if quarter note
+            note.style.background = "rgba(72, 128, 255, 1)";
+          } else {  //any other note played
+
+            // we're not playing non-8th 16th notes so dont display
+            if (noteResolution == 1 && i % 2) {
+              console.log("nR, beat", noteResolution, i);
+              if (i < 4 || (i >= 8 && i < 12)) {
+                note.style.background = "rgba(255, 255, 255, 0.15)";
+              } else {
+                note.style.background = "rgba(255, 255, 255, 0.3)";
+              }
+            }
+            // we're not playing non-quarter 8th notes so dont display
+            else if (noteResolution == 2 && i % 4) {
+              console.log("nR, beat", noteResolution, i);
+              if (i < 4 || (i >= 8 && i < 12)) {
+                note.style.background = "rgba(255, 255, 255, 0.15)";
+              } else {
+                note.style.background = "rgba(255, 255, 255, 0.3)";
+              }
+            } else {
+              console.log("else");
+              note.style.background = "rgba(255, 255, 255, .75)"
+            }
+          }
+        } else {  //all notes not being played
+          if (i < 4 || (i >= 8 && i < 12)) {
+            note.style.background = "rgba(0, 0, 0, 0.05)";
+          } else {
+            note.style.background = "rgba(255, 255, 255, 0.15)";
+          }
+        }
         /*
         if (currentNote == i){
           if (note.classList.contains("clicked")){  
