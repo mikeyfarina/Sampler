@@ -78,7 +78,8 @@ ul.drum-machine__pads li button {
   padding-top: 100%;
 
   background: #c4c4c4;
-  border: none;
+  border: 0;
+  cursor:pointer;
   border-radius: 0.4rem;
   box-shadow: 4px 3px 5px rgba(0, 0, 0, 0.2);
 }
@@ -244,12 +245,42 @@ ul.drum-machine__pads li button:active {
 }
 
 /* sequencer styling */
-.sequencer__controls__play-button {
-  display: inline-grid;
-  margin-right: 20%;
-  padding: 5%;
-  font-size: 20px;
+.sequencer {
+  font-family: "super smash tv";
+  color: #4a4a4a;
+  background-color: #e8e8e8;
+  margin-left: 5%;
+  padding: 3% 2%;
   border: 4px #c4c4c4 solid;
+  max-width: 60vw;
+}
+
+.sequencer__controls {
+  width:100%;
+  height:25%;
+  display: inline-grid;
+  grid-template-columns: 1.25fr .75fr 1.25fr ;
+  align-items: center;
+}
+
+.sequencer__controls__buttons {
+  height:100%;
+  width:100%;
+  grid-template-columns: 1fr 1fr;
+  display: inline-grid;
+  margin-right: 0%;
+}
+
+.sequencer__controls__buttons__play{
+  height:100%;
+  margin-right: 15%;
+  font-size: 30px;
+}
+
+.sequencer__controls__buttons__reset{
+  height:100%;
+  margin:0 25%;
+  font-size: 20px;
 }
 
 .sequencer__controls__tempo {
@@ -258,20 +289,11 @@ ul.drum-machine__pads li button:active {
 
 .tempo-info {
   font-size: 1.5rem;
-}
-
-.sequencer__controls {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-}
-
-.beat-selector {
-  height: 85%;
+  text-align: center;
 }
 
 #tempo {
-  width: 80%;
+  width: 100%;
 }
 
 input[type="range"] {
@@ -279,39 +301,46 @@ input[type="range"] {
   background-color: black;
 }
 
-.sequencer {
-  font-family: "super smash tv";
-  color: #4a4a4a;
-  background-color: #c4c4c4;
-  margin-left: 5%;
-  padding: 3% 2%;
-  border: 4px #7c7c7c solid;
-  max-width: 60vw;
+.beat-selector {
+  height: 100%;
+  margin:0 10%;
 }
 
 .sequencer__display {
-  height: 75%;
+  padding-top: 5%;
+  height: 80%;
 }
 
 .sequencer__display__track {
   display: grid;
-  grid-template-columns: 10% repeat(16, 1fr);
+  grid-template-columns: 15% repeat(16, 1fr);
   height: 25%;
   width: 50vw;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .sequencer__display__track__name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width:100%;
+  height:100%;
   text-align: center;
-  padding-top: 40%;
-  height: 50%;
+  font-size:1.5vw;
+  background-color: rgba(255,255,255,0.1);
+  background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
 }
 
 .sequencer__display__track__button {
   font-size: 1.5vw;
-  margin-top: 25%;
-  padding-top: 40%;
+  background:rgba(255, 255, 255, 0.1);
+  border:0;
+  padding:25% 0;
 }
 
 .clicked {
+  text-align: center;
   color: yellow;
+  opacity:1;
 }

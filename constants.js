@@ -5,6 +5,9 @@ const samplesToLoad = [
   require("./sounds/kick.wav"),
   require("./sounds/snap.wav"),
   require("./sounds/scratch.wav"),
+  require("./sounds/shake.wav"),
+  require("./sounds/clap.wav"),
+  require("./sounds/snaretwo.wav"),
 ];
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -28,6 +31,18 @@ const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
 
+const trackBackgroundColors = [
+  "#f94144",
+  "#f3722c",
+  "#f8961e",
+  "#f9c74f",
+  "#90be6d",
+  "#43aa8b",
+  "#84d2f6",
+  "#0096c7",
+  "#386fa4"
+]
+
 export {
   samplesToLoad,
   drumPads,
@@ -43,4 +58,5 @@ export {
   beatSelector,
   tempoSlider,
   tempoDisplay,
+  trackBackgroundColors
 };

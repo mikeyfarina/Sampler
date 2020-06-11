@@ -1,5 +1,8 @@
+import { trackBackgroundColors } from "./constants.js";
+
 let sequencerDisplay = document.querySelector(".sequencer__display");
 let trackObject = [];
+let trackNumber = 0;
 
 export function replaceTrack(newTrack, oldPad) {
   console.log("replacing/creating track", newTrack, oldPad);
@@ -38,7 +41,7 @@ export function replaceTrack(newTrack, oldPad) {
 
 function transformPadToTrack(padInfo) {
   //create a track div
-  console.log("tPTT ", padInfo);
+  console.log("tPTT", padInfo);
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -49,17 +52,21 @@ function transformPadToTrack(padInfo) {
 
   trackObject.push(padInfo);
 
+  newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
+
   //create 16 buttons on a track, unique id for each
   for (let i = 0; i < 16; i++) {
     let button = document.createElement("button");
     button.className = "sequencer__display__track__button";
     button.id = `${padInfo.trackName}__${i}`;
-    button.innerText = "*";
+
+    button.innerText = "_";
 
     if (i < 4 || (i >= 8 && i < 12)) {
-      button.style.background = "#c4c4c4";
+      button.style.background = "rgba(0, 0, 0, 0.05)";
     } else {
-      button.style.background = "#7c7c7c";
+      button.style.background = "rgba(255, 255, 255, 0.15)";
+
     }
 
     button.addEventListener("click", () => {

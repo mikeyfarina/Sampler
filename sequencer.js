@@ -26,10 +26,13 @@ let notesInQueue = []; // the notes that have been put into the web audio,
 let seqTracks;
 
 export function setUpSequencer() {
-  let playButton = document.querySelector(".sequencer__controls__play-button");
+  let playButton = document.querySelector(".sequencer__controls__buttons__play");
   playButton.addEventListener("click", (ev) => {
     play(ev);
   });
+  let resetButton = document.querySelector(".sequencer__controls__buttons__reset");
+  resetButton.addEventListener("click", resetSequencer);
+
   // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
   window.requestAnimFrame = (function () {
     return (
@@ -46,7 +49,18 @@ export function setUpSequencer() {
 
   requestAnimFrame(draw); // start the drawing loop.
 }
-
+function resetSequencer() {
+  seqTracks = document.querySelectorAll(".sequencer__display__track");
+  [].forEach.call(seqTracks, (track) => {
+    let beats = track.querySelectorAll(".sequencer__display__track__button");
+    [].forEach.call(beats, (beat) => {
+      if (beat.classList.contains("clicked")) {
+        beat.classList.remove("clicked");
+      }
+    });
+  });
+  current16thNote = 0;
+}
 function nextNote() {
   tempo = tempoSlider.value; //always updating the tempo
   tempoDisplay.innerText = tempo; //and note resolution
@@ -143,16 +157,42 @@ function draw() {
         let note = track.children[i + 1];
         //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
         //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
-        note.style.background =
-          currentNote == i
-            ? note.classList.contains("clicked")
-              ? "yellow"
-              : currentNote % 4 == 0
-              ? "#4880ff"
-              : "white"
-            : i < 4 || (i >= 8 && i < 12)
-            ? "gray"
-            : "#4880ff";
+        if (currentNote == i) {
+          if (note.classList.contains("clicked")) { // if clicked
+            note.style.background = "yellow";
+          } else if (currentNote % 4 == 0) {  // if quarter note
+            note.style.background = "rgba(72, 128, 255, 1)";
+          } else {  //any other note played
+
+            // we're not playing non-8th 16th notes so dont display
+            if (noteResolution == 1 && i % 2) {
+              console.log("nR, beat", noteResolution, i);
+              if (i < 4 || (i >= 8 && i < 12)) {
+                note.style.background = "rgba(255, 255, 255, 0.15)";
+              } else {
+                note.style.background = "rgba(255, 255, 255, 0.3)";
+              }
+            }
+            // we're not playing non-quarter 8th notes so dont display
+            else if (noteResolution == 2 && i % 4) {
+              console.log("nR, beat", noteResolution, i);
+              if (i < 4 || (i >= 8 && i < 12)) {
+                note.style.background = "rgba(255, 255, 255, 0.15)";
+              } else {
+                note.style.background = "rgba(255, 255, 255, 0.3)";
+              }
+            } else {
+              console.log("else");
+              note.style.background = "rgba(255, 255, 255, .75)"
+            }
+          }
+        } else {  //all notes not being played
+          if (i < 4 || (i >= 8 && i < 12)) {
+            note.style.background = "rgba(0, 0, 0, 0.05)";
+          } else {
+            note.style.background = "rgba(255, 255, 255, 0.15)";
+          }
+        }
         /*
         if (currentNote == i){
           if (note.classList.contains("clicked")){  
