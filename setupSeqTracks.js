@@ -53,17 +53,20 @@ function transformPadToTrack(padInfo) {
   trackObject.push(padInfo);
 
   newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
+
   //create 16 buttons on a track, unique id for each
   for (let i = 0; i < 16; i++) {
     let button = document.createElement("button");
     button.className = "sequencer__display__track__button";
     button.id = `${padInfo.trackName}__${i}`;
+
     button.innerText = "_";
 
     if (i < 4 || (i >= 8 && i < 12)) {
       button.style.background = "rgba(0, 0, 0, 0.05)";
     } else {
       button.style.background = "rgba(255, 255, 255, 0.15)";
+
     }
 
     button.addEventListener("click", () => {
