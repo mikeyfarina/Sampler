@@ -125,16 +125,80 @@ export function createEffectPanel(track) {
     panInfo.innerText = `Panning: ${(panValue < 0) ? "L " + panValue : "R " + panValue}`
   });
 
-
   panControl.append(panInfo);
   panControl.append(panInput);
 
+  //create filter effect and 
+  // allow user input for multiple factors of the filter
+  // type, freq
+  let filterControl = document.createElement("div");
+  filterControl.className = "effects-panel__filter";
+
+  let filterInfo = document.createElement("span");
+  filterInfo.innerText = "filter";
+  filterInfo.className = "effects-panel__filter__info";
+
+  //create a select option for each type of filter
+  let optionsArray = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass"];
+  let filterOptions = document.createElement("select");
+  filterOptions.className = "effects-panel__filter__select";
+  let chosenFilter = "allpass";
+
+  //append each option to the select
+  for (let i = 0; i < optionsArray.length; i++) {
+    let option = document.createElement("option");
+    option.value = optionsArray[i];
+    option.text = optionsArray[i];
+    filterOptions.appendChild(option);
+  }
+  //update chosenFilter whenever option is changed
+  filterOptions.addEventListener("change", () => {
+    console.log(
+      "seleect changed to: ",
+      filterOptions[filterOptions.selectedIndex].value
+    );
+    chosenFilter = filterOptions[filterOptions.selectedIndex].value;
+    filterObject.type = chosenFilter;
+  })
+
+  //create a slider for frequency of the filter
+  let filterFreq = 0;
+  let filterFreqInput = document.createElement("input");
+  filterFreqInput.type = "range";
+  filterFreqInput.value = "0";
+  filterFreqInput.min = "50";
+  filterFreqInput.max = "2500";
+  filterFreqInput.step = "1";
+
+  filterFreqInput.className = "effects-panel__filter__input";
+
+  let filterFreqInfo = document.createElement("span");
+  filterFreqInfo.innerText = "Freq. " + filterFreq;
+
+  filterFreqInput.addEventListener("input", () => {
+    filterFreq = filterFreqInput.value;
+    filterFreqInfo.innerText = `Freq. ${filterFreq}`;
+    filterObject.freq = filterFreq;
+  });
+
+  filterControl.append(filterInfo);
+  filterControl.append(filterOptions);
+
+  filterControl.append(filterFreqInfo);
+  filterControl.append(filterFreqInput);
+
+  let filterObject = {
+    type: chosenFilter,
+    freq: filterFreq
+  }
+
+  //set up test button to combine all effects
   effectTestButton.addEventListener("click", () => {
     let source = context.createBufferSource();
     source.buffer = trackInfo.trackBuffer;
 
     //connect source to effects
-    connectSourceToEffects(source, semitones, volume, panValue);
+    connectSourceToEffects(source, semitones, volume, panValue, filterObject);
   });
 
   //add effects to panel
@@ -142,17 +206,23 @@ export function createEffectPanel(track) {
   effectDiv.append(volumeControl);
   effectDiv.append(panControl);
   effectDiv.append(pitchControl);
+  effectDiv.append(filterControl);
 
   //attach effect panel to track
   track.parentNode.insertBefore(effectDiv, track.nextSibling);
 }
 
 //it will need to take the buffer from each track and add effects
-function connectSourceToEffects(source, semitones, volume, panValue) {
+function connectSourceToEffects(source, semitones, volume, panValue, filter) {
   //create pan node and set value
   let panNode = context.createStereoPanner();
-  console.log(panNode);
   panNode.pan.value = panValue;
+
+  //create filter and set
+  let filterNode = context.createBiquadFilter();
+  filterNode.type = filter.type;
+  filterNode.frequency.value = filter.freq;
+  console.log(filter, filterNode);
 
   //create gainNode and set value
   let gainNode = context.createGain();
@@ -161,7 +231,7 @@ function connectSourceToEffects(source, semitones, volume, panValue) {
   //detune sample accordingly before connecting other effects
   source.detune.value = semitones * 100; //100 cents
 
-  source.connect(panNode).connect(gainNode).connect(context.destination);
+  source.connect(panNode).connect(filterNode).connect(gainNode).connect(context.destination);
   source.start(0);
 
   //return source later so that it plays in the sequencer
