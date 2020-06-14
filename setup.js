@@ -3,13 +3,15 @@ import { loadSamples } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
 import { screenSubtitle } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
+import { configAudioEffects } from "./setupAudioEffects.js";
 
 export function init() {
   loadSamples().then((arrayOfLoadedPads) => {
-    setUpSequencer();
     arrayOfLoadedPads.forEach(function (pad) {
       replaceTrack(pad);
     });
+    setUpSequencer();
+    configAudioEffects();
   });
   setupUploadButtons();
   screenSubtitle.innerHTML = "ready to play";

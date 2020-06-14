@@ -27,10 +27,13 @@ const screenSubtitle = document.querySelector(
 );
 
 /* sequencer */
+
+//controls
 const beatSelector = document.querySelector(".beat-selector");
 const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
 
+//display
 const trackBackgroundColors = [
   "#f94144",
   "#f3722c",

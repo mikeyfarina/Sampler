@@ -51,14 +51,31 @@ export function setUpSequencer() {
 }
 function resetSequencer() {
   seqTracks = document.querySelectorAll(".sequencer__display__track");
+
   [].forEach.call(seqTracks, (track) => {
     let beats = track.querySelectorAll(".sequencer__display__track__button");
+
     [].forEach.call(beats, (beat) => {
+      //remove clicked beats
       if (beat.classList.contains("clicked")) {
         beat.classList.remove("clicked");
       }
     });
+
+    let currentNote = last16thNoteDrawn;
+    //set playhead back to beat 0 if not there already
+    if (currentNote !== 0) {
+      beats[0].style.background = "rgba(72, 128, 255, 1)";
+    }
+    for (let i = 1; i < 16; i++) {
+      if (i < 4 || (i >= 8 && i < 12)) {
+        beats[i].style.background = "rgba(0, 0, 0, 0.05)";
+      } else {
+        beats[i].style.background = "rgba(255, 255, 255, 0.15)";
+      }
+    }
   });
+
   current16thNote = 0;
 }
 function nextNote() {
@@ -153,8 +170,9 @@ function draw() {
   if (last16thNoteDrawn != currentNote) {
     last16thNoteDrawn = currentNote;
     for (let track of seqTracks) {
+      let beats = track.querySelectorAll(".sequencer__display__track__button");
       for (let i = 0; i < 16; i++) {
-        let note = track.children[i + 1];
+        let note = beats[i];
         //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
         //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
         if (currentNote == i) {
