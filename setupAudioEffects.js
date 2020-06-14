@@ -15,6 +15,7 @@ export function configAudioEffects() {
   [].forEach.call(openEffectPanelButtons, (button) => {
     button.addEventListener("click", (ev) => {
       console.log("clicked");
+
       //display panel
       displayEffectPanel(ev);
     });
@@ -52,8 +53,8 @@ export function createEffectPanel(track) {
   effectTestButton.innerText = "test";
 
   //create a pitch shifter and a user input to decide semitones
-  let pitch = document.createElement("div");
-  pitch.className = "effects-panel__pitch";
+  let pitchControl = document.createElement("div");
+  pitchControl.className = "effects-panel__pitch";
 
   let pitchInput = document.createElement("input");
   pitchInput.className = "effects-panel__pitch__input";
@@ -73,52 +74,95 @@ export function createEffectPanel(track) {
     pitchInfo.innerText = `pitch: ${semitones}`;
   });
 
+  //append pitchinfo and input to pitch div
+  pitchControl.append(pitchInfo);
+  pitchControl.append(pitchInput);
+
   //create a gain node and a user input to control the volume
   let volumeControl = document.createElement("div");
   volumeControl.className = "effects-panel__gain";
 
-  let volumeControlInput = document.createElement("input");
-  volumeControlInput.className = "effects-panel__gain__input";
+  let volumeInput = document.createElement("input");
+  volumeInput.className = "effects-panel__gain__input";
 
-  volumeControlInput.type = "range";
-  volumeControlInput.min = "0";
-  volumeControlInput.max = "1";
-  volumeControlInput.step = "0.05";
+  volumeInput.type = "range";
+  volumeInput.value = "1";
+  volumeInput.min = "0";
+  volumeInput.max = "3";
+  volumeInput.step = "0.1";
 
   let volume = 1;
 
-  volumeControlInput.addEventListener("input", () => {
-    volume = volumeControlInput.value;
+  volumeInput.addEventListener("input", () => {
+    volume = volumeInput.value;
   });
 
   let volumeInfo = document.createElement("span");
   volumeInfo.innerText = `Volume: `;
+
+  //attach volume info and input to div
+  volumeControl.append(volumeInfo);
+  volumeControl.append(volumeInput);
+
+  //create pan effect and user input to decide direction
+  let panControl = document.createElement("div");
+  panControl.className = "effects-panel__pan";
+
+  let panValue = 0;
+  let panInput = document.createElement("input");
+  panInput.className = "effects-panel__pan__input";
+  panInput.type = "range";
+  panInput.value = "0";
+  panInput.min = "-1";
+  panInput.max = "1";
+  panInput.step = "0.1";
+
+  let panInfo = document.createElement("span");
+  panInfo.innerText = `Panning: ${(panValue < 0) ? "L " + panValue : "R " + panValue}`
+
+  panInput.addEventListener("input", () => {
+    panValue = panInput.value;
+    panInfo.innerText = `Panning: ${(panValue < 0) ? "L " + panValue : "R " + panValue}`
+  });
+
+
+  panControl.append(panInfo);
+  panControl.append(panInput);
 
   effectTestButton.addEventListener("click", () => {
     let source = context.createBufferSource();
     source.buffer = trackInfo.trackBuffer;
 
     //connect source to effects
-    connectSourceToEffects(source, semitones, volume);
+    connectSourceToEffects(source, semitones, volume, panValue);
   });
 
-  //add button to panel
+  //add effects to panel
   effectDiv.append(effectTestButton);
-
-  pitch.append(pitchInfo);
-  pitch.append(pitchInput);
-  effectDiv.append(pitch);
+  effectDiv.append(volumeControl);
+  effectDiv.append(panControl);
+  effectDiv.append(pitchControl);
 
   //attach effect panel to track
   track.parentNode.insertBefore(effectDiv, track.nextSibling);
 }
 
 //it will need to take the buffer from each track and add effects
-function connectSourceToEffects(source, semitones, volume) {
+function connectSourceToEffects(source, semitones, volume, panValue) {
+  //create pan node and set value
+  let panNode = context.createStereoPanner();
+  console.log(panNode);
+  panNode.pan.value = panValue;
+
+  //create gainNode and set value
   let gainNode = context.createGain();
   gainNode.gain.value = volume;
 
+  //detune sample accordingly before connecting other effects
   source.detune.value = semitones * 100; //100 cents
 
-  return source;
+  source.connect(panNode).connect(gainNode).connect(context.destination);
+  source.start(0);
+
+  //return source later so that it plays in the sequencer
 }
