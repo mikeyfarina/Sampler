@@ -49,7 +49,7 @@ function transformPadToTrack(padInfo) {
   // sequencer effect button to display panel setup
 
   let displayEffectsButton = document.createElement("button");
-  displayEffectsButton.innerText = '\u21b3' //unicode for down-right arrow
+  displayEffectsButton.innerText = "\u21b3"; //unicode for down-right arrow
   displayEffectsButton.className = "sequencer__display__track__show-effects";
   newTrackDiv.append(displayEffectsButton);
 
@@ -80,7 +80,6 @@ function transformPadToTrack(padInfo) {
       button.style.background = "rgba(0, 0, 0, 0.05)";
     } else {
       button.style.background = "rgba(255, 255, 255, 0.15)";
-
     }
 
     button.addEventListener("click", () => {

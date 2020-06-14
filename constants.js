@@ -43,8 +43,8 @@ const trackBackgroundColors = [
   "#43aa8b",
   "#84d2f6",
   "#0096c7",
-  "#386fa4"
-]
+  "#386fa4",
+];
 
 export {
   samplesToLoad,
@@ -61,5 +61,5 @@ export {
   beatSelector,
   tempoSlider,
   tempoDisplay,
-  trackBackgroundColors
+  trackBackgroundColors,
 };

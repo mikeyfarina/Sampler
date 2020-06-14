@@ -26,11 +26,15 @@ let notesInQueue = []; // the notes that have been put into the web audio,
 let seqTracks;
 
 export function setUpSequencer() {
-  let playButton = document.querySelector(".sequencer__controls__buttons__play");
+  let playButton = document.querySelector(
+    ".sequencer__controls__buttons__play"
+  );
   playButton.addEventListener("click", (ev) => {
     play(ev);
   });
-  let resetButton = document.querySelector(".sequencer__controls__buttons__reset");
+  let resetButton = document.querySelector(
+    ".sequencer__controls__buttons__reset"
+  );
   resetButton.addEventListener("click", resetSequencer);
 
   // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -176,11 +180,14 @@ function draw() {
         //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
         //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
         if (currentNote == i) {
-          if (note.classList.contains("clicked")) { // if clicked
+          if (note.classList.contains("clicked")) {
+            // if clicked
             note.style.background = "yellow";
-          } else if (currentNote % 4 == 0) {  // if quarter note
+          } else if (currentNote % 4 == 0) {
+            // if quarter note
             note.style.background = "rgba(72, 128, 255, 1)";
-          } else {  //any other note played
+          } else {
+            //any other note played
 
             // we're not playing non-8th 16th notes so dont display
             if (noteResolution == 1 && i % 2) {
@@ -201,10 +208,11 @@ function draw() {
               }
             } else {
               console.log("else");
-              note.style.background = "rgba(255, 255, 255, .75)"
+              note.style.background = "rgba(255, 255, 255, .75)";
             }
           }
-        } else {  //all notes not being played
+        } else {
+          //all notes not being played
           if (i < 4 || (i >= 8 && i < 12)) {
             note.style.background = "rgba(0, 0, 0, 0.05)";
           } else {
