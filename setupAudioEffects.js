@@ -1,6 +1,5 @@
 import { trackObject } from "./setupSeqTracks.js";
 import { context } from "./constants.js";
-import { doc } from "prettier";
 
 let openEffectPanelButtons = [];
 
