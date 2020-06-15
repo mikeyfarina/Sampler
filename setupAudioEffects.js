@@ -279,7 +279,8 @@ export function createEffectPanel(track) {
 }
 
 //it will need to take the buffer from each track and add effects
-function connectSourceToEffects(source, semitones, volume, panValue, filter, delay) {
+function connectSourceToEffects(source, semitones, volume, panValue, filter, delayObj) {
+  console.log("delay", delayObj)
   //create pan node and set value
   let panNode = context.createStereoPanner();
   panNode.pan.value = panValue;
@@ -291,8 +292,11 @@ function connectSourceToEffects(source, semitones, volume, panValue, filter, del
   console.log(filter, filterNode);
 
   //create delay and set value
-  let delayNode = createDelay(delay.time, delay.feedback);
-  console.log("delayNode", delayNode);
+  let delay = context.createDelay();
+  let feedback = context.createGain();
+  delay.delayTime.value = delayObj.time;
+  feedback.gain.value = eval(delayObj.feedback);
+
   //create gainNode and set value
   let gainNode = context.createGain();
   gainNode.gain.value = volume;
@@ -300,7 +304,10 @@ function connectSourceToEffects(source, semitones, volume, panValue, filter, del
   //detune sample accordingly before connecting other effects
   source.detune.value = semitones * 100; //100 cents
 
-  source.connect(delayNode);
+  //set up delay looper
+  source.connect(delay).connect(feedback).connect(delay);
+  feedback.connect(context.destination);
+
   source.connect(panNode)
     .connect(filterNode)
     .connect(gainNode)
@@ -309,26 +316,24 @@ function connectSourceToEffects(source, semitones, volume, panValue, filter, del
 
   //return source later so that it plays in the sequencer
 }
-
+/*
 //delay time (seconds) - amt of time beat will be delayed for
 //feedbackValue [0-1) - volume of feedback, DO NOT PASS 1
-function createDelay(delayTime, feedbackValue) {
-  console.log(delayTime, feedbackValue);
+function createDelay(source, delayTime, feedback) {
+  let sound = context.createBufferSource();
+  let delayAmount = context.createGain();
   let delay = context.createDelay();
-  delay.delayTime.value = delayTime;
-
-  let feedback = context.createGain();
-  feedback.gain.value = eval(feedbackValue);
-
-  let filter = context.createBiquadFilter();
-  filter.frequency.value = 4000;
-
-  filter.connect(delay);
-  delay.connect(feedback);
-  feedback.connect(filter);
-  delay.connect(context.destination);
-
+  sound.buffer = source.buffer;
+  delay.delayTime.value = 0.5;
+  delayAmount.gain.value = 0.5;
+  sound.connect(delay);
+  delay.connect(delayAmount);
+  delayAmount.connect(delay);
+  delayAmount.connect(context.destination);
+  sound.connect(context.destination);
+  return sound;
 }
+*/
 
 function getBPMForDelay(timeSig) {
   if (timeSig === "off") {
