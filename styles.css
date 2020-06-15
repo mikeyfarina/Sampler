@@ -329,11 +329,67 @@ input[type="range"] {
 
 .sequencer__display__track__effects-panel {
   width: 100%;
-  padding: 50px 0;
   text-align: center;
   background: lightblue;
   display: none;
   flex-direction: column;
+}
+
+.sequencer__display__track__effects-panel__controls{
+  height:100%;
+  display:grid;
+  grid-template-columns: 5% repeat(3, 1fr);
+  grid-template-rows: 1.5fr 2fr;
+}
+
+.effects-panel__controls__gain{
+  grid-template-columns: 25% 75%;
+  align-items:center;
+  display:grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 0 4%;
+}
+
+.effects-panel__controls__pan{
+  grid-template-columns: 40% 60%;
+  align-items:center;
+  display:grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 0 4%;
+}
+
+.effects-panel__controls__pitch{
+  display:grid;
+  grid-template-columns: 40% 60%;
+  align-items:center;
+
+  text-align: left;
+  align-items: center;
+  padding: 0 4%;
+}
+
+.effects-panel__controls__filter{
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 35% 65%;
+  display:grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 0 4%;
+}
+
+.effects-panel__controls__delay{
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 35% 65%;
+  display:grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 0 4%;
 }
 
 .sequencer__display__track__name {

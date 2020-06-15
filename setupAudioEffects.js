@@ -41,23 +41,25 @@ export function createEffectPanel(track) {
   let trackInfo = trackObject.find((o) => o.trackName === trackName);
 
   console.log("loading effects for: ", trackInfo, track);
+  let panel = document.createElement("div");
+  panel.className = "sequencer__display__track__effects-panel";
 
   let effectDiv = document.createElement("div");
-  effectDiv.className = "sequencer__display__track__effects-panel";
+  effectDiv.className = "sequencer__display__track__effects-panel__controls";
   console.log(track.style.background);
   effectDiv.style.background = track.style.background;
 
   //start with loading sample to play with button to test effects
   let effectTestButton = document.createElement("button");
-  effectTestButton.className = "effects-panel__test-button";
+  effectTestButton.className = "effects-panel__controls__test-button";
   effectTestButton.innerText = "test";
 
   //create a pitch shifter and a user input to decide semitones
   let pitchControl = document.createElement("div");
-  pitchControl.className = "effects-panel__pitch";
+  pitchControl.className = "effects-panel__controls__pitch";
 
   let pitchInput = document.createElement("input");
-  pitchInput.className = "effects-panel__pitch__input";
+  pitchInput.className = "effects-panel__controls__pitch__input";
 
   let pitchInfo = document.createElement("span");
   let semitones = 0;
@@ -80,10 +82,10 @@ export function createEffectPanel(track) {
 
   //create a gain node and a user input to control the volume
   let volumeControl = document.createElement("div");
-  volumeControl.className = "effects-panel__gain";
+  volumeControl.className = "effects-panel__controls__gain";
 
   let volumeInput = document.createElement("input");
-  volumeInput.className = "effects-panel__gain__input";
+  volumeInput.className = "effects-panel__controls__gain__input";
 
   volumeInput.type = "range";
   volumeInput.value = "1";
@@ -106,11 +108,11 @@ export function createEffectPanel(track) {
 
   //create pan effect and user input to decide direction
   let panControl = document.createElement("div");
-  panControl.className = "effects-panel__pan";
+  panControl.className = "effects-panel__controls__pan";
 
   let panValue = 0;
   let panInput = document.createElement("input");
-  panInput.className = "effects-panel__pan__input";
+  panInput.className = "effects-panel__controls__pan__input";
   panInput.type = "range";
   panInput.value = "0";
   panInput.min = "-1";
@@ -132,16 +134,16 @@ export function createEffectPanel(track) {
   // allow user input for multiple factors of the filter
   // type, freq
   let filterControl = document.createElement("div");
-  filterControl.className = "effects-panel__filter";
+  filterControl.className = "effects-panel__controls__filter";
 
   let filterInfo = document.createElement("span");
   filterInfo.innerText = "filter";
-  filterInfo.className = "effects-panel__filter__info";
+  filterInfo.className = "effects-panel__controls__filter__info";
 
   //create a select option for each type of filter
   let optionsArray = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass"];
   let filterOptions = document.createElement("select");
-  filterOptions.className = "effects-panel__filter__select";
+  filterOptions.className = "effects-panel__controls__filter__select";
   let chosenFilter = "allpass";
 
   //append each option to the select
@@ -159,7 +161,7 @@ export function createEffectPanel(track) {
     );
     chosenFilter = filterOptions[filterOptions.selectedIndex].value;
     filterObject.type = chosenFilter;
-  })
+  });
 
   //create a slider for frequency of the filter
   let filterFreq = 0;
@@ -170,7 +172,7 @@ export function createEffectPanel(track) {
   filterFreqInput.max = "2500";
   filterFreqInput.step = "1";
 
-  filterFreqInput.className = "effects-panel__filter__input";
+  filterFreqInput.className = "effects-panel__controls__filter__input";
 
   let filterFreqInfo = document.createElement("span");
   filterFreqInfo.innerText = "Freq. " + filterFreq;
@@ -192,28 +194,92 @@ export function createEffectPanel(track) {
     freq: filterFreq
   }
 
+  //create delay effect and user input for selecting time
+  let delayControl = document.createElement("div");
+  delayControl.className = "effects-panel__controls__delay";
+
+  let delayInfo = document.createElement("span");
+  delayInfo.className = "effects-panel__controls__delay__info";
+  delayInfo.innerText = "delay ";
+
+  let delayObject = { time: 0, feedback: 0 };
+
+  //create a select option for each type of delay
+  let delayArray = ["off", "1/2", "1/4", "1/8", "1/16", "1/32"];
+  let delayOptions = document.createElement("select");
+  delayOptions.className = "effects-panel__controls__delay__select";
+  //append each option to the select
+  for (let i = 0; i < delayArray.length; i++) {
+    let option = document.createElement("option");
+    option.text = delayArray[i];
+    delayOptions.appendChild(option);
+  }
+
+  let delayTimeValue;
+
+  //create delay feedback slider for user input
+  let delayFeedbackInfo = document.createElement("span");
+  delayFeedbackInfo.innerText = "feedback: 0.00";
+  let delayFeedbackInput = document.createElement("input");
+  let feedbackValue = 0.00;
+  delayFeedbackInput.type = "range";
+  delayFeedbackInput.value = "0";
+  delayFeedbackInput.min = "0";
+  delayFeedbackInput.max = "0.85";
+  delayFeedbackInput.step = ".01";
+
+  delayFeedbackInput.addEventListener("input", () => {
+    feedbackValue = delayFeedbackInput.value;
+    delayFeedbackInfo.innerText = `feedback: ${feedbackValue}`;
+    delayObject.feedback = feedbackValue;
+    console.log("feedback dO", delayObject);
+  });
+
+  //update chosenFilter whenever option is changed
+  delayOptions.addEventListener("change", () => {
+    console.log(
+      "delay changed to: ",
+      delayOptions[delayOptions.selectedIndex]
+    );
+    delayTimeValue = delayOptions[delayOptions.selectedIndex].text;
+    console.log("dti", typeof delayTimeValue);
+    delayObject.time = getBPMForDelay(delayTimeValue);
+    console.log("options dO", delayObject);
+  });
+
+  //get value of selection, compute time value of beat to set delay
+
+  delayControl.append(delayInfo);
+  delayControl.append(delayOptions);
+  delayControl.append(delayFeedbackInfo);
+  delayControl.append(delayFeedbackInput);
+
   //set up test button to combine all effects
   effectTestButton.addEventListener("click", () => {
     let source = context.createBufferSource();
     source.buffer = trackInfo.trackBuffer;
 
     //connect source to effects
-    connectSourceToEffects(source, semitones, volume, panValue, filterObject);
+    connectSourceToEffects(source, semitones, volume, panValue, filterObject, delayObject);
   });
 
+  let emptyDiv = document.createElement("div");
   //add effects to panel
   effectDiv.append(effectTestButton);
   effectDiv.append(volumeControl);
   effectDiv.append(panControl);
   effectDiv.append(pitchControl);
+  effectDiv.append(emptyDiv);
   effectDiv.append(filterControl);
+  effectDiv.append(delayControl);
 
+  panel.append(effectDiv);
   //attach effect panel to track
-  track.parentNode.insertBefore(effectDiv, track.nextSibling);
+  track.parentNode.insertBefore(panel, track.nextSibling);
 }
 
 //it will need to take the buffer from each track and add effects
-function connectSourceToEffects(source, semitones, volume, panValue, filter) {
+function connectSourceToEffects(source, semitones, volume, panValue, filter, delay) {
   //create pan node and set value
   let panNode = context.createStereoPanner();
   panNode.pan.value = panValue;
@@ -224,6 +290,9 @@ function connectSourceToEffects(source, semitones, volume, panValue, filter) {
   filterNode.frequency.value = filter.freq;
   console.log(filter, filterNode);
 
+  //create delay and set value
+  let delayNode = createDelay(delay.time, delay.feedback);
+  console.log("delayNode", delayNode);
   //create gainNode and set value
   let gainNode = context.createGain();
   gainNode.gain.value = volume;
@@ -231,8 +300,44 @@ function connectSourceToEffects(source, semitones, volume, panValue, filter) {
   //detune sample accordingly before connecting other effects
   source.detune.value = semitones * 100; //100 cents
 
-  source.connect(panNode).connect(filterNode).connect(gainNode).connect(context.destination);
+  source.connect(delayNode);
+  source.connect(panNode)
+    .connect(filterNode)
+    .connect(gainNode)
+    .connect(context.destination);
   source.start(0);
 
   //return source later so that it plays in the sequencer
+}
+
+//delay time (seconds) - amt of time beat will be delayed for
+//feedbackValue [0-1) - volume of feedback, DO NOT PASS 1
+function createDelay(delayTime, feedbackValue) {
+  console.log(delayTime, feedbackValue);
+  let delay = context.createDelay();
+  delay.delayTime.value = delayTime;
+
+  let feedback = context.createGain();
+  feedback.gain.value = eval(feedbackValue);
+
+  let filter = context.createBiquadFilter();
+  filter.frequency.value = 4000;
+
+  filter.connect(delay);
+  delay.connect(feedback);
+  feedback.connect(filter);
+  delay.connect(context.destination);
+
+}
+
+function getBPMForDelay(timeSig) {
+  if (timeSig === "off") {
+    return 0;
+  }
+  let tempo = document.getElementById("tempo").value;
+  let secondsPerBeat = 60.0 / tempo;
+
+  console.log("BPM", eval(timeSig), secondsPerBeat * eval(timeSig));
+  return secondsPerBeat * eval(timeSig);
+
 }
