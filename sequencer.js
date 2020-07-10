@@ -53,6 +53,7 @@ export function setUpSequencer() {
 
   requestAnimFrame(draw); // start the drawing loop.
 }
+
 function resetSequencer() {
   seqTracks = document.querySelectorAll(".sequencer__display__track");
 
@@ -82,6 +83,7 @@ function resetSequencer() {
 
   current16thNote = 0;
 }
+
 function nextNote() {
   tempo = tempoSlider.value; //always updating the tempo
   tempoDisplay.innerText = tempo; //and note resolution
