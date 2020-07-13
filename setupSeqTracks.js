@@ -1,4 +1,5 @@
 import { trackBackgroundColors } from "./constants.js";
+import { createEffectPanel } from "./setupAudioEffects.js";
 
 let sequencerDisplay = document.querySelector(".sequencer__display");
 let trackObject = [];
@@ -45,13 +46,26 @@ function transformPadToTrack(padInfo) {
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
+  // sequencer effect button to display panel setup
+
+  let displayEffectsButton = document.createElement("button");
+  displayEffectsButton.innerText = "\u21b3"; //unicode for down-right arrow
+  displayEffectsButton.className = "sequencer__display__track__show-effects";
+  newTrackDiv.append(displayEffectsButton);
+
+  // sequencer panel setup
+
+  // name track
+
   let padName = document.createElement("span");
   padName.innerText = padInfo.trackName;
   padName.className = "sequencer__display__track__name";
   newTrackDiv.append(padName);
 
+  //push info of pad into memory
   trackObject.push(padInfo);
 
+  //cycle background colors
   newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
 
   //create 16 buttons on a track, unique id for each
@@ -66,7 +80,6 @@ function transformPadToTrack(padInfo) {
       button.style.background = "rgba(0, 0, 0, 0.05)";
     } else {
       button.style.background = "rgba(255, 255, 255, 0.15)";
-
     }
 
     button.addEventListener("click", () => {
@@ -79,6 +92,7 @@ function transformPadToTrack(padInfo) {
     newTrackDiv.append(button);
   }
   sequencerDisplay.append(newTrackDiv);
+  createEffectPanel(newTrackDiv);
 }
 
 export { trackObject };
