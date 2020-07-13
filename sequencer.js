@@ -4,7 +4,6 @@ import {
   tempoSlider,
   tempoDisplay,
 } from "./constants.js";
-import { makeSource, loadedPadsWithSamples } from "./setupPads.js";
 import { trackObject } from "./setupSeqTracks.js";
 import { tracksEffectInfo, connectSourceToEffects } from "./setupAudioEffects.js";
 
@@ -146,16 +145,8 @@ function playSample(trackInfo) {
   reverbSource.buffer = trackInfo.reverbBuffer;
 
   let effectedSource = connectSourceToEffects(
+    trackInfo,
     source,
-    trackInfo.semitones,
-    trackInfo.volume,
-    trackInfo.pan,
-    trackInfo.filterType,
-    trackInfo.filterFreq,
-    trackInfo.delayTime,
-    trackInfo.delayFeedback,
-    trackInfo.reverbBuffer,
-    trackInfo.reverbWet,
     reverbSource
   );
   console.log("eS playSample", effectedSource, trackInfo);

@@ -5,8 +5,6 @@ import { loadedReverbs } from "./setup.js";
 
 let openEffectPanelButtons = [];
 let tracksEffectInfo = [];
-let reverbDiv = document.createElement("select");
-let isBufferEffected = false;
 
 export function configAudioEffects() {
   //get all open panel buttons
@@ -92,7 +90,6 @@ export function createEffectPanel(track) {
   pitchInput.className = "effects-panel__controls__pitch__input";
 
   let pitchInfo = document.createElement("span");
-  let semitones = 0;
 
   pitchInput.type = "range";
   pitchInput.min = "-12";
@@ -103,8 +100,9 @@ export function createEffectPanel(track) {
 
   pitchInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
-    semitones = pitchInput.value; // -12 -> 12 in semitones
-    trackInfo.semitones = semitones;
+
+    // -12 -> 12 in semitones
+    trackInfo.semitones = pitchInput.value;
 
     pitchInfo.innerText = `pitch: ${pitchInput.value}`;
   });
@@ -126,16 +124,13 @@ export function createEffectPanel(track) {
   volumeInput.max = "3";
   volumeInput.step = "0.01";
 
-  let volume = 1;
-
   let volumeInfo = document.createElement("span");
   volumeInfo.innerText = `Volume: 0.00`;
 
   volumeInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
-    volume = volumeInput.value;
-    trackInfo.volume = volume;
+    trackInfo.volume = volumeInput.value;;
     volumeInfo.innerText = `Volume: ${volumeInput.value}`;
   });
 
@@ -147,7 +142,6 @@ export function createEffectPanel(track) {
   let panControl = document.createElement("div");
   panControl.className = "effects-panel__controls__pan";
 
-  let panValue = 0;
   let panInput = document.createElement("input");
   panInput.className = "effects-panel__controls__pan__input";
   panInput.type = "range";
@@ -162,9 +156,13 @@ export function createEffectPanel(track) {
   panInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
-    panValue = panInput.value;
-    trackInfo.pan = panValue;
-    panInfo.innerText = `Panning: ${(panValue == "0") ? "\n0.0" : (panValue < 0) ? "\nL " + panValue : "\n" + panValue + " R"}`;
+    trackInfo.pan = panInput.value;
+    panInfo.innerText = `Panning: 
+      ${(panInput.value == "0") ?
+        "\n0.0" :
+        (panInput.value < 0) ?
+          "\nL " + panInput.value :
+          "\n" + panInput.value + " R"}`;
   });
 
   panControl.append(panInfo);
@@ -184,7 +182,6 @@ export function createEffectPanel(track) {
   let optionsArray = ["allpass", "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch"];
   let filterOptions = document.createElement("select");
   filterOptions.className = "effects-panel__controls__filter__select";
-  let chosenFilter = "allpass";
 
   //append each option to the select
   for (let i = 0; i < optionsArray.length; i++) {
@@ -198,16 +195,13 @@ export function createEffectPanel(track) {
     trackInfo.isBufferEffected = true;
 
     console.log(
-      "seleect changed to: ",
+      "filter select changed to: ",
       filterOptions[filterOptions.selectedIndex].value
     );
-    chosenFilter = filterOptions[filterOptions.selectedIndex].value;
-    filterObject.type = chosenFilter;
-    trackInfo.filterType = chosenFilter;
+    trackInfo.filterType = filterOptions[filterOptions.selectedIndex].value;;
   });
 
   //create a slider for frequency of the filter
-  let filterFreq = 0;
   let filterFreqInput = document.createElement("input");
   filterFreqInput.type = "range";
   filterFreqInput.value = "0";
@@ -218,15 +212,13 @@ export function createEffectPanel(track) {
   filterFreqInput.className = "effects-panel__controls__filter__input";
 
   let filterFreqInfo = document.createElement("span");
-  filterFreqInfo.innerText = "Freq. " + filterFreq;
+  filterFreqInfo.innerText = "Freq. 0";
 
   filterFreqInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
-    filterFreq = filterFreqInput.value;
     filterFreqInfo.innerText = `Freq. ${filterFreqInput.value}`;
-    filterObject.freq = filterFreq;
-    trackInfo.filterFreq = filterFreq;
+    trackInfo.filterFreq = filterFreqInput.value;
   });
 
   filterControl.append(filterInfo);
@@ -234,11 +226,6 @@ export function createEffectPanel(track) {
 
   filterControl.append(filterFreqInfo);
   filterControl.append(filterFreqInput);
-
-  let filterObject = {
-    type: chosenFilter,
-    freq: filterFreq
-  }
 
   //create delay effect and user input for selecting time
   let delayControl = document.createElement("div");
@@ -315,18 +302,11 @@ export function createEffectPanel(track) {
   reverbInfo.className = "effects-panel__controls__reverb__info";
   reverbInfo.innerText = "reverb";
 
-  let reverbObject = {
-    reverbBuffer: null,
-    feedback: 0,
-    reverbSource: null,
-    wetValue: null,
-  };
-
   //wet = effected (reverbed) audio
   let wetInfo = document.createElement("span");
   wetInfo.innerText = `wet: 0.00`;
+
   let wetInput = document.createElement("input");
-  let wetValue = 0.00;
   wetInput.type = "range";
   wetInput.value = "0";
   wetInput.min = "0";
@@ -336,11 +316,8 @@ export function createEffectPanel(track) {
   wetInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
-    wetValue = wetInput.value;
     wetInfo.innerText = `wet: ${wetInput.value}`;
-    reverbObject.wetValue = wetValue;
-    console.log("wet rO", reverbObject);
-    trackInfo.reverbWet = wetValue;
+    trackInfo.reverbWet = wetInput.value;
   });
 
   let reverbSelect = document.createElement("select");
@@ -350,7 +327,6 @@ export function createEffectPanel(track) {
   offOption.text = "off";
   reverbSelect.append(offOption);
 
-  console.log("ra", loadedReverbs);
   //create options for reverb
   for (let i = 0; i < loadedReverbs.length; i++) {
     //create reverb selection options
@@ -366,13 +342,11 @@ export function createEffectPanel(track) {
 
     if (reverbSelect.selectedIndex === 0) {
       trackInfo.reverbBuffer = null;
-      reverbObject.reverbBuffer = null;
       return;
     }
     let reverbSelection = reverbSelect[reverbSelect.selectedIndex];
     console.log("reverbSelection", reverbSelection);
     let rBuffer = loadedReverbs.find((reverb) => reverb.name === reverbSelection.text);
-    reverbObject.reverbBuffer = rBuffer;
     trackInfo.reverbBuffer = rBuffer;
   });
 
@@ -393,16 +367,8 @@ export function createEffectPanel(track) {
 
     //connect source to effects
     let testEffectedSource = connectSourceToEffects(
+      trackInfo,
       source,
-      trackInfo.semitones,
-      trackInfo.volume,
-      trackInfo.pan,
-      trackInfo.filterType,
-      trackInfo.filterFreq,
-      trackInfo.delayTime,
-      trackInfo.delayFeedback,
-      trackInfo.reverbBuffer,
-      trackInfo.reverbWet,
       reverbSource
     );
     console.log("tES", testEffectedSource, "trackInfo ", trackInfo);
@@ -463,7 +429,6 @@ export function createEffectPanel(track) {
     resetTrackEffectsValues();
   });
 }
-export { tracksEffectInfo };
 
 function resetTrackEffectsValues() {
   //reset effect information for each track to default
@@ -482,44 +447,44 @@ function resetTrackEffectsValues() {
   });
 }
 //it will need to take the buffer from each track and add effects
-export function connectSourceToEffects(source, semitones, volume, panValue, filterType, filterFreq, delayTime, delayFeedback, reverbBuffer, reverbWet, reverbSource) {
+export function connectSourceToEffects(trackInfo, source, reverbSource) {
   //create pan node and set value
   let panNode = context.createStereoPanner();
-  panNode.pan.value = panValue;
+  panNode.pan.value = trackInfo.pan;
 
   //create filter and set
   let filterNode = context.createBiquadFilter();
-  filterNode.type = filterType;
-  filterNode.frequency.value = filterFreq;
-  console.log(filterType, filterFreq);
+  filterNode.type = trackInfo.filterType;
+  filterNode.frequency.value = trackInfo.filterFreq;
+  console.log(trackInfo.filterType, trackInfo.filterFreq);
 
   //create delay and set value
   let delay = context.createDelay();
   let feedback = context.createGain();
-  delay.delayTime.value = delayTime;
-  feedback.gain.value = eval(delayFeedback);
+  delay.delayTime.value = trackInfo.delayTime;
+  feedback.gain.value = eval(trackInfo.delayFeedback);
 
   //create reverb node and set values 
-  console.log(reverbBuffer, reverbWet);
+  console.log(trackInfo.reverbBuffer, trackInfo.reverbWet);
   let reverb = context.createConvolver();
-  reverb.buffer = reverbBuffer;
+  reverb.buffer = trackInfo.reverbBuffer;
   let wetVolume = context.createGain();
-  wetVolume.gain.value = reverbWet;
+  wetVolume.gain.value = trackInfo.reverbWet;
 
   //create gainNode and set value
   let gainNode = context.createGain();
-  gainNode.gain.value = volume;
+  gainNode.gain.value = trackInfo.volume;
 
   //detune sample accordingly before connecting other effects
-  source.detune.value = semitones * 100; //100 cents
-  reverbSource.detune.value = semitones * 100;
+  source.detune.value = trackInfo.semitones * 100; //100 cents
+  reverbSource.detune.value = trackInfo.semitones * 100;
 
   //set up delay looper
   source.connect(delay).connect(feedback).connect(delay);
   feedback.connect(context.destination);
 
   //if reverb is selected, 
-  if (reverbBuffer) {
+  if (trackInfo.reverbBuffer) {
     //connect wet reverbed buffer to output 
     reverbSource.connect(wetVolume);
     wetVolume.connect(panNode);
@@ -542,7 +507,7 @@ export function connectSourceToEffects(source, semitones, volume, panValue, filt
     source,
     reverbObj: {
       reverbSource,
-      reverbBuffer
+      reverbBuffer: trackInfo.reverbBuffer
     }
   };
   //return source later so that it plays in the sequencer
@@ -560,16 +525,4 @@ function getBPMForDelay(timeSig) {
   return secondsPerBeat * eval(timeSig);
 }
 
-function createReverbOptions(reverbArray) {
-  for (let i = 0; i < reverbArray.length; i++) {
-    console.log("reverb", reverbArray);
-    let offOption = document.createElement("option");
-    offOption.text = "off";
-    reverbSelect.append(offOption);
-    //create reverb selection options
-    let reverbOption = document.createElement("option");
-    reverbOption.text = reverbArray[i].name;
-    reverbOption.id = reverbArray[i].name;
-    reverbSelect.append(reverbOption);
-  }
-}
+export { tracksEffectInfo };

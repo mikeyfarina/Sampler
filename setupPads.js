@@ -41,7 +41,7 @@ export function assignSoundsToPads(bufferList) {
 
     //create an object consisting of the html pad element
     //and the name of the buffer loaded onto the pad
-    createObjectWithPadInfo(drumPads[i], bufferList[i]);
+    createObjectWithPadInfo(bufferList[i]);
   }
   return loadedPadsWithSamples;
 }
@@ -58,7 +58,7 @@ function makeLabel(drumPad, name) {
   label.innerText = name;
 }
 
-function createObjectWithPadInfo(drumPad, buffer) {
+function createObjectWithPadInfo(buffer) {
   console.log("creating padinfo object");
   let padObject = { trackName: buffer.name, trackBuffer: buffer };
   loadedPadsWithSamples.push(padObject);

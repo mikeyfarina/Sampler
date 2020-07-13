@@ -5,7 +5,6 @@ import { replaceTrack } from "./setupSeqTracks.js";
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
-let touched;
 export function setupUploadButtons() {
   console.log("setupUploadButtons");
 
