@@ -257,32 +257,36 @@ ul.drum-machine__pads li button:active {
 }
 
 .sequencer__controls {
-  width: 100%;
   height: 15%;
   display: inline-grid;
-  grid-template-columns: 1.25fr 0.75fr 1.25fr;
+  grid-template-columns: 1fr .5fr .75fr;
   align-items: center;
 }
 
 .sequencer__controls__buttons {
   height: 100%;
   width: 100%;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: .5fr .5fr 1fr;
   display: inline-grid;
   margin-right: 0%;
+  font-family: "super smash tv";
 }
 
 .sequencer__controls__buttons__play {
   height: 100%;
-  margin-right: 15%;
   font-size: 30px;
 }
 
 .sequencer__controls__buttons__reset {
   height: 100%;
-  margin: 0 25%;
-  font-size: 20px;
+  font-size: 30px;
 }
+
+.sequencer__controls__buttons__reset-effects {
+  height: 100%;
+  font-size: 30px;
+}
+
 
 .sequencer__controls__tempo {
   display: inline-grid;

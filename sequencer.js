@@ -6,6 +6,7 @@ import {
 } from "./constants.js";
 import { makeSource, loadedPadsWithSamples } from "./setupPads.js";
 import { trackObject } from "./setupSeqTracks.js";
+import { tracksEffectInfo, connectSourceToEffects } from "./setupAudioEffects.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -37,6 +38,9 @@ export function setUpSequencer() {
   );
   resetButton.addEventListener("click", resetSequencer);
 
+  tempoSlider.addEventListener("input", () => {
+    tempoDisplay.innerText = tempoSlider.value;
+  })
   // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
   window.requestAnimFrame = (function () {
     return (
@@ -86,7 +90,6 @@ function resetSequencer() {
 
 function nextNote() {
   tempo = tempoSlider.value; //always updating the tempo
-  tempoDisplay.innerText = tempo; //and note resolution
   noteResolution = beatSelector.selectedIndex;
 
   // Advance current note and time by a 16th note...
@@ -118,21 +121,52 @@ function scheduleNote(beatNumber, time) {
       ".sequencer__display__track__button"
     );
     let name = track.querySelector("span").innerText;
-    let trackInfo = trackObject.find((o) => o.trackName === name);
+
+    console.log("tEI, in schedule note", tracksEffectInfo);
+    let trackInfo = tracksEffectInfo.find((o) =>
+      o.trackObjectInfo.trackName === name
+    );
+    console.log("trackInfo iS", trackInfo)
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
       console.log(
-        `!! playing ${trackInfo.trackBuffer.name} on beat ${beatNumber}\n`,
+        `!! playing ${trackInfo} on beat ${beatNumber}\n`,
         trackInfo.trackBuffer
       );
-      playSample(trackInfo.trackBuffer);
+      playSample(trackInfo);
     }
   });
 }
 
-function playSample(buffer) {
-  let source = makeSource(buffer);
-  source.source.start(0);
+function playSample(trackInfo) {
+  let source = context.createBufferSource();
+  source.buffer = trackInfo.trackObjectInfo.trackBuffer;
+
+  let reverbSource = context.createBufferSource();
+  reverbSource.buffer = trackInfo.reverbBuffer;
+
+  let effectedSource = connectSourceToEffects(
+    source,
+    trackInfo.semitones,
+    trackInfo.volume,
+    trackInfo.pan,
+    trackInfo.filterType,
+    trackInfo.filterFreq,
+    trackInfo.delayTime,
+    trackInfo.delayFeedback,
+    trackInfo.reverbBuffer,
+    trackInfo.reverbWet,
+    reverbSource
+  );
+  console.log("eS playSample", effectedSource, trackInfo);
+
+  let reverb = effectedSource.reverbObj.reverbSource;
+  let eSource = effectedSource.source;
+
+  eSource.start(0);
+  if (effectedSource.reverbObj.reverbBuffer) {
+    reverb.start(0);
+  }
 }
 
 function scheduler() {
