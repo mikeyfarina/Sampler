@@ -336,8 +336,16 @@ input[type="range"] {
   height:10vw;
   text-align: center;
   background: lightblue;
-  display: none;
+  display: flex;
   flex-direction: column;
+  transition: height 50ms ease-in;
+}
+
+.effect-panel-dropdown {
+  transition: height 50ms ease-out;
+}
+.hide {
+  height: 0 !important;
 }
 
 .sequencer__display__track__effects-panel__controls{

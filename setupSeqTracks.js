@@ -16,11 +16,11 @@ export function replaceTrack(newTrack, oldPad) {
     let oldPadObject = trackObject.find((o) => o.trackName === oldPadName);
     let oldPadIndex = trackObject.indexOf(oldPadObject);
 
+    console.log("upload", trackObject, oldPadIndex);
     if (oldPadObject) {
-      trackObject.splice(oldPadIndex, 1);
+      trackObject.splice(oldPadIndex, 1, newTrack);
     }
 
-    trackObject.push(newTrack);
     console.log("pushing newTrack", newTrack, trackObject, oldPadObject);
 
     let allTrackNames = document.querySelectorAll(
@@ -31,16 +31,16 @@ export function replaceTrack(newTrack, oldPad) {
     [].forEach.call(allTrackNames, (trackName) => {
       if (trackName.innerText === oldPadName) {
         let track = trackName.parentElement;
-        console.log("attempting to remove... ", track);
+        console.log("attempting to remove... ", track.parentElement);
         track.parentElement.removeChild(track);
       }
     });
   }
   //add new track newTrack {trackName, trackBuffer}
-  transformPadToTrack(newTrack);
+  transformPadToTrack(newTrack, oldPad);
 }
 
-function transformPadToTrack(padInfo) {
+function transformPadToTrack(padInfo, oldPad) {
   //create a track div
   console.log("tPTT", padInfo);
   let newTrackDiv = document.createElement("div");
@@ -62,11 +62,27 @@ function transformPadToTrack(padInfo) {
   padName.className = "sequencer__display__track__name";
   newTrackDiv.append(padName);
 
-  //push info of pad into memory
-  trackObject.push(padInfo);
+  let padIndex = trackObject.indexOf(trackObject.find((o) => o.trackName === padInfo.trackName));
 
-  //cycle background colors
-  newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
+
+  //push info of pad into memory if not replacing old track
+  if (oldPad === undefined) {
+    trackObject.push(padInfo);
+
+    //cycle background colors
+    newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
+  } else {
+    newTrackDiv.style.background = trackBackgroundColors[padIndex];
+
+    displayEffectsButton.addEventListener("click", (event) => {
+      console.log("new clicked");
+      let effectPanel = event.target.parentNode.nextSibling;
+
+      effectPanel.classList.toggle("hide");
+      effectPanel.classList.toggle("effect-panel-dropdown");
+    })
+  }
+
 
   //create 16 buttons on a track, unique id for each
   for (let i = 0; i < 16; i++) {
