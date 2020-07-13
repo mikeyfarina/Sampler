@@ -1,6 +1,6 @@
 # Sampler - a drum machine
 
-### (soon to be) sample sequencer / (soon to be) sound editor
+### (in-progress) sample sequencer / (soon to be) sound editor
 
 ## Web Audio API
 
