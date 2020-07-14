@@ -39,11 +39,8 @@ export function loadReverbPresets(reverbArray) {
 function displayEffectPanel(event) {
   let effectPanel = event.target.parentNode.nextSibling;
 
-  if (effectPanel.style.display === "none") {
-    effectPanel.style.display = "flex";
-  } else {
-    effectPanel.style.display = "none";
-  }
+  effectPanel.classList.toggle("hide");
+  effectPanel.classList.toggle("effect-panel-dropdown");
 }
 
 //create panel with multiple audio effects
@@ -71,6 +68,8 @@ export function createEffectPanel(track) {
   console.log("loading effects for: ", trackInfo, track);
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
+  panel.classList.add("hide");
+
 
   let effectDiv = document.createElement("div");
   effectDiv.className = "sequencer__display__track__effects-panel__controls";
