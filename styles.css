@@ -15,8 +15,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position:relative;
 
-  height: 99vh;
+  max-height: 100vh;
   background-color: #89c9ff;
 }
 
@@ -24,10 +25,36 @@ button:focus {
   outline: 0;
 }
 
+.instructions{
+  display:grid;
+
+  width:98vw;
+  height:95vh;
+  
+  margin:0;
+  padding:0;
+
+  border-radius: 9px;
+  align-items: center;
+  transition: opacity 350ms linear;
+  opacity:.95;
+  z-index:1;
+  
+  position:absolute;
+  background:black;
+}
+
+.instructions__text{
+  color:white;
+  text-align: center;
+}
+
 .drum-machine {
-  min-width: 60vh;
+  max-width: 60vh;
   background-color: #e8e8e8;
   padding: 2vw 2.5vw;
+  margin: 4vw;
+  margin-right: 0;
   font-family: "Helvetica Neue";
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
@@ -252,11 +279,10 @@ ul.drum-machine__pads li button:active {
   font-family: "super smash tv";
   color: #4a4a4a;
   background-color: #e8e8e8;
-  margin-left: 5%;
+  margin-left: 2%;
   padding: 2%;
   border: 4px #c4c4c4 solid;
   max-width: 60vw;
-  min-height: 75%;
 }
 
 .sequencer__controls {
@@ -319,7 +345,7 @@ input[type="range"] {
   flex-direction: column;
   margin-top: 4%;
   border-radius: 8px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .sequencer__display__track {
