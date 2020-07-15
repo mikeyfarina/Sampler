@@ -1,15 +1,14 @@
 import "./styles.css";
 import { init } from "./setup.js";
-import { instructionScreen } from "./constants.js";
+import { screen } from "./constants.js";
 
 let initialized = false;
 
 //for mobile devices
-instructionScreen.addEventListener(
+screen.addEventListener(
   "touchstart",
   (e) => {
     e.preventDefault();
-
     if (initialized) {
       return;
     }
@@ -20,7 +19,7 @@ instructionScreen.addEventListener(
 );
 
 //for mouse events
-instructionScreen.addEventListener(
+screen.addEventListener(
   "click",
   () => {
     if (initialized) {
