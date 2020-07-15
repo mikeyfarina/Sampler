@@ -39,12 +39,10 @@ const reverbsToLoad = [
   require("./reverb_impulses/Parking Garage.wav"),
   require("./reverb_impulses/Masonic Lodge.wav")
 ];
+
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const context = new AudioContext();
-
-const instructionScreen = document.querySelector(".instructions");
-const instructionScreenText = document.querySelector(".instructions__text");
 
 const drumPads = document.querySelectorAll(".drum-machine__pads button");
 const drumMachine = document.querySelector(".drum-machine");
@@ -81,8 +79,6 @@ const trackBackgroundColors = [
 export {
   samplesToLoad,
   reverbsToLoad,
-  instructionScreen,
-  instructionScreenText,
   drumPads,
   drumMachine,
   padLabels,
