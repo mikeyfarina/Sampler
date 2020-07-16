@@ -30,12 +30,17 @@ export function setUpSequencer() {
     ".sequencer__controls__buttons__play"
   );
   playButton.addEventListener("click", (ev) => {
-    play(ev);
+    play(ev.target);
   });
   let resetButton = document.querySelector(
     ".sequencer__controls__buttons__reset"
   );
-  resetButton.addEventListener("click", resetSequencer);
+  resetButton.addEventListener("click", () => {
+    if (isPlaying) {
+      play(playButton);
+    }
+    resetSequencer();
+  });
 
   tempoSlider.addEventListener("input", () => {
     tempoDisplay.innerText = tempoSlider.value;
@@ -58,8 +63,9 @@ export function setUpSequencer() {
 }
 
 function resetSequencer() {
-  seqTracks = document.querySelectorAll(".sequencer__display__track");
+  let currentNote = last16thNoteDrawn;
 
+  seqTracks = document.querySelectorAll(".sequencer__display__track");
   [].forEach.call(seqTracks, (track) => {
     let beats = track.querySelectorAll(".sequencer__display__track__button");
 
@@ -70,9 +76,9 @@ function resetSequencer() {
       }
     });
 
-    let currentNote = last16thNoteDrawn;
     //set playhead back to beat 0 if not there already
     if (currentNote !== 0) {
+      console.log("current note not 0", currentNote)
       beats[0].style.background = "rgba(72, 128, 255, 1)";
     }
     for (let i = 1; i < 16; i++) {
@@ -122,8 +128,8 @@ function scheduleNote(beatNumber, time) {
     let name = track.querySelector("span").innerText;
 
     console.log("tEI, in schedule note", tracksEffectInfo);
-    let trackInfo = tracksEffectInfo.find((o) =>
-      o.trackObjectInfo.trackName === name
+    let trackInfo = tracksEffectInfo.find(
+      (o) => o.trackObjectInfo.trackName === name
     );
     console.log("trackInfo iS", trackInfo)
 
@@ -169,7 +175,7 @@ function scheduler() {
   timerID = window.setTimeout(scheduler, lookahead);
 }
 
-function play(ev) {
+function play(playButton) {
   console.log("play", trackObject, isPlaying);
   isPlaying = !isPlaying;
 
@@ -179,10 +185,10 @@ function play(ev) {
     nextNoteTime = context.currentTime;
     //kick off scheduling
     scheduler();
-    ev.target.innerText = "stop";
+    playButton.innerText = "stop";
   } else {
     window.clearTimeout(timerID);
-    ev.target.innerText = "play";
+    playButton.innerText = "play";
   }
 }
 
