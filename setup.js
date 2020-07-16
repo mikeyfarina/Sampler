@@ -1,24 +1,33 @@
 import { replaceTrack } from "./setupSeqTracks.js";
 import { loadSamples } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
-import { instructionScreen, instructionScreenText, reverbsToLoad, context } from "./constants.js";
+import { instructionScreen, reverbsToLoad, context } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
 import { configAudioEffects, loadReverbPresets } from "./setupAudioEffects.js";
 let loadedReverbs = [];
+
 export function init() {
+  //give user response on click to know that it is loading
+  let loadingText = document.createElement("span");
+  loadingText.innerText = "Loading...";
+  loadingText.classList.add("instructions__text");
+  instructionScreen.append(loadingText);
+
   let quietBuffer;
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
     loadedReverbs = loaded;
-    loadSamples().then((arrayOfLoadedPads) => {
-      arrayOfLoadedPads.forEach(function (pad) {
-        replaceTrack(pad);
+    loadSamples()
+      .then((arrayOfLoadedPads) => {
+        arrayOfLoadedPads.forEach(function (pad) {
+          replaceTrack(pad);
+        });
+        setUpSequencer();
+        configAudioEffects();
+      })
+      .then(() => {
+        removeInstructionScreen(quietBuffer);
       });
-      setUpSequencer();
-      configAudioEffects();
-    }).then(() => {
-      removeInstructionScreen(quietBuffer);
-    });
     setupUploadButtons();
     quickHideAddressBar();
   });

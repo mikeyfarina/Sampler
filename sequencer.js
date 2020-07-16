@@ -5,7 +5,10 @@ import {
   tempoDisplay,
 } from "./constants.js";
 import { trackObject } from "./setupSeqTracks.js";
-import { tracksEffectInfo, connectSourceToEffects } from "./setupAudioEffects.js";
+import {
+  tracksEffectInfo,
+  connectSourceToEffects,
+} from "./setupAudioEffects.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -44,7 +47,7 @@ export function setUpSequencer() {
 
   tempoSlider.addEventListener("input", () => {
     tempoDisplay.innerText = tempoSlider.value;
-  })
+  });
   // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
   window.requestAnimFrame = (function () {
     return (
@@ -76,9 +79,9 @@ function resetSequencer() {
       }
     });
 
-    //set playhead back to beat 0 if not there already
+    //set playhead back to beat 0 if not th`e`re already
     if (currentNote !== 0) {
-      console.log("current note not 0", currentNote)
+      console.log("current note not 0", currentNote);
       beats[0].style.background = "rgba(72, 128, 255, 1)";
     }
     for (let i = 1; i < 16; i++) {
@@ -131,7 +134,7 @@ function scheduleNote(beatNumber, time) {
     let trackInfo = tracksEffectInfo.find(
       (o) => o.trackObjectInfo.trackName === name
     );
-    console.log("trackInfo iS", trackInfo)
+    console.log("trackInfo iS", trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
       console.log(
@@ -150,11 +153,7 @@ function playSample(trackInfo) {
   let reverbSource = context.createBufferSource();
   reverbSource.buffer = trackInfo.reverbBuffer;
 
-  let effectedSource = connectSourceToEffects(
-    trackInfo,
-    source,
-    reverbSource
-  );
+  let effectedSource = connectSourceToEffects(trackInfo, source, reverbSource);
   console.log("eS playSample", effectedSource, trackInfo);
 
   let reverb = effectedSource.reverbObj.reverbSource;

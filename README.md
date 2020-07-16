@@ -1,6 +1,6 @@
-# Sampler - a drum machine
+# Sampler 
 
-### (in-progress) sample sequencer / (soon to be) sound editor
+### drum machine / sample sequencer / sound editor
 
 ## Web Audio API
 
@@ -8,18 +8,18 @@
 
 - decodes array of audio file urls and loads each sample onto the next pad after clicking the start screen
 - allows user to upload each pads sound through a button on pad
+- Sequencer
+- Effect section within Sequencer allows for each track to have unique effects applied
 
 ## Currently:
 
-- adapting screen and functionality to mobile devices
+- have pads be triggered by keyboard presses as well
+- create instruction screen to help users
 
 ## todo:
 
-- SEQUENCER
-
-- Effects section
-
-  - when pad is clicked open second area containing different effects that can be added to each sample
-    - volume, delay, reverb, eq, pitch?
-
-- Audio file wavelength editor (SliceX)
+- reformat data structure used by sequencer for effect data to increase efficiency
+- adapting screen and functionality to mobile devices
+- Tap Tempo?
+- Clean UI
+- Audio file wavelength editor (SliceX)?
