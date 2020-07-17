@@ -14,6 +14,12 @@
 
 ## Currently:
 
+- working on drum machine screen to display various messages
+  - title
+    - welcome to the sampler screen that welcomes user and scrolls away
+    - playing *sound*
+  - subtitle
+    - loaded ____ sample
 - create instruction screen to help users
 
 ## todo:
