@@ -1,6 +1,7 @@
-import { drumPads, context, fileInputs } from "./constants.js";
-import { uploadFile } from "./uploadSamples.js";
+import { drumPads, context, fileInputs, letterKeyCodes } from "./constants.js";
+
 let source;
+let loadedPadsWithSamples = [];
 
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
@@ -14,13 +15,47 @@ export function assignSoundsToPads(bufferList) {
       //stop propagation to prevent sample from playing twice on mobile
       e.stopPropagation();
       e.preventDefault();
+
       let bufferSource = makeSource(bufferList[i]);
       console.log("playing", bufferSource);
       bufferSource.source.start(0);
     };
+    let makeSourceFromBufferAndPlayFromKeys = (e) => {
+      //stop propagation to prevent sample from playing twice on mobile
+      e.stopPropagation();
+      e.preventDefault();
 
+      if (e.keyCode === letterKeyCodes[i]) {
+        console.log(
+          "playing from keys",
+          drumPads[i],
+          e,
+          e.keyCode,
+          letterKeyCodes[i]
+        );
+
+        drumPads[i].classList.add("button-active");
+
+        document.addEventListener("keyup", (e) => {
+          if (e.keyCode === letterKeyCodes[i]) {
+            drumPads[i].classList.toggle("button-active");
+          }
+        });
+
+        let bufferSource = makeSource(bufferList[i]);
+        console.log("playing", bufferSource);
+        bufferSource.source.start(0);
+      }
+      //fix "stuck" pads when multiple keys are pressed at once
+      setTimeout(() => {
+        if (drumPads[i].classList.contains("button-active")) {
+          drumPads[i].classList.toggle("button-active");
+        }
+      }, 150);
+    };
     drumPads[i].addEventListener("mousedown", makeSourceFromBufferAndPlay);
     drumPads[i].addEventListener("touchstart", makeSourceFromBufferAndPlay);
+    document.addEventListener("keydown", makeSourceFromBufferAndPlayFromKeys);
     //chage to i, after adding all buttons
     fileInputs[i].addEventListener(
       "change",
@@ -34,10 +69,19 @@ export function assignSoundsToPads(bufferList) {
           "touchstart",
           makeSourceFromBufferAndPlay
         );
+        document.removeEventListener(
+          "keydown",
+          makeSourceFromBufferAndPlayFromKeys
+        );
       },
       { once: true }
     );
+
+    //create an object consisting of the html pad element
+    //and the name of the buffer loaded onto the pad
+    createObjectWithPadInfo(bufferList[i]);
   }
+  return loadedPadsWithSamples;
 }
 
 export function makeSource(buffer) {
@@ -47,20 +91,16 @@ export function makeSource(buffer) {
   return { source };
 }
 
-/*
-export function playSound(sound) {
-  let source = context.createBufferSource();
-  console.log("playing sound", sound);
-  source.buffer = sound;
-  source.connect(context.destination);
-  source.start(0);
-  source.onended = function(){
-    console.log("onended,", source.buffer, context.destination);
-  }
-}
-*/
-
 function makeLabel(drumPad, name) {
   let label = drumPad.querySelector("p.drum-machine__pads__label");
   label.innerText = name;
 }
+
+function createObjectWithPadInfo(buffer) {
+  console.log("creating padinfo object");
+  let padObject = { trackName: buffer.name, trackBuffer: buffer };
+  loadedPadsWithSamples.push(padObject);
+  console.log("pushed object into array\n\n");
+}
+
+export { loadedPadsWithSamples };

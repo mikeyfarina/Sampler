@@ -3,5 +3,8 @@ import { assignSoundsToPads } from "./setupPads.js";
 import { samplesToLoad } from "./constants.js";
 
 export function loadSamples() {
-  loadAllUrls(samplesToLoad).then(assignSoundsToPads);
+  return new Promise((resolve, reject) => {
+    resolve(loadAllUrls(samplesToLoad).then(assignSoundsToPads));
+    reject("error");
+  });
 }

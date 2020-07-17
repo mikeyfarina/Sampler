@@ -1,10 +1,15 @@
-import { drumPads, uploadButtons, context, fileInputs } from "./constants.js";
+import {
+  uploadButtons,
+  context,
+  letterKeyCodes,
+  drumPads,
+} from "./constants.js";
 import { makeSource } from "./setupPads.js";
+import { replaceTrack } from "./setupSeqTracks.js";
 
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
-let touched;
 export function setupUploadButtons() {
   console.log("setupUploadButtons");
 
@@ -38,19 +43,23 @@ function configFileChange(ev) {
     "change",
     (event) => {
       console.log("Added listener to input");
-      uploadFile(event, parentPad, parentInput, ev);
+      uploadFile(event, parentPad, parentInput);
     },
     { once: true }
   );
 }
 
-function uploadFile(event, parentPad, parentInput, ev) {
+function uploadFile(event, parentPad, parentInput) {
   readFile(event).then((buffer) => {
+    let bufferName = buffer.name;
+    let newTrack = { trackName: buffer.name, trackBuffer: buffer };
+    console.log(newTrack);
+    replaceTrack(newTrack, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
-
     //label
-    parentPad.querySelector("p.drum-machine__pads__label").innerText =
-      buffer.name;
+    parentPad.querySelector(
+      "p.drum-machine__pads__label"
+    ).innerText = bufferName;
   });
 }
 
@@ -76,23 +85,67 @@ function readFile({ target }) {
 }
 
 function loadSoundToPad(sample, parentPad, parentInput) {
-  console.log("loading " + sample.name + " to ", parentPad);
+  console.log(
+    "loading " + sample.name + " to ",
+    parentPad.querySelector("p").innerText,
+    parentPad.parentNode.parentNode
+  );
 
+  let i = 0;
+  let padIndex;
+
+  [].forEach.call(drumPads, (pad) => {
+    if (pad.querySelector("p") === parentPad.querySelector("p")) {
+      padIndex = i;
+    }
+    i++;
+  });
+  console.log(padIndex);
+
+  let oldPad = drumPads[padIndex];
   let addSampleToParentPad = (e) => {
     //stop propagation to prevent sample from playing twice on mobile
     e.stopPropagation();
     e.preventDefault();
+
     console.log("playing", sample.name);
     let sampleSource = makeSource(sample);
     sampleSource.source.start(0);
   };
+
+  let addSampleToParentPadWithKeyPress = (e) => {
+    //stop propagation to prevent sample from playing twice on mobile
+    e.stopPropagation();
+    e.preventDefault();
+    if (e.keyCode === letterKeyCodes[padIndex]) {
+      console.log("playing", sample.name);
+      let sampleSource = makeSource(sample);
+      sampleSource.source.start(0);
+
+      oldPad.classList.add("button-active");
+
+      document.addEventListener("keyup", () => {
+        if (e.keyCode === letterKeyCodes[i]) {
+          oldPad.classList.toggle("button-active");
+        }
+      });
+    }
+    //fix "stuck" pads when multiple keys are pressed at once
+    setTimeout(() => {
+      if (oldPad.classList.contains("button-active")) {
+        oldPad.classList.toggle("button-active");
+      }
+    }, 150);
+  };
   //make pad play sound on click
   parentPad.addEventListener("mousedown", addSampleToParentPad);
   parentPad.addEventListener("touchstart", addSampleToParentPad);
+  document.addEventListener("keydown", addSampleToParentPadWithKeyPress);
   //remove event listener if file is changed
   parentInput.addEventListener("change", () => {
     parentPad.removeEventListener("mousedown", addSampleToParentPad);
     parentPad.removeEventListener("touchstart", addSampleToParentPad);
+    document.removeEventListener("keydown", addSampleToParentPadWithKeyPress);
   });
 }
 

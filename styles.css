@@ -15,8 +15,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
-  height: 99vh;
+  max-height: 100vh;
   background-color: #89c9ff;
 }
 
@@ -24,10 +25,36 @@ button:focus {
   outline: 0;
 }
 
+.instructions {
+  display: grid;
+
+  width: 98vw;
+  height: 95vh;
+
+  margin: 0;
+  padding: 0;
+
+  border-radius: 9px;
+  align-items: center;
+  transition: opacity 350ms linear;
+  opacity: 0.95;
+  z-index: 1;
+
+  position: absolute;
+  background: black;
+}
+
+.instructions__text {
+  color: white;
+  text-align: center;
+}
+
 .drum-machine {
-  min-width: 60vh;
+  max-width: 60vh;
   background-color: #e8e8e8;
   padding: 2vw 2.5vw;
+  margin: 4vw;
+  margin-right: 0;
   font-family: "Helvetica Neue";
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
@@ -56,7 +83,7 @@ button:focus {
 
 .drum-machine__screen__subtitle {
   font-size: 3vh;
-  margin:.2rem 0;
+  margin: 0.2rem 0;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -81,13 +108,15 @@ ul.drum-machine__pads li button {
   padding-top: 100%;
 
   background: #c4c4c4;
-  border: none;
+  border: 0;
+  cursor: pointer;
   border-radius: 0.4rem;
   box-shadow: 4px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-ul.drum-machine__pads li button:active {
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+ul.drum-machine__pads li button:active,
+.button-active {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2) !important;
   transform: translateY(-1px);
 
   -webkit-transform: translateY(-1px);
@@ -244,4 +273,223 @@ ul.drum-machine__pads li button:active {
   .js-upload-button {
     font-size: 0.8em;
   }
+}
+
+/* sequencer styling */
+.sequencer {
+  font-family: "super smash tv";
+  color: #4a4a4a;
+  background-color: #e8e8e8;
+  margin-left: 2%;
+  padding: 2%;
+  border: 4px #c4c4c4 solid;
+  max-width: 60vw;
+}
+
+.sequencer__controls {
+  height: 15%;
+  display: inline-grid;
+  grid-template-columns: 1fr 0.5fr 0.75fr;
+  align-items: center;
+}
+
+.sequencer__controls__buttons {
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 0.5fr 0.5fr 1fr;
+  display: inline-grid;
+  margin-right: 0%;
+  font-family: "super smash tv";
+}
+
+.sequencer__controls__buttons__play {
+  height: 100%;
+  font-size: 30px;
+}
+
+.sequencer__controls__buttons__reset {
+  height: 100%;
+  font-size: 30px;
+}
+
+.sequencer__controls__buttons__reset-effects {
+  height: 100%;
+  font-size: 30px;
+}
+
+.sequencer__controls__tempo {
+  display: inline-grid;
+}
+
+.tempo-info {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#tempo {
+  width: 100%;
+}
+
+input[type="range"] {
+  height: 100%;
+  background-color: black;
+}
+
+.beat-selector {
+  height: 100%;
+  margin: 0 10%;
+}
+
+.sequencer__display {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sequencer__display__track {
+  display: grid;
+  grid-template-columns: 3% 15% repeat(16, 1fr);
+  width: 50vw;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sequencer__display__track__show-effects {
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+}
+
+.sequencer__display__track__effects-panel {
+  width: 100%;
+  height: 10vw;
+  text-align: center;
+  background: lightblue;
+  display: flex;
+  flex-direction: column;
+  transition: height 50ms ease-in;
+}
+
+.effect-panel-dropdown {
+  transition: height 50ms ease-out;
+}
+.hide {
+  height: 0 !important;
+}
+
+.sequencer__display__track__effects-panel__controls {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 3% repeat(3, 1fr);
+  grid-template-rows: 1.5fr 2fr;
+}
+.effects-panel__controls__test-button {
+  padding: 0;
+}
+.effects-panel__controls__gain {
+  grid-template-rows: 25% 75%;
+  align-items: center;
+  display: grid;
+
+  align-items: center;
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+
+.effects-panel__controls__pan {
+  grid-template-rows: 40% 60%;
+  align-items: center;
+  display: grid;
+
+  align-items: center;
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+
+.effects-panel__controls__pitch {
+  display: grid;
+  grid-template-rows: 40% 60%;
+  align-items: center;
+
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+
+.effects-panel__controls__filter {
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 35% 65%;
+  display: grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+
+.effects-panel__controls__delay {
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 40% 60%;
+  display: grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+.effects-panel__controls__reverb {
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 25% 75%;
+  display: grid;
+
+  text-align: left;
+  align-items: center;
+  padding: 2%;
+
+  margin: 1%;
+  background-color: rgba(211, 211, 211, 0.3);
+}
+.effects-panel__controls__reverb__wet {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  width: 100%;
+}
+
+.sequencer__display__track__name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 1.5vw;
+  background-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.sequencer__display__track__button {
+  font-size: 1.5vw;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  padding: 25% 0;
+}
+
+.clicked {
+  text-align: center;
+  color: yellow;
+  opacity: 1;
 }
