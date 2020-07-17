@@ -10,10 +10,10 @@
 - allows user to upload each pads sound through a button on pad
 - Sequencer
 - Effect section within Sequencer allows for each track to have unique effects applied
+- have pads be triggered by keyboard presses as well
 
 ## Currently:
 
-- have pads be triggered by keyboard presses as well
 - create instruction screen to help users
 
 ## todo:
