@@ -1,4 +1,9 @@
-import { uploadButtons, context } from "./constants.js";
+import {
+  uploadButtons,
+  context,
+  letterKeyCodes,
+  drumPads,
+} from "./constants.js";
 import { makeSource } from "./setupPads.js";
 import { replaceTrack } from "./setupSeqTracks.js";
 
@@ -80,23 +85,67 @@ function readFile({ target }) {
 }
 
 function loadSoundToPad(sample, parentPad, parentInput) {
-  console.log("loading " + sample.name + " to ", parentPad);
+  console.log(
+    "loading " + sample.name + " to ",
+    parentPad.querySelector("p").innerText,
+    parentPad.parentNode.parentNode
+  );
 
+  let i = 0;
+  let padIndex;
+
+  [].forEach.call(drumPads, (pad) => {
+    if (pad.querySelector("p") === parentPad.querySelector("p")) {
+      padIndex = i;
+    }
+    i++;
+  });
+  console.log(padIndex);
+
+  let oldPad = drumPads[padIndex];
   let addSampleToParentPad = (e) => {
     //stop propagation to prevent sample from playing twice on mobile
     e.stopPropagation();
     e.preventDefault();
+
     console.log("playing", sample.name);
     let sampleSource = makeSource(sample);
     sampleSource.source.start(0);
   };
+
+  let addSampleToParentPadWithKeyPress = (e) => {
+    //stop propagation to prevent sample from playing twice on mobile
+    e.stopPropagation();
+    e.preventDefault();
+    if (e.keyCode === letterKeyCodes[padIndex]) {
+      console.log("playing", sample.name);
+      let sampleSource = makeSource(sample);
+      sampleSource.source.start(0);
+
+      oldPad.classList.add("button-active");
+
+      document.addEventListener("keyup", () => {
+        if (e.keyCode === letterKeyCodes[i]) {
+          oldPad.classList.toggle("button-active");
+        }
+      });
+    }
+    //fix "stuck" pads when multiple keys are pressed at once
+    setTimeout(() => {
+      if (oldPad.classList.contains("button-active")) {
+        oldPad.classList.toggle("button-active");
+      }
+    }, 150);
+  };
   //make pad play sound on click
   parentPad.addEventListener("mousedown", addSampleToParentPad);
   parentPad.addEventListener("touchstart", addSampleToParentPad);
+  document.addEventListener("keydown", addSampleToParentPadWithKeyPress);
   //remove event listener if file is changed
   parentInput.addEventListener("change", () => {
     parentPad.removeEventListener("mousedown", addSampleToParentPad);
     parentPad.removeEventListener("touchstart", addSampleToParentPad);
+    document.removeEventListener("keydown", addSampleToParentPadWithKeyPress);
   });
 }
 

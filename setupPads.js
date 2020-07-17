@@ -1,5 +1,5 @@
-import { drumPads, context, fileInputs } from "./constants.js";
-import { uploadFile } from "./uploadSamples.js";
+import { drumPads, context, fileInputs, letterKeyCodes } from "./constants.js";
+
 let source;
 let loadedPadsWithSamples = [];
 
@@ -15,13 +15,47 @@ export function assignSoundsToPads(bufferList) {
       //stop propagation to prevent sample from playing twice on mobile
       e.stopPropagation();
       e.preventDefault();
+
       let bufferSource = makeSource(bufferList[i]);
       console.log("playing", bufferSource);
       bufferSource.source.start(0);
     };
+    let makeSourceFromBufferAndPlayFromKeys = (e) => {
+      //stop propagation to prevent sample from playing twice on mobile
+      e.stopPropagation();
+      e.preventDefault();
 
+      if (e.keyCode === letterKeyCodes[i]) {
+        console.log(
+          "playing from keys",
+          drumPads[i],
+          e,
+          e.keyCode,
+          letterKeyCodes[i]
+        );
+
+        drumPads[i].classList.add("button-active");
+
+        document.addEventListener("keyup", (e) => {
+          if (e.keyCode === letterKeyCodes[i]) {
+            drumPads[i].classList.toggle("button-active");
+          }
+        });
+
+        let bufferSource = makeSource(bufferList[i]);
+        console.log("playing", bufferSource);
+        bufferSource.source.start(0);
+      }
+      //fix "stuck" pads when multiple keys are pressed at once
+      setTimeout(() => {
+        if (drumPads[i].classList.contains("button-active")) {
+          drumPads[i].classList.toggle("button-active");
+        }
+      }, 150);
+    };
     drumPads[i].addEventListener("mousedown", makeSourceFromBufferAndPlay);
     drumPads[i].addEventListener("touchstart", makeSourceFromBufferAndPlay);
+    document.addEventListener("keydown", makeSourceFromBufferAndPlayFromKeys);
     //chage to i, after adding all buttons
     fileInputs[i].addEventListener(
       "change",
@@ -34,6 +68,10 @@ export function assignSoundsToPads(bufferList) {
         drumPads[i].removeEventListener(
           "touchstart",
           makeSourceFromBufferAndPlay
+        );
+        document.removeEventListener(
+          "keydown",
+          makeSourceFromBufferAndPlayFromKeys
         );
       },
       { once: true }

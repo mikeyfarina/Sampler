@@ -7,7 +7,7 @@ const samplesToLoad = [
   require("./sounds/scratch.wav"),
   require("./sounds/shake.wav"),
   require("./sounds/clap.wav"),
-  require("./sounds/snaretwo.wav")
+  require("./sounds/snaretwo.wav"),
 ];
 const reverbsToLoad = [
   require("./reverb_impulses/Block Inside.wav"),
@@ -37,8 +37,11 @@ const reverbsToLoad = [
   require("./reverb_impulses/Vocal Duo.wav"),
   require("./reverb_impulses/French 18th Century Salon.wav"),
   require("./reverb_impulses/Parking Garage.wav"),
-  require("./reverb_impulses/Masonic Lodge.wav")
+  require("./reverb_impulses/Masonic Lodge.wav"),
 ];
+//                      T   Y   U   F   G   H   V   B   N
+const letterKeyCodes = [84, 89, 85, 70, 71, 72, 86, 66, 78];
+
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const context = new AudioContext();
@@ -81,6 +84,7 @@ const trackBackgroundColors = [
 export {
   samplesToLoad,
   reverbsToLoad,
+  letterKeyCodes,
   instructionScreen,
   instructionScreenText,
   drumPads,
