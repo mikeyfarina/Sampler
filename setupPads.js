@@ -1,4 +1,11 @@
-import { drumPads, context, fileInputs, letterKeyCodes } from "./constants.js";
+import {
+  drumPads,
+  context,
+  fileInputs,
+  letterKeyCodes,
+  screenTitle,
+  screenSubtitle,
+} from "./constants.js";
 
 let source;
 let loadedPadsWithSamples = [];
@@ -12,20 +19,23 @@ export function assignSoundsToPads(bufferList) {
     makeLabel(drumPads[i], bufferList[i].name);
 
     let makeSourceFromBufferAndPlay = (e) => {
+      updateScreen(bufferList[i]);
+
       //stop propagation to prevent sample from playing twice on mobile
       e.stopPropagation();
       e.preventDefault();
 
       let bufferSource = makeSource(bufferList[i]);
-      console.log("playing", bufferSource);
       bufferSource.source.start(0);
     };
     let makeSourceFromBufferAndPlayFromKeys = (e) => {
+      screenTitle.innerText = "";
       //stop propagation to prevent sample from playing twice on mobile
       e.stopPropagation();
       e.preventDefault();
 
       if (e.keyCode === letterKeyCodes[i]) {
+        updateScreen(bufferList[i]);
         console.log(
           "playing from keys",
           drumPads[i],
@@ -43,7 +53,6 @@ export function assignSoundsToPads(bufferList) {
         });
 
         let bufferSource = makeSource(bufferList[i]);
-        console.log("playing", bufferSource);
         bufferSource.source.start(0);
       }
       //fix "stuck" pads when multiple keys are pressed at once
@@ -94,6 +103,22 @@ export function makeSource(buffer) {
 function makeLabel(drumPad, name) {
   let label = drumPad.querySelector("p.drum-machine__pads__label");
   label.innerText = name;
+}
+
+export function updateScreen(buffer) {
+  screenTitle.innerText = "";
+  screenTitle.textContent = "";
+
+  screenSubtitle.innerText = "";
+
+  let div = document.createElement("div");
+  div.innerText = `playing ${buffer.name}`;
+  screenTitle.appendChild(div);
+
+  setTimeout(() => {
+    div.innerText = "";
+    console.log("cleaning: ", div);
+  }, 2000);
 }
 
 function createObjectWithPadInfo(buffer) {

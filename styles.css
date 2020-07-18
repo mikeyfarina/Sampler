@@ -62,16 +62,16 @@ button:focus {
 }
 
 .drum-machine__screen {
-  max-height: 15vh;
+  max-height: 15%;
   font-family: "super smash tv";
   background-color: #4880ff;
   color: white;
   font-weight: normal;
-  padding: 3%;
-  max-width: 55vh;
+  padding: 3% 4%;
   margin-bottom: 2vw;
   border-radius: 0.2rem;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @keyframes slide {
@@ -98,8 +98,8 @@ button:focus {
   min-width: 55vh;
 
   font-size: 6vh;
-  margin-top: 2vh;
-  margin-bottom: 0.5vh;
+  margin-top: 5%;
+  margin-bottom: 2%;
 
   white-space: nowrap;
 }
@@ -107,7 +107,8 @@ button:focus {
 .drum-machine__screen__subtitle {
   font-size: 3vh;
   min-height: 3vh;
-  margin: 0.2rem 0;
+  margin-top: 2%;
+  margin-bottom: 2%;
 
   white-space: nowrap;
 }
@@ -296,7 +297,7 @@ ul.drum-machine__pads li button:active,
     font-size: 0.8em;
   }
 }
-
+/*!!!!! adjust max-width of effect panels !!!!*/
 /* sequencer styling */
 .sequencer {
   font-family: "super smash tv";
@@ -304,7 +305,8 @@ ul.drum-machine__pads li button:active,
   background-color: #e8e8e8;
   margin-left: 2%;
   padding: 2%;
-  border: 4px #c4c4c4 solid;
+  border: 8px #c4c4c4 solid;
+  border-radius: 10px;
   max-width: 60vw;
 }
 
