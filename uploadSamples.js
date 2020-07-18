@@ -1,10 +1,12 @@
 import {
+  screenSubtitle,
   uploadButtons,
   context,
   letterKeyCodes,
   drumPads,
+  screenTitle,
 } from "./constants.js";
-import { makeSource } from "./setupPads.js";
+import { makeSource, updateScreen } from "./setupPads.js";
 import { replaceTrack } from "./setupSeqTracks.js";
 
 //upload file
@@ -21,13 +23,15 @@ export function setupUploadButtons() {
       if (touched) {
         return;
       }
-      console.log("clicked upload button");
+      screenTitle.innerText = "Upload in progress";
+      screenSubtitle.innerText = "Select an audio file";
       configFileChange(ev);
     });
     el.addEventListener("touchstart", (ev) => {
       ev.stopPropagation();
       touched = true;
-      console.log("touched upload button");
+      screenTitle.innerText = "Upload in progress";
+      screenSubtitle.innerText = "Select an audio file";
       configFileChange(ev);
     });
   });
@@ -108,7 +112,7 @@ function loadSoundToPad(sample, parentPad, parentInput) {
     e.stopPropagation();
     e.preventDefault();
 
-    console.log("playing", sample.name);
+    updateScreen(sample);
     let sampleSource = makeSource(sample);
     sampleSource.source.start(0);
   };
@@ -118,7 +122,7 @@ function loadSoundToPad(sample, parentPad, parentInput) {
     e.stopPropagation();
     e.preventDefault();
     if (e.keyCode === letterKeyCodes[padIndex]) {
-      console.log("playing", sample.name);
+      updateScreen(sample);
       let sampleSource = makeSource(sample);
       sampleSource.source.start(0);
 
@@ -147,6 +151,9 @@ function loadSoundToPad(sample, parentPad, parentInput) {
     parentPad.removeEventListener("touchstart", addSampleToParentPad);
     document.removeEventListener("keydown", addSampleToParentPadWithKeyPress);
   });
+
+  screenTitle.innerText = "ready to play";
+  screenSubtitle.innerText = "uploaded " + sample.name;
 }
 
 //drag and drop

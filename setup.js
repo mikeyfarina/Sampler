@@ -1,7 +1,13 @@
 import { replaceTrack } from "./setupSeqTracks.js";
 import { loadSamples } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
-import { instructionScreen, reverbsToLoad, context } from "./constants.js";
+import {
+  screenTitle,
+  screenSubtitle,
+  instructionScreen,
+  reverbsToLoad,
+  context,
+} from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
 import { configAudioEffects, loadReverbPresets } from "./setupAudioEffects.js";
 let loadedReverbs = [];
@@ -46,9 +52,20 @@ function removeInstructionScreen(quietBuffer) {
   let resumeBuffer = context.createBufferSource();
   resumeBuffer.buffer = quietBuffer;
 
+  screenTitle.classList.add("animate-text");
   setTimeout(() => {
     instructionScreen.parentNode.removeChild(instructionScreen);
     resumeBuffer.start(0);
+    screenTitle.innerText = "";
+    let textDiv = document.createElement("div");
+    textDiv.innerText = "Welcome to sampler";
+    screenTitle.append(textDiv);
+
+    setTimeout(() => {
+      screenTitle.innerText = "";
+      screenSubtitle.innerText = "";
+      screenTitle.classList.remove("animate-text");
+    }, 10000);
   }, 350);
 }
 
