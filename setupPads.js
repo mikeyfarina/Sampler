@@ -117,7 +117,6 @@ export function updateScreen(buffer) {
 
   setTimeout(() => {
     div.innerText = "";
-    console.log("cleaning: ", div);
   }, 2000);
 }
 
