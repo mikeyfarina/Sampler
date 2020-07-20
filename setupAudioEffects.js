@@ -15,7 +15,7 @@ export function configAudioEffects() {
   //have clicking button open panel that has many effects for audio
   [].forEach.call(openEffectPanelButtons, (button) => {
     button.addEventListener("click", (ev) => {
-      console.log("clicked", ev);
+      console.log("clicked");
 
       //display panel
       displayEffectPanel(ev);
@@ -40,11 +40,7 @@ export function loadReverbPresets(reverbArray) {
 }
 //displays effect panel or hides panel if displayed
 function displayEffectPanel(event) {
-  console.log(
-    event.target.parentNode.querySelector("div"),
-    event.target.parentNode
-  );
-  let effectPanel = event.target.parentNode.querySelector("div");
+  let effectPanel = event.target.parentNode.nextSibling;
 
   effectPanel.classList.toggle("hide");
   effectPanel.classList.toggle("effect-panel-dropdown");
@@ -53,7 +49,7 @@ function displayEffectPanel(event) {
 //create panel with multiple audio effects
 // to manipulate played samples
 export function createEffectPanel(track) {
-  console.log("cEP trackDiv", track);
+  console.log("cEP trackDiv", track, track.parentNode);
 
   let trackName = track.querySelector("span").innerText;
   let trackObjectInfo = trackObject.find((o) => o.trackName === trackName);
@@ -73,11 +69,13 @@ export function createEffectPanel(track) {
   };
 
   console.log("loading effects for: ", trackInfo, track);
+  let panel = document.createElement("div");
+  panel.className = "sequencer__display__track__effects-panel";
+  panel.classList.add("hide");
 
   let effectDiv = document.createElement("div");
   effectDiv.className = "sequencer__display__track__effects-panel__controls";
   console.log(track.style.background);
-  effectDiv.classList.add("hide");
   effectDiv.style.background = track.style.background;
 
   //start with loading sample to play with button to test effects
@@ -410,7 +408,9 @@ export function createEffectPanel(track) {
   effectDiv.append(delayControl);
   effectDiv.append(reverbControl);
 
-  track.append(effectDiv);
+  panel.append(effectDiv);
+  //attach effect panel to track
+  track.parentNode.insertBefore(panel, track.nextSibling);
 
   //push effect info with listeners to collection array for use in track playback
   tracksEffectInfo.push(trackInfo);

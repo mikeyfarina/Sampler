@@ -107,8 +107,8 @@ function transformPadToTrack(padInfo, oldPad) {
     });
     newTrackDiv.append(button);
   }
-  createEffectPanel(newTrackDiv);
   sequencerDisplay.append(newTrackDiv);
+  createEffectPanel(newTrackDiv);
 }
 
 export { trackObject };
