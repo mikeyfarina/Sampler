@@ -22,16 +22,16 @@ button:focus {
 }
 
 .instrument-container {
-  max-width: 98vw;
+  max-height: 95vh;
+  max-width: 96vw;
   height: 95vh;
-  margin: 0 auto;
-
+  margin: auto;
   background: #7c7c7c;
   border: 8px #c4c4c4 solid;
   border-radius: 20px;
 
   display: grid;
-  grid-template-columns: 0.35fr 0.55fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-content: center;
 }
@@ -62,13 +62,12 @@ button:focus {
 }
 
 .drum-machine {
-  max-height: 100%;
-  max-width: 50vh;
+  max-height: 90%;
+  width: 75%;
   background-color: #e8e8e8;
   padding: 2vw 2.5vw;
   font-family: "Helvetica Neue";
-  margin: 5% 0;
-  margin-right: 5%;
+  margin: auto;
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
   box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.15);
@@ -76,6 +75,7 @@ button:focus {
 
 .drum-machine__screen {
   min-height: 12%;
+
   font-family: "super smash tv";
   background-color: #4880ff;
   color: white;
@@ -107,20 +107,18 @@ button:focus {
 }
 
 .drum-machine__screen__title {
-  min-height: 6.5vh;
-  min-width: 55vh;
-
-  font-size: 6vh;
+  min-height: 4.5vh;
+  font-size: 2.5vw;
   margin-top: 5%;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
 
   white-space: nowrap;
 }
 
 .drum-machine__screen__subtitle {
-  font-size: 3vh;
+  font-size: 1.5vw;
   min-height: 3vh;
-  margin-top: 2%;
+  margin-top: 1%;
   margin-bottom: 2%;
 
   white-space: nowrap;
@@ -128,9 +126,10 @@ button:focus {
 
 ul.drum-machine__pads {
   list-style: none;
+  width: 100%;
 
   padding: 0;
-  margin-top: auto;
+  margin: 0;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -188,11 +187,13 @@ ul.drum-machine__pads li button:active,
 
 /* sequencer styling */
 .sequencer {
-  max-width: 100%;
-  max-height: 100%;
+  max-height: 85%;
+  max-width: 60vw;
+  width: 85%;
   font-family: "super smash tv";
   color: #4a4a4a;
   background-color: #e8e8e8;
+  margin: auto;
 
   padding: 2vw 1.5vw;
   border: 8px #c4c4c4 solid;
@@ -250,7 +251,6 @@ input[type="range"] {
 }
 
 .sequencer__display {
-  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 4%;
@@ -271,6 +271,7 @@ input[type="range"] {
 }
 
 .sequencer__display__track__effects-panel {
+  width: 100%;
   text-align: center;
   background: lightblue;
   display: flex;
@@ -290,7 +291,7 @@ input[type="range"] {
 .sequencer__display__track__effects-panel__controls {
   height: 100%;
   display: grid;
-  grid-template-columns: 3% repeat(3, 1fr);
+  grid-template-columns: 100% repeat(3, 1fr);
   grid-template-rows: 1.5fr 2fr;
 }
 .effects-panel__controls__test-button {
