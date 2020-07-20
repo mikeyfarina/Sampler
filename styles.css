@@ -62,12 +62,12 @@ button:focus {
 }
 
 .drum-machine {
-  max-height: 90%;
+  max-height: 65%;
   width: 75%;
   background-color: #e8e8e8;
   padding: 2vw 2.5vw;
   font-family: "Helvetica Neue";
-  margin: auto;
+  margin-left: auto;
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
   box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.15);
@@ -163,7 +163,7 @@ ul.drum-machine__pads li button:active,
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  font-size: 3vh;
+  font-size: 1.5vw;
   color: #4a4a4a;
 }
 
@@ -187,7 +187,7 @@ ul.drum-machine__pads li button:active,
 
 /* sequencer styling */
 .sequencer {
-  max-height: 85%;
+  max-height: 65%;
   max-width: 60vw;
   width: 85%;
   font-family: "super smash tv";
@@ -404,6 +404,36 @@ input[type="range"] {
 }
 
 /* MEDIA QUERIES */
+
+@media only screen and (min-height: 320px) and (max-height: 950px) {
+  .drum-machine {
+    background: green;
+    max-width: 45vh;
+    padding-bottom: 10%;
+  }
+  .drum-machine__screen {
+    padding: 0;
+  }
+  .drum-machine__screen__title {
+    font-size: 2.2vw;
+    padding: 0 4%;
+    padding-bottom: 3%;
+  }
+  .drum-machine__screen__subtitle {
+    font-size: 1.25vw;
+    padding: 0 4%;
+    padding-bottom: 3%;
+  }
+  .sequencer {
+    max-height: 90%;
+    max-width: 100vh;
+  }
+  .sequencer__display {
+    overflow: hidden;
+    height: 100%;
+    max-width: 100vh;
+  }
+}
 
 @media only screen and (min-width: 320px) and (max-width: 1024px) {
   /*
