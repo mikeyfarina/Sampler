@@ -9,6 +9,7 @@ import {
   tracksEffectInfo,
   connectSourceToEffects,
 } from "./setupAudioEffects.js";
+import { hashTableConversion } from "./hashTable.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -27,8 +28,12 @@ let last16thNoteDrawn = -1; // the last "box" we drew on the screen
 let notesInQueue = []; // the notes that have been put into the web audio,
 // and may or may not have played yet. {note, time}
 let seqTracks;
+let hashEffectInfo;
 
-export function setUpSequencer() {
+export function setUpSequencer(hash) {
+  hashEffectInfo = hash;
+
+  console.log("\n\n hEI \n\n", hashEffectInfo);
   let playButton = document.querySelector(
     ".sequencer__controls__buttons__play"
   );
@@ -61,7 +66,6 @@ export function setUpSequencer() {
       }
     );
   })();
-
   requestAnimFrame(draw); // start the drawing loop.
 }
 
@@ -130,17 +134,12 @@ function scheduleNote(beatNumber, time) {
     );
     let name = track.querySelector("span").innerText;
 
-    console.log("tEI, in schedule note", tracksEffectInfo);
-    let trackInfo = tracksEffectInfo.find(
-      (o) => o.trackObjectInfo.trackName === name
-    );
+    console.log("tEI, in schedule note", hashEffectInfo);
+    let trackInfo = hashEffectInfo[name];
     console.log("trackInfo iS", trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
-      console.log(
-        `!! playing ${trackInfo} on beat ${beatNumber}\n`,
-        trackInfo.trackBuffer
-      );
+      console.log(`!! playing ${trackInfo} on beat ${beatNumber}\n`);
       playSample(trackInfo);
     }
   });

@@ -9,7 +9,13 @@ import {
   context,
 } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
-import { configAudioEffects, loadReverbPresets } from "./setupAudioEffects.js";
+import {
+  configAudioEffects,
+  loadReverbPresets,
+  tracksEffectInfo,
+} from "./setupAudioEffects.js";
+import { hashTableConversion } from "./hashTable.js";
+
 let loadedReverbs = [];
 
 export function init() {
@@ -20,6 +26,7 @@ export function init() {
   instructionScreen.append(loadingText);
 
   let quietBuffer;
+  let hash;
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
     loadedReverbs = loaded;
@@ -28,8 +35,12 @@ export function init() {
         arrayOfLoadedPads.forEach(function (pad) {
           replaceTrack(pad);
         });
-        setUpSequencer();
-        configAudioEffects();
+      })
+      .then(() => {
+        hashTableConversion(tracksEffectInfo).then((hash) => {
+          setUpSequencer(hash);
+          configAudioEffects();
+        });
       })
       .then(() => {
         removeInstructionScreen(quietBuffer);

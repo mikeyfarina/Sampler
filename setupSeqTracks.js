@@ -62,8 +62,9 @@ function transformPadToTrack(padInfo, oldPad) {
   padName.className = "sequencer__display__track__name";
   newTrackDiv.append(padName);
 
-  let padIndex = trackObject.indexOf(trackObject.find((o) => o.trackName === padInfo.trackName));
-
+  let padIndex = trackObject.indexOf(
+    trackObject.find((o) => o.trackName === padInfo.trackName)
+  );
 
   //push info of pad into memory if not replacing old track
   if (oldPad === undefined) {
@@ -80,9 +81,8 @@ function transformPadToTrack(padInfo, oldPad) {
 
       effectPanel.classList.toggle("hide");
       effectPanel.classList.toggle("effect-panel-dropdown");
-    })
+    });
   }
-
 
   //create 16 buttons on a track, unique id for each
   for (let i = 0; i < 16; i++) {
