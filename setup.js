@@ -42,12 +42,12 @@ export function init() {
           console.log("passing hash to seq.", hash);
           setUpSequencer(hash);
           configAudioEffects();
+          setupUploadButtons(hash);
         });
       })
       .then(() => {
         removeInstructionScreen(quietBuffer);
       });
-    setupUploadButtons();
     quickHideAddressBar();
   });
 }

@@ -9,7 +9,7 @@ import {
   tracksEffectInfo,
   connectSourceToEffects,
 } from "./setupAudioEffects.js";
-import { hashTableConversion } from "./hashTable.js";
+import { hashTableConversion, hashTable } from "./hashTable.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -178,6 +178,9 @@ function scheduler() {
 function play(playButton) {
   console.log("play", isPlaying);
   isPlaying = !isPlaying;
+  console.log("before", hashEffectInfo);
+  //always refresh the datastructure list on start/stop
+  console.log("AFTER", hashEffectInfo);
 
   if (isPlaying) {
     // start playing

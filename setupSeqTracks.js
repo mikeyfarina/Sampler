@@ -8,20 +8,30 @@ let trackNumber = 0;
 export function replaceTrack(newTrack, oldPad) {
   console.log("replacing/creating track", newTrack, oldPad);
   //if theres an old track remove it
+  let hashedTrack = undefined;
+  let oldPadObject = undefined;
   if (oldPad !== undefined) {
     console.log("oldpad exists", trackObject);
+    hashedTrack = {};
+    hashedTrack[newTrack.trackName] = newTrack.trackBuffer;
+    console.log("hashed newtrack", hashedTrack);
     //select old track
     let oldPadName = oldPad.querySelector("p.drum-machine__pads__label")
       .innerText;
-    let oldPadObject = trackObject.find((o) => o.trackName === oldPadName);
+    oldPadObject = trackObject.find((o) => {
+      if (Object.keys(o)[0] === oldPadName) return o;
+    });
     let oldPadIndex = trackObject.indexOf(oldPadObject);
+    oldPadObject.index = oldPadIndex;
+
+    console.log("old info", oldPadName, oldPadObject, oldPadIndex);
 
     console.log("upload", trackObject, oldPadIndex);
     if (oldPadObject) {
-      trackObject.splice(oldPadIndex, 1, newTrack);
+      trackObject.splice(oldPadIndex, 1, hashedTrack);
     }
 
-    console.log("pushing newTrack", newTrack, trackObject, oldPadObject);
+    console.log("pushing newTrack", hashedTrack, trackObject);
 
     let allTrackNames = document.querySelectorAll(
       ".sequencer__display__track__name"
@@ -29,21 +39,34 @@ export function replaceTrack(newTrack, oldPad) {
 
     //find old track and remove it
     [].forEach.call(allTrackNames, (trackName) => {
+      console.log(trackName);
       if (trackName.innerText === oldPadName) {
-        let track = trackName.parentElement;
-        console.log("attempting to remove... ", track.parentElement);
+        let track = trackName.parentNode;
+        console.log("attempting to remove... ", track);
         track.parentElement.removeChild(track);
       }
     });
   }
   //add new track newTrack {trackName, trackBuffer}
-  transformPadToTrack(newTrack, oldPad);
+  console.log(oldPadObject);
+  transformPadToTrack(newTrack, oldPad, hashedTrack, oldPadObject);
 }
 
-function transformPadToTrack(padInfo, oldPad) {
-  //create a track div
-  console.log("tPTT", padInfo);
-  let trackName = Object.keys(padInfo)[0];
+function transformPadToTrack(padInfo, oldPad, hashedTrack, oldPadObject) {
+  console.log("tPTT args", padInfo, oldPad, hashedTrack, oldPadObject);
+  let inNeedOfHash = false;
+  //if uploaded new hash track exists
+  let trackName;
+  if (hashedTrack !== undefined) {
+    inNeedOfHash = true;
+    console.log("hash tPTT", hashedTrack);
+    trackName = Object.keys(hashedTrack)[0];
+  } else {
+    //create a track div
+    inNeedOfHash = false;
+    console.log("tPTT", padInfo);
+    trackName = Object.keys(padInfo)[0];
+  }
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -74,7 +97,7 @@ function transformPadToTrack(padInfo, oldPad) {
     //cycle background colors
     newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
   } else {
-    newTrackDiv.style.background = trackBackgroundColors[padIndex];
+    newTrackDiv.style.background = trackBackgroundColors[oldPadObject.index];
 
     displayEffectsButton.addEventListener("click", (event) => {
       console.log("new clicked");
@@ -109,7 +132,7 @@ function transformPadToTrack(padInfo, oldPad) {
     newTrackDiv.append(button);
   }
   sequencerDisplay.append(newTrackDiv);
-  createEffectPanel(newTrackDiv, trackName);
+  createEffectPanel(newTrackDiv, trackName, inNeedOfHash);
 }
 
 export { trackObject };

@@ -12,8 +12,8 @@ import { replaceTrack } from "./setupSeqTracks.js";
 //upload file
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
-export function setupUploadButtons() {
-  console.log("setupUploadButtons");
+export function setupUploadButtons(hash) {
+  console.log("setupUploadButtons", hash);
 
   [].forEach.call(uploadButtons, (el) => {
     //when upload button is clicked

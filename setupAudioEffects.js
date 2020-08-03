@@ -2,6 +2,7 @@ import { trackObject } from "./setupSeqTracks.js";
 import { context } from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import { loadedReverbs } from "./setup.js";
+import { uploadConversionToHash } from "./hashTable.js";
 
 let openEffectPanelButtons = [];
 let tracksEffectInfo = [];
@@ -48,17 +49,11 @@ function displayEffectPanel(event) {
 
 //create panel with multiple audio effects
 // to manipulate played samples
-export function createEffectPanel(track, trackName) {
-  console.log(
-    "cEP trackDiv",
-    track,
-    trackName,
-    "tObj",
-    trackObject,
-    Object.keys(trackObject)
-  );
+export function createEffectPanel(track, trackName, isHashNeeded) {
+  console.log("cEP trackDiv", track, trackName, "tObj", trackObject);
   //cycle through hash map of {name: buffer} objects to find this tracks buffer
   let trackObjectInfo = trackObject.find((o) => {
+    console.log(Object.keys(o)[0], trackName);
     if (Object.keys(o)[0] === trackName) return o;
   });
   console.log("found!", trackObjectInfo);
@@ -76,7 +71,11 @@ export function createEffectPanel(track, trackName) {
     isBufferEffected: false,
     effectedBuffer: null,
   };
-
+  if (isHashNeeded) {
+    uploadConversionToHash(trackInfo).then((hash) => {
+      console.log(hash);
+    });
+  }
   console.log("loading effects for: ", trackInfo, track);
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
