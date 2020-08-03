@@ -1,4 +1,4 @@
-import { replaceTrack } from "./setupSeqTracks.js";
+import { replaceTrack, trackObject } from "./setupSeqTracks.js";
 import { loadSamples } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
 import {
@@ -37,7 +37,9 @@ export function init() {
         });
       })
       .then(() => {
+        console.log(tracksEffectInfo);
         hashTableConversion(tracksEffectInfo).then((hash) => {
+          console.log("passing hash to seq.", hash);
           setUpSequencer(hash);
           configAudioEffects();
         });

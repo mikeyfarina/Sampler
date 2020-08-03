@@ -43,6 +43,7 @@ export function replaceTrack(newTrack, oldPad) {
 function transformPadToTrack(padInfo, oldPad) {
   //create a track div
   console.log("tPTT", padInfo);
+  let trackName = Object.keys(padInfo)[0];
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -58,7 +59,7 @@ function transformPadToTrack(padInfo, oldPad) {
   // name track
 
   let padName = document.createElement("span");
-  padName.innerText = padInfo.trackName;
+  padName.innerText = trackName;
   padName.className = "sequencer__display__track__name";
   newTrackDiv.append(padName);
 
@@ -108,7 +109,7 @@ function transformPadToTrack(padInfo, oldPad) {
     newTrackDiv.append(button);
   }
   sequencerDisplay.append(newTrackDiv);
-  createEffectPanel(newTrackDiv);
+  createEffectPanel(newTrackDiv, trackName);
 }
 
 export { trackObject };

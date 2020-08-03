@@ -136,18 +136,20 @@ function scheduleNote(beatNumber, time) {
 
     console.log("tEI, in schedule note", hashEffectInfo);
     let trackInfo = hashEffectInfo[name];
+    let trackBuffer = trackInfo.trackObjectInfo[name];
     console.log("trackInfo iS", trackInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
       console.log(`!! playing ${trackInfo} on beat ${beatNumber}\n`);
-      playSample(trackInfo);
+      playSample(trackInfo, trackBuffer);
     }
   });
 }
 
-function playSample(trackInfo) {
+function playSample(trackInfo, trackBuffer) {
+  console.log("pS tI", trackInfo);
   let source = context.createBufferSource();
-  source.buffer = trackInfo.trackObjectInfo.trackBuffer;
+  source.buffer = trackBuffer;
 
   let reverbSource = context.createBufferSource();
   reverbSource.buffer = trackInfo.reverbBuffer;
@@ -174,7 +176,7 @@ function scheduler() {
 }
 
 function play(playButton) {
-  console.log("play", trackObject, isPlaying);
+  console.log("play", isPlaying);
   isPlaying = !isPlaying;
 
   if (isPlaying) {

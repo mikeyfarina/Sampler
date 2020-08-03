@@ -122,8 +122,12 @@ export function updateScreen(buffer) {
 
 function createObjectWithPadInfo(buffer) {
   console.log("creating padinfo object");
-  let padObject = { trackName: buffer.name, trackBuffer: buffer };
-  loadedPadsWithSamples.push(padObject);
+  let padObject = { name: buffer.name, buffer };
+  let hashedPad = {};
+  hashedPad[padObject.name] = buffer;
+
+  console.log("\nhP\n", hashedPad);
+  loadedPadsWithSamples.push(hashedPad);
   console.log("pushed object into array\n\n");
 }
 

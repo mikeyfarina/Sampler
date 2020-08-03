@@ -48,11 +48,20 @@ function displayEffectPanel(event) {
 
 //create panel with multiple audio effects
 // to manipulate played samples
-export function createEffectPanel(track) {
-  console.log("cEP trackDiv", track);
-
-  let trackName = track.querySelector("span").innerText;
-  let trackObjectInfo = trackObject.find((o) => o.trackName === trackName);
+export function createEffectPanel(track, trackName) {
+  console.log(
+    "cEP trackDiv",
+    track,
+    trackName,
+    "tObj",
+    trackObject,
+    Object.keys(trackObject)
+  );
+  //cycle through hash map of {name: buffer} objects to find this tracks buffer
+  let trackObjectInfo = trackObject.find((o) => {
+    if (Object.keys(o)[0] === trackName) return o;
+  });
+  console.log("found!", trackObjectInfo);
   let trackInfo = {
     trackObjectInfo,
     semitones: 0,
