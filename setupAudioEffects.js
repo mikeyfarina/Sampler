@@ -2,10 +2,9 @@ import { trackObject } from "./setupSeqTracks.js";
 import { context } from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import { loadedReverbs } from "./setup.js";
-import {} from "./hashTable.js";
+import { addToTrackEffectInfoHash } from "./hashTable.js";
 
 let openEffectPanelButtons = [];
-let tracksEffectInfo = [];
 
 export function configAudioEffects() {
   //get all open panel buttons
@@ -38,7 +37,6 @@ export function createEffectPanel(track, trackName) {
   console.log("cEP trackDiv", track, trackName, "tObj", trackObject);
 
   let trackInfo = {
-    trackName: trackName,
     trackBuffer: trackObject[trackName],
     colorIndex: trackObject[trackName].colorIndex,
     semitones: 0,
@@ -53,7 +51,7 @@ export function createEffectPanel(track, trackName) {
     isBufferEffected: false,
     effectedBuffer: null,
   };
-
+  addToTrackEffectInfoHash(trackName, trackInfo);
   console.log("loading effects for: ", trackInfo, track);
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
@@ -400,15 +398,12 @@ export function createEffectPanel(track, trackName) {
   //attach effect panel to track
   track.parentNode.insertBefore(panel, track.nextSibling);
 
-  //push effect info with listeners to collection array for use in track playback
-  tracksEffectInfo.push(trackInfo);
-
   //when reset button is clicked
   //reset all effect values in the panel
-
   let resetEffectsButton = document.querySelector(
     ".sequencer__controls__buttons__reset-effects"
   );
+
   resetEffectsButton.addEventListener("click", () => {
     pitchInput.value = 0;
     pitchInfo.innerText = "Pitch: 0";
@@ -438,17 +433,7 @@ export function createEffectPanel(track, trackName) {
 function resetTrackEffectsValues() {
   //reset effect information for each track to default
   [].forEach.call(tracksEffectInfo, (track) => {
-    track.semitones = 0;
-    track.volume = 1;
-    track.pan = 0;
-    track.filterType = "allpass";
-    track.filterFreq = 0;
-    track.delayFeedback = 0;
-    track.delayTime = 0;
-    track.reverbWet = 0;
-    track.reverbBuffer = null;
-    track.isBufferEffected = false;
-    track.effectedBuffer = null;
+    resetTrackEffectsHashValues(track);
   });
 }
 //it will need to take the buffer from each track and add effects
@@ -529,5 +514,3 @@ function getBPMForDelay(timeSig) {
   console.log("BPM", eval(timeSig), secondsPerBeat * eval(timeSig));
   return secondsPerBeat * eval(timeSig);
 }
-
-export { tracksEffectInfo };

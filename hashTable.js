@@ -2,27 +2,8 @@ const trackEffectInfoHash = {}; //{name: effect info}
 const subscribers = [];
 let count = 0;
 
-export function trackEffectInfoHashConversion(trackEffectInfo) {
-  return new Promise((resolve) => {
-    console.log("\n\n\n\ntrackEffectInfoHashInfo\n\n\n\n\n", trackEffectInfo);
-
-    trackEffectInfo.forEach((obj) => {
-      console.log(obj, obj.trackName);
-      trackEffectInfoHash[obj.trackName] = obj;
-      delete trackEffectInfoHash[obj.trackName].trackName;
-    });
-    /*
-    let formattedTrackEInfo = trackEffectInfo.reduce((map, obj) => {
-      map[Object.keys(obj.trackObjectInfo)] = obj;
-      return map;
-    }, []);
-    */
-    console.log("\n\n\n trackEffectInfoHash Done \n\n\n", trackEffectInfoHash);
-    resolve(trackEffectInfoHash);
-  });
-}
-
 export function getTrackEffectInfo(key) {
+  console.log("looking through hashtable", trackEffectInfoHash, "for: ", key);
   return trackEffectInfoHash[key];
 }
 //add item to trackEffectInfoHash
@@ -35,4 +16,17 @@ export function removeItemFromTrackEffectInfoHash(key) {
     delete trackEffectInfoHash[key];
     console.log("removed", key, trackEffectInfoHash);
   }
+}
+export function resetTrackEffectHashValues(track) {
+  track.semitones = 0;
+  track.volume = 1;
+  track.pan = 0;
+  track.filterType = "allpass";
+  track.filterFreq = 0;
+  track.delayFeedback = 0;
+  track.delayTime = 0;
+  track.reverbWet = 0;
+  track.reverbBuffer = null;
+  track.isBufferEffected = false;
+  track.effectedBuffer = null;
 }

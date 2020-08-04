@@ -121,11 +121,13 @@ function scheduleNote(beatNumber, time) {
   if (noteResolution == 2 && beatNumber % 4) return;
 
   [].forEach.call(seqTracks, (track) => {
+    console.log(track);
     let trackButtons = track.querySelectorAll(
       ".sequencer__display__track__button"
     );
     let name = track.querySelector("span").innerText;
 
+    console.log(name);
     let trackEffectInfo = getTrackEffectInfo(name);
     let buffer = trackEffectInfo.trackBuffer;
 

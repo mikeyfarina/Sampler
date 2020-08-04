@@ -122,8 +122,5 @@ export function updateScreen(buffer) {
 }
 
 function createObjectWithPadInfo(buffer) {
-  console.log("creating padinfo object");
   loadedPadsWithSamples[buffer.name] = buffer;
-
-  console.log("pushed object into array\n\n", buffer, loadedPadsWithSamples);
 }

@@ -38,13 +38,9 @@ export function init() {
         }
       })
       .then(() => {
-        console.log(tracksEffectInfo);
-        trackEffectInfoHashConversion(tracksEffectInfo).then((hash) => {
-          console.log("passing hash to seq.", hash);
-          setUpSequencer(hash);
-          configAudioEffects();
-          setupUploadButtons(hash);
-        });
+        setUpSequencer();
+        configAudioEffects();
+        setupUploadButtons();
       })
       .then(() => {
         removeInstructionScreen(quietBuffer);

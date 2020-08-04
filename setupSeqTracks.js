@@ -3,6 +3,7 @@ import { createEffectPanel } from "./setupAudioEffects.js";
 import {
   removeItemFromTrackBufferHash,
   removeItemFromTrackEffectInfoHash,
+  addToTrackEffectInfoHash,
 } from "./hashTable.js";
 
 let sequencerDisplay = document.querySelector(".sequencer__display");
@@ -13,18 +14,15 @@ export function replaceTrack(newTrack, oldPad) {
   console.log("replacing/creating track", newTrack, oldPad);
 
   //if theres an old track remove it
-  let oldPadObject = undefined;
+  let oldPadBuffer = undefined;
   if (oldPad !== undefined) {
     //select old track
     let oldPadName = oldPad.querySelector("p.drum-machine__pads__label")
       .innerText;
-    console.log(trackObject, "trackobj");
-    oldPadObject = trackObject[oldPadName];
 
+    oldPadBuffer = trackObject[oldPadName];
     //get index of old pad
-    oldPadObject.colorIndex = oldPadObject.colorIndex;
-
-    console.log(oldPadObject.colorIndex, oldPadObject);
+    oldPadBuffer.colorIndex;
 
     //remove old pad info at index and replace with new track info
     let nameOfNewTrack = Object.keys(newTrack)[0];
@@ -45,16 +43,15 @@ export function replaceTrack(newTrack, oldPad) {
     });
   }
   //add new track newTrack {trackName: trackBuffer}
-  transformPadToTrack(newTrack, oldPad, oldPadObject);
+  transformPadToTrack(newTrack, oldPad, oldPadBuffer);
 }
 
-function transformPadToTrack(padInfo, oldPad, oldPadObject) {
-  console.log("tPTT args", padInfo, oldPad, oldPadObject);
+function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
+  console.log("tPTT args", padInfo, oldPad, oldPadBuffer);
   //get trackName from padInfo
   //padInfo {trackName: trackBuffer, colorIndex}
   let allTracks = document.querySelectorAll(".sequencer__display__track");
   let trackName = Object.keys(padInfo)[0];
-  console.log("keys tN", trackName, padInfo);
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -77,16 +74,15 @@ function transformPadToTrack(padInfo, oldPad, oldPadObject) {
   //push info of pad into memory if not replacing old track
   if (oldPad === undefined) {
     console.log(padInfo);
-    trackObject[Object.keys(padInfo)] = padInfo[trackName];
-    console.log(trackObject);
+    trackObject[trackName] = padInfo[trackName];
     //cycle background colors
     newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
   } else {
     //take background color of track being replaced]
-    console.log(oldPadObject.colorIndex, trackBackgroundColors);
-    padInfo[trackName].colorIndex = oldPadObject.colorIndex;
+    padInfo[trackName].colorIndex = oldPadBuffer.colorIndex;
+    trackObject[trackName] = padInfo[trackName];
     newTrackDiv.style.background =
-      trackBackgroundColors[oldPadObject.colorIndex];
+      trackBackgroundColors[oldPadBuffer.colorIndex];
 
     displayEffectsButton.addEventListener("click", (event) => {
       let effectPanel = event.target.parentNode.nextSibling;
@@ -121,14 +117,13 @@ function transformPadToTrack(padInfo, oldPad, oldPadObject) {
   }
 
   if (oldPad !== undefined) {
-    allTracks[oldPadObject.colorIndex].parentNode.insertBefore(
+    allTracks[oldPadBuffer.colorIndex].parentNode.insertBefore(
       newTrackDiv,
-      allTracks[oldPadObject.colorIndex]
+      allTracks[oldPadBuffer.colorIndex]
     );
     createEffectPanel(newTrackDiv, trackName);
   } else {
     sequencerDisplay.append(newTrackDiv);
-    console.log(trackName);
     createEffectPanel(newTrackDiv, trackName, padInfo.colorIndex);
   }
 }
