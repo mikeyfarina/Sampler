@@ -2,7 +2,6 @@ import { context } from "./constants.js";
 import "regenerator-runtime/runtime";
 
 export default function loadAllUrls(urlList) {
-  console.log("urlList ", urlList);
   return promisesInOrder(urlList.map(loadSampleFromUrl));
 }
 
@@ -11,7 +10,6 @@ async function promisesInOrder(promises) {
   for (const promise of promises) {
     values.push(await promise);
   }
-  console.log(values);
   return values;
 }
 
@@ -25,12 +23,10 @@ function loadSampleFromUrl(url) {
       context.decodeAudioData(
         request.response,
         (buffer) => {
-          console.log("decoded...", buffer, url);
           buffer.name = /[a-z]+/.exec(url)[0];
           resolve(buffer);
         },
         (error) => {
-          console.log(error, url);
           reject(error);
         }
       );

@@ -1,48 +1,51 @@
 import { trackBackgroundColors } from "./constants.js";
 import { createEffectPanel } from "./setupAudioEffects.js";
+import { removeItemFromTrackEffectInfoHash } from "./hashTable.js";
 
 let sequencerDisplay = document.querySelector(".sequencer__display");
-let trackObject = [];
+let trackObject = {};
 let trackNumber = 0;
 
 export function replaceTrack(newTrack, oldPad) {
   console.log("replacing/creating track", newTrack, oldPad);
+
   //if theres an old track remove it
+  let oldPadBuffer = undefined;
   if (oldPad !== undefined) {
-    console.log("oldpad exists", trackObject);
     //select old track
     let oldPadName = oldPad.querySelector("p.drum-machine__pads__label")
       .innerText;
-    let oldPadObject = trackObject.find((o) => o.trackName === oldPadName);
-    let oldPadIndex = trackObject.indexOf(oldPadObject);
 
-    console.log("upload", trackObject, oldPadIndex);
-    if (oldPadObject) {
-      trackObject.splice(oldPadIndex, 1, newTrack);
-    }
+    oldPadBuffer = trackObject[oldPadName];
+    //get index of old pad
+    oldPadBuffer.colorIndex;
 
-    console.log("pushing newTrack", newTrack, trackObject, oldPadObject);
+    //remove old pad info at index and replace with new track info
+    let nameOfNewTrack = Object.keys(newTrack)[0];
+    trackObject[nameOfNewTrack] = newTrack[nameOfNewTrack];
 
+    //find old track and remove it
     let allTrackNames = document.querySelectorAll(
       ".sequencer__display__track__name"
     );
-
-    //find old track and remove it
-    [].forEach.call(allTrackNames, (trackName) => {
-      if (trackName.innerText === oldPadName) {
-        let track = trackName.parentElement;
-        console.log("attempting to remove... ", track.parentElement);
+    [].forEach.call(allTrackNames, (trackNameDiv) => {
+      let trackName = trackNameDiv.innerText;
+      if (trackName === oldPadName) {
+        let track = trackNameDiv.parentNode;
+        removeItemFromTrackEffectInfoHash(trackName);
         track.parentElement.removeChild(track);
       }
     });
   }
-  //add new track newTrack {trackName, trackBuffer}
-  transformPadToTrack(newTrack, oldPad);
+  //add new track newTrack {trackName: trackBuffer}
+  transformPadToTrack(newTrack, oldPad, oldPadBuffer);
 }
 
-function transformPadToTrack(padInfo, oldPad) {
-  //create a track div
-  console.log("tPTT", padInfo);
+function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
+  //get trackName from padInfo
+  //padInfo {trackName: trackBuffer, colorIndex}
+  let allTracks = document.querySelectorAll(".sequencer__display__track");
+  let trackName = Object.keys(padInfo)[0];
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -57,38 +60,36 @@ function transformPadToTrack(padInfo, oldPad) {
 
   // name track
 
-  let padName = document.createElement("span");
-  padName.innerText = padInfo.trackName;
-  padName.className = "sequencer__display__track__name";
-  newTrackDiv.append(padName);
-
-  let padIndex = trackObject.indexOf(trackObject.find((o) => o.trackName === padInfo.trackName));
-
+  let nameOfTrack = document.createElement("span");
+  nameOfTrack.innerText = trackName;
+  nameOfTrack.className = "sequencer__display__track__name";
+  newTrackDiv.append(nameOfTrack);
 
   //push info of pad into memory if not replacing old track
   if (oldPad === undefined) {
-    trackObject.push(padInfo);
-
+    trackObject[trackName] = padInfo[trackName];
     //cycle background colors
     newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
   } else {
-    newTrackDiv.style.background = trackBackgroundColors[padIndex];
+    //take background color of track being replaced]
+    padInfo[trackName].colorIndex = oldPadBuffer.colorIndex;
+    trackObject[trackName] = padInfo[trackName];
+    newTrackDiv.style.background =
+      trackBackgroundColors[oldPadBuffer.colorIndex];
 
     displayEffectsButton.addEventListener("click", (event) => {
-      console.log("new clicked");
       let effectPanel = event.target.parentNode.nextSibling;
 
       effectPanel.classList.toggle("hide");
       effectPanel.classList.toggle("effect-panel-dropdown");
-    })
+    });
   }
-
 
   //create 16 buttons on a track, unique id for each
   for (let i = 0; i < 16; i++) {
     let button = document.createElement("button");
     button.className = "sequencer__display__track__button";
-    button.id = `${padInfo.trackName}__${i}`;
+    button.id = `${trackName}__${i}`;
 
     button.innerText = "_";
 
@@ -107,8 +108,17 @@ function transformPadToTrack(padInfo, oldPad) {
     });
     newTrackDiv.append(button);
   }
-  sequencerDisplay.append(newTrackDiv);
-  createEffectPanel(newTrackDiv);
+
+  if (oldPad !== undefined) {
+    allTracks[oldPadBuffer.colorIndex].parentNode.insertBefore(
+      newTrackDiv,
+      allTracks[oldPadBuffer.colorIndex]
+    );
+    createEffectPanel(newTrackDiv, trackName);
+  } else {
+    sequencerDisplay.append(newTrackDiv);
+    createEffectPanel(newTrackDiv, trackName, padInfo.colorIndex);
+  }
 }
 
 export { trackObject };

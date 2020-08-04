@@ -13,8 +13,6 @@ import { replaceTrack } from "./setupSeqTracks.js";
 // User selects file, read it as an ArrayBuffer
 // and pass to the API.
 export function setupUploadButtons() {
-  console.log("setupUploadButtons");
-
   [].forEach.call(uploadButtons, (el) => {
     //when upload button is clicked
     let touched;
@@ -41,12 +39,9 @@ function configFileChange(ev) {
   let parentPad = ev.target.parentNode;
   let parentInput = parentPad.querySelector(".audio-file");
 
-  console.log("pp", parentPad, "pi", parentInput);
-
   parentInput.addEventListener(
     "change",
     (event) => {
-      console.log("Added listener to input");
       uploadFile(event, parentPad, parentInput);
     },
     { once: true }
@@ -56,9 +51,10 @@ function configFileChange(ev) {
 function uploadFile(event, parentPad, parentInput) {
   readFile(event).then((buffer) => {
     let bufferName = buffer.name;
-    let newTrack = { trackName: buffer.name, trackBuffer: buffer };
-    console.log(newTrack);
-    replaceTrack(newTrack, parentPad);
+    let newPad = {};
+    newPad[bufferName] = buffer;
+
+    replaceTrack(newPad, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
     //label
     parentPad.querySelector(
@@ -89,12 +85,6 @@ function readFile({ target }) {
 }
 
 function loadSoundToPad(sample, parentPad, parentInput) {
-  console.log(
-    "loading " + sample.name + " to ",
-    parentPad.querySelector("p").innerText,
-    parentPad.parentNode.parentNode
-  );
-
   let i = 0;
   let padIndex;
 
@@ -104,7 +94,6 @@ function loadSoundToPad(sample, parentPad, parentInput) {
     }
     i++;
   });
-  console.log(padIndex);
 
   let oldPad = drumPads[padIndex];
   let addSampleToParentPad = (e) => {

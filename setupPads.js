@@ -8,13 +8,12 @@ import {
 } from "./constants.js";
 
 let source;
-let loadedPadsWithSamples = [];
+let loadedPadsWithSamples = {};
 
 export function assignSoundsToPads(bufferList) {
-  console.log("aSTP bufferList", bufferList);
-
   for (let i = 0; i < bufferList.length; i++) {
     console.log("assigning", bufferList[i].name + " to pad " + i);
+    bufferList[i].colorIndex = i;
 
     makeLabel(drumPads[i], bufferList[i].name);
 
@@ -36,13 +35,6 @@ export function assignSoundsToPads(bufferList) {
 
       if (e.keyCode === letterKeyCodes[i]) {
         updateScreen(bufferList[i]);
-        console.log(
-          "playing from keys",
-          drumPads[i],
-          e,
-          e.keyCode,
-          letterKeyCodes[i]
-        );
 
         drumPads[i].classList.add("button-active");
 
@@ -69,7 +61,6 @@ export function assignSoundsToPads(bufferList) {
     fileInputs[i].addEventListener(
       "change",
       () => {
-        console.log("removed default sample from pad");
         drumPads[i].removeEventListener(
           "mousedown",
           makeSourceFromBufferAndPlay
@@ -121,10 +112,5 @@ export function updateScreen(buffer) {
 }
 
 function createObjectWithPadInfo(buffer) {
-  console.log("creating padinfo object");
-  let padObject = { trackName: buffer.name, trackBuffer: buffer };
-  loadedPadsWithSamples.push(padObject);
-  console.log("pushed object into array\n\n");
+  loadedPadsWithSamples[buffer.name] = buffer;
 }
-
-export { loadedPadsWithSamples };
