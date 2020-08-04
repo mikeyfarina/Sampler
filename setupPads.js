@@ -11,8 +11,6 @@ let source;
 let loadedPadsWithSamples = {};
 
 export function assignSoundsToPads(bufferList) {
-  console.log("aSTP bufferList", bufferList);
-
   for (let i = 0; i < bufferList.length; i++) {
     console.log("assigning", bufferList[i].name + " to pad " + i);
     bufferList[i].colorIndex = i;

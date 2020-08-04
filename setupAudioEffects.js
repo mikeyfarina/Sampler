@@ -1,6 +1,5 @@
 import { trackObject } from "./setupSeqTracks.js";
 import { context } from "./constants.js";
-import loadAllUrls from "./BufferLoader.js";
 import { loadedReverbs } from "./setup.js";
 import { addToTrackEffectInfoHash } from "./hashTable.js";
 
@@ -11,7 +10,6 @@ export function configAudioEffects() {
   openEffectPanelButtons = document.querySelectorAll(
     ".sequencer__display__track__show-effects"
   );
-  console.log("openEffectPanelButtons", openEffectPanelButtons);
   //have clicking button open panel that has many effects for audio
   [].forEach.call(openEffectPanelButtons, (button) => {
     button.addEventListener("click", (ev) => {
@@ -34,8 +32,6 @@ function displayEffectPanel(event) {
 //create panel with multiple audio effects
 // to manipulate played samples
 export function createEffectPanel(track, trackName) {
-  console.log("cEP trackDiv", track, trackName, "tObj", trackObject);
-
   let trackInfo = {
     trackBuffer: trackObject[trackName],
     colorIndex: trackObject[trackName].colorIndex,
@@ -52,14 +48,12 @@ export function createEffectPanel(track, trackName) {
     effectedBuffer: null,
   };
   addToTrackEffectInfoHash(trackName, trackInfo);
-  console.log("loading effects for: ", trackInfo, track);
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
   panel.classList.add("hide");
 
   let effectDiv = document.createElement("div");
   effectDiv.className = "sequencer__display__track__effects-panel__controls";
-  console.log(track.style.background);
   effectDiv.style.background = track.style.background;
 
   //start with loading sample to play with button to test effects

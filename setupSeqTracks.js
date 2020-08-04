@@ -1,10 +1,6 @@
 import { trackBackgroundColors } from "./constants.js";
 import { createEffectPanel } from "./setupAudioEffects.js";
-import {
-  removeItemFromTrackBufferHash,
-  removeItemFromTrackEffectInfoHash,
-  addToTrackEffectInfoHash,
-} from "./hashTable.js";
+import { removeItemFromTrackEffectInfoHash } from "./hashTable.js";
 
 let sequencerDisplay = document.querySelector(".sequencer__display");
 let trackObject = {};
@@ -47,7 +43,6 @@ export function replaceTrack(newTrack, oldPad) {
 }
 
 function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
-  console.log("tPTT args", padInfo, oldPad, oldPadBuffer);
   //get trackName from padInfo
   //padInfo {trackName: trackBuffer, colorIndex}
   let allTracks = document.querySelectorAll(".sequencer__display__track");
@@ -73,7 +68,6 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
 
   //push info of pad into memory if not replacing old track
   if (oldPad === undefined) {
-    console.log(padInfo);
     trackObject[trackName] = padInfo[trackName];
     //cycle background colors
     newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];

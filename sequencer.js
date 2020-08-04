@@ -5,7 +5,7 @@ import {
   tempoDisplay,
 } from "./constants.js";
 import { connectSourceToEffects } from "./setupAudioEffects.js";
-import { getTrackEffectInfo, subscribe } from "./hashTable.js";
+import { getTrackEffectInfo } from "./hashTable.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -126,12 +126,8 @@ function scheduleNote(beatNumber, time) {
       ".sequencer__display__track__button"
     );
     let name = track.querySelector("span").innerText;
-
-    console.log(name);
     let trackEffectInfo = getTrackEffectInfo(name);
     let buffer = trackEffectInfo.trackBuffer;
-
-    console.log("trackEffectInfo iS", trackEffectInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
       console.log(`!! playing ${trackEffectInfo} on beat ${beatNumber}\n`);

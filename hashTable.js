@@ -1,6 +1,4 @@
 const trackEffectInfoHash = {}; //{name: effect info}
-const subscribers = [];
-let count = 0;
 
 export function getTrackEffectInfo(key) {
   console.log("looking through hashtable", trackEffectInfoHash, "for: ", key);
@@ -9,7 +7,7 @@ export function getTrackEffectInfo(key) {
 //add item to trackEffectInfoHash
 export function addToTrackEffectInfoHash(key, value) {
   trackEffectInfoHash[key] = value;
-  console.log("pushed object into array\n\n", key, value, trackEffectInfoHash);
+  console.log("pushed object into array\n", trackEffectInfoHash);
 }
 export function removeItemFromTrackEffectInfoHash(key) {
   if (trackEffectInfoHash.hasOwnProperty(key)) {

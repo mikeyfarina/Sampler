@@ -27,10 +27,8 @@ export function init() {
     loaded.forEach((reverb) => {
       loadedReverbs[reverb.name] = reverb;
     });
-    console.log(loadedReverbs);
     loadSamples()
       .then((arrayOfLoadedPads) => {
-        console.log(arrayOfLoadedPads);
         for (let pad in arrayOfLoadedPads) {
           let hashedPad = {};
           hashedPad[pad] = arrayOfLoadedPads[pad];
