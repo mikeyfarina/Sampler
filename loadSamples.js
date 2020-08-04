@@ -8,3 +8,19 @@ export function loadSamples() {
     reject("error");
   });
 }
+
+export function loadReverbPresets(reverbArray) {
+  return new Promise((resolve) => {
+    loadAllUrls(reverbArray).then((loadedReverbs) => {
+      for (let i = 0; i < loadedReverbs.length; i++) {
+        let name = reverbArray[i]
+          .split("/")
+          .pop()
+          .replace(".wav", "")
+          .split(".")[0];
+        loadedReverbs[i].name = name;
+      }
+      resolve(loadedReverbs);
+    });
+  });
+}

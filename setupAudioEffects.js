@@ -2,7 +2,7 @@ import { trackObject } from "./setupSeqTracks.js";
 import { context } from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import { loadedReverbs } from "./setup.js";
-import { uploadConversionToHash } from "./hashTable.js";
+import {} from "./hashTable.js";
 
 let openEffectPanelButtons = [];
 let tracksEffectInfo = [];
@@ -24,21 +24,6 @@ export function configAudioEffects() {
   });
 }
 
-export function loadReverbPresets(reverbArray) {
-  return new Promise((resolve) => {
-    loadAllUrls(reverbArray).then((loadedReverbs) => {
-      for (let i = 0; i < loadedReverbs.length; i++) {
-        let name = reverbArray[i]
-          .split("/")
-          .pop()
-          .replace(".wav", "")
-          .split(".")[0];
-        loadedReverbs[i].name = name;
-      }
-      resolve(loadedReverbs);
-    });
-  });
-}
 //displays effect panel or hides panel if displayed
 function displayEffectPanel(event) {
   let effectPanel = event.target.parentNode.nextSibling;
@@ -49,16 +34,13 @@ function displayEffectPanel(event) {
 
 //create panel with multiple audio effects
 // to manipulate played samples
-export function createEffectPanel(track, trackName, isHashNeeded) {
+export function createEffectPanel(track, trackName) {
   console.log("cEP trackDiv", track, trackName, "tObj", trackObject);
-  //cycle through hash map of {name: buffer} objects to find this tracks buffer
-  let trackObjectInfo = trackObject.find((o) => {
-    console.log(Object.keys(o)[0], trackName);
-    if (Object.keys(o)[0] === trackName) return o;
-  });
-  console.log("found!", trackObjectInfo);
+
   let trackInfo = {
-    trackObjectInfo,
+    trackName: trackName,
+    trackBuffer: trackObject[trackName],
+    colorIndex: trackObject[trackName].colorIndex,
     semitones: 0,
     volume: 1,
     pan: 0,
@@ -71,11 +53,7 @@ export function createEffectPanel(track, trackName, isHashNeeded) {
     isBufferEffected: false,
     effectedBuffer: null,
   };
-  if (isHashNeeded) {
-    uploadConversionToHash(trackInfo).then((hash) => {
-      console.log(hash);
-    });
-  }
+
   console.log("loading effects for: ", trackInfo, track);
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
@@ -343,12 +321,14 @@ export function createEffectPanel(track, trackName, isHashNeeded) {
   offOption.text = "off";
   reverbSelect.append(offOption);
 
-  //create options for reverb
-  for (let i = 0; i < loadedReverbs.length; i++) {
+  //create options for reverb by cycling loadedReverbs {name: buffer}
+  for (let reverb in loadedReverbs) {
     //create reverb selection options
     let reverbOption = document.createElement("option");
-    reverbOption.text = loadedReverbs[i].name;
-    reverbOption.id = loadedReverbs[i].name;
+
+    reverbOption.text = reverb;
+    reverbOption.id = reverb;
+
     reverbSelect.append(reverbOption);
   }
 
@@ -362,11 +342,10 @@ export function createEffectPanel(track, trackName, isHashNeeded) {
     }
 
     let reverbSelection = reverbSelect[reverbSelect.selectedIndex];
-    console.log("reverbSelection", reverbSelection);
-    let rBuffer = loadedReverbs.find(
-      (reverb) => reverb.name === reverbSelection.text
-    );
-    trackInfo.reverbBuffer = rBuffer;
+    let reverbName = reverbSelection.text;
+
+    trackInfo.reverbBuffer = loadedReverbs[reverbName];
+    console.log(trackInfo.reverbBuffer);
   });
 
   //append all reverb sections
@@ -378,7 +357,7 @@ export function createEffectPanel(track, trackName, isHashNeeded) {
   //set up test button to combine all effects
   effectTestButton.addEventListener("click", () => {
     let source = context.createBufferSource();
-    source.buffer = trackInfo.trackObjectInfo.trackBuffer;
+    source.buffer = trackInfo.trackBuffer;
 
     let reverbSource = context.createBufferSource();
     reverbSource.buffer = trackInfo.reverbBuffer;

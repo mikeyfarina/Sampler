@@ -4,12 +4,8 @@ import {
   tempoSlider,
   tempoDisplay,
 } from "./constants.js";
-import { trackObject } from "./setupSeqTracks.js";
-import {
-  tracksEffectInfo,
-  connectSourceToEffects,
-} from "./setupAudioEffects.js";
-import { hashTableConversion, hashTable } from "./hashTable.js";
+import { connectSourceToEffects } from "./setupAudioEffects.js";
+import { getTrackEffectInfo, subscribe } from "./hashTable.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -28,12 +24,8 @@ let last16thNoteDrawn = -1; // the last "box" we drew on the screen
 let notesInQueue = []; // the notes that have been put into the web audio,
 // and may or may not have played yet. {note, time}
 let seqTracks;
-let hashEffectInfo;
 
-export function setUpSequencer(hash) {
-  hashEffectInfo = hash;
-
-  console.log("\n\n hEI \n\n", hashEffectInfo);
+export function setUpSequencer() {
   let playButton = document.querySelector(
     ".sequencer__controls__buttons__play"
   );
@@ -134,14 +126,14 @@ function scheduleNote(beatNumber, time) {
     );
     let name = track.querySelector("span").innerText;
 
-    console.log("tEI, in schedule note", hashEffectInfo);
-    let trackInfo = hashEffectInfo[name];
-    let trackBuffer = trackInfo.trackObjectInfo[name];
-    console.log("trackInfo iS", trackInfo);
+    let trackEffectInfo = getTrackEffectInfo(name);
+    let buffer = trackEffectInfo.trackBuffer;
+
+    console.log("trackEffectInfo iS", trackEffectInfo);
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
-      console.log(`!! playing ${trackInfo} on beat ${beatNumber}\n`);
-      playSample(trackInfo, trackBuffer);
+      console.log(`!! playing ${trackEffectInfo} on beat ${beatNumber}\n`);
+      playSample(trackEffectInfo, buffer);
     }
   });
 }
@@ -178,9 +170,6 @@ function scheduler() {
 function play(playButton) {
   console.log("play", isPlaying);
   isPlaying = !isPlaying;
-  console.log("before", hashEffectInfo);
-  //always refresh the datastructure list on start/stop
-  console.log("AFTER", hashEffectInfo);
 
   if (isPlaying) {
     // start playing
@@ -255,23 +244,6 @@ function draw() {
             note.style.background = "rgba(255, 255, 255, 0.15)";
           }
         }
-        /*
-        if (currentNote == i){
-          if (note.classList.contains("clicked")){  
-            note.style.background = "yellow";
-          } else if (currentNote % 4 == 0) {  //cursor if 1/4 beat
-            note.style.background = "#4880ff";
-          } else {
-            note.style.background = "white"; // cursor if not 1/4 beat
-          }
-        } else {
-          if (i < 4 || i >= 8 && i < 12){
-            note.style.background = "gray";
-          } else {
-            note.style.background = "teal";
-          }
-        }
-        */
       }
     }
   }

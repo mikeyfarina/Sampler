@@ -1,5 +1,5 @@
 import { replaceTrack, trackObject } from "./setupSeqTracks.js";
-import { loadSamples } from "./loadSamples.js";
+import { loadSamples, loadReverbPresets } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
 import {
   screenTitle,
@@ -9,14 +9,10 @@ import {
   context,
 } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
-import {
-  configAudioEffects,
-  loadReverbPresets,
-  tracksEffectInfo,
-} from "./setupAudioEffects.js";
-import { hashTableConversion } from "./hashTable.js";
+import { configAudioEffects, tracksEffectInfo } from "./setupAudioEffects.js";
+import { trackEffectInfoHashConversion } from "./hashTable.js";
 
-let loadedReverbs = [];
+let loadedReverbs = {};
 
 export function init() {
   //give user response on click to know that it is loading
@@ -26,19 +22,24 @@ export function init() {
   instructionScreen.append(loadingText);
 
   let quietBuffer;
-  let hash;
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
-    loadedReverbs = loaded;
+    loaded.forEach((reverb) => {
+      loadedReverbs[reverb.name] = reverb;
+    });
+    console.log(loadedReverbs);
     loadSamples()
       .then((arrayOfLoadedPads) => {
-        arrayOfLoadedPads.forEach(function (pad) {
-          replaceTrack(pad);
-        });
+        console.log(arrayOfLoadedPads);
+        for (let pad in arrayOfLoadedPads) {
+          let hashedPad = {};
+          hashedPad[pad] = arrayOfLoadedPads[pad];
+          replaceTrack(hashedPad);
+        }
       })
       .then(() => {
         console.log(tracksEffectInfo);
-        hashTableConversion(tracksEffectInfo).then((hash) => {
+        trackEffectInfoHashConversion(tracksEffectInfo).then((hash) => {
           console.log("passing hash to seq.", hash);
           setUpSequencer(hash);
           configAudioEffects();

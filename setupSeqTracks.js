@@ -1,63 +1,60 @@
 import { trackBackgroundColors } from "./constants.js";
 import { createEffectPanel } from "./setupAudioEffects.js";
+import {
+  removeItemFromTrackBufferHash,
+  removeItemFromTrackEffectInfoHash,
+} from "./hashTable.js";
 
 let sequencerDisplay = document.querySelector(".sequencer__display");
-let trackObject = [];
+let trackObject = {};
 let trackNumber = 0;
 
 export function replaceTrack(newTrack, oldPad) {
   console.log("replacing/creating track", newTrack, oldPad);
+
   //if theres an old track remove it
-  let hashedTrack = undefined;
   let oldPadObject = undefined;
   if (oldPad !== undefined) {
-    hashedTrack = {};
-    hashedTrack[newTrack.trackName] = newTrack.trackBuffer;
     //select old track
     let oldPadName = oldPad.querySelector("p.drum-machine__pads__label")
       .innerText;
-    oldPadObject = trackObject.find((o) => {
-      if (Object.keys(o)[0] === oldPadName) return o;
-    });
-    let oldPadIndex = trackObject.indexOf(oldPadObject);
-    oldPadObject.index = oldPadIndex;
+    console.log(trackObject, "trackobj");
+    oldPadObject = trackObject[oldPadName];
 
-    if (oldPadObject) {
-      trackObject.splice(oldPadIndex, 1, hashedTrack);
-    }
+    //get index of old pad
+    oldPadObject.colorIndex = oldPadObject.colorIndex;
 
+    console.log(oldPadObject.colorIndex, oldPadObject);
+
+    //remove old pad info at index and replace with new track info
+    let nameOfNewTrack = Object.keys(newTrack)[0];
+    trackObject[nameOfNewTrack] = newTrack[nameOfNewTrack];
+
+    //find old track and remove it
     let allTrackNames = document.querySelectorAll(
       ".sequencer__display__track__name"
     );
-
-    //find old track and remove it
-    [].forEach.call(allTrackNames, (trackName) => {
-      console.log(trackName);
-      if (trackName.innerText === oldPadName) {
-        let track = trackName.parentNode;
+    [].forEach.call(allTrackNames, (trackNameDiv) => {
+      let trackName = trackNameDiv.innerText;
+      if (trackName === oldPadName) {
+        let track = trackNameDiv.parentNode;
         console.log("attempting to remove... ", track);
+        removeItemFromTrackEffectInfoHash(trackName);
         track.parentElement.removeChild(track);
       }
     });
   }
-  //add new track newTrack {trackName, trackBuffer}
-  console.log(oldPadObject);
-  transformPadToTrack(newTrack, oldPad, hashedTrack, oldPadObject);
+  //add new track newTrack {trackName: trackBuffer}
+  transformPadToTrack(newTrack, oldPad, oldPadObject);
 }
 
-function transformPadToTrack(padInfo, oldPad, hashedTrack, oldPadObject) {
-  console.log("tPTT args", padInfo, oldPad, hashedTrack, oldPadObject);
-  let inNeedOfHash = false;
-  //if uploaded new hash track exists
-  let trackName;
-  if (hashedTrack !== undefined) {
-    inNeedOfHash = true;
-    trackName = Object.keys(hashedTrack)[0];
-  } else {
-    //create a track div
-    inNeedOfHash = false;
-    trackName = Object.keys(padInfo)[0];
-  }
+function transformPadToTrack(padInfo, oldPad, oldPadObject) {
+  console.log("tPTT args", padInfo, oldPad, oldPadObject);
+  //get trackName from padInfo
+  //padInfo {trackName: trackBuffer, colorIndex}
+  let allTracks = document.querySelectorAll(".sequencer__display__track");
+  let trackName = Object.keys(padInfo)[0];
+  console.log("keys tN", trackName, padInfo);
   let newTrackDiv = document.createElement("div");
   newTrackDiv.className = `sequencer__display__track`;
 
@@ -72,22 +69,26 @@ function transformPadToTrack(padInfo, oldPad, hashedTrack, oldPadObject) {
 
   // name track
 
-  let padName = document.createElement("span");
-  padName.innerText = trackName;
-  padName.className = "sequencer__display__track__name";
-  newTrackDiv.append(padName);
+  let nameOfTrack = document.createElement("span");
+  nameOfTrack.innerText = trackName;
+  nameOfTrack.className = "sequencer__display__track__name";
+  newTrackDiv.append(nameOfTrack);
 
   //push info of pad into memory if not replacing old track
   if (oldPad === undefined) {
-    trackObject.push(padInfo);
-
+    console.log(padInfo);
+    trackObject[Object.keys(padInfo)] = padInfo[trackName];
+    console.log(trackObject);
     //cycle background colors
     newTrackDiv.style.background = trackBackgroundColors[`${trackNumber++}`];
   } else {
-    newTrackDiv.style.background = trackBackgroundColors[oldPadObject.index];
+    //take background color of track being replaced]
+    console.log(oldPadObject.colorIndex, trackBackgroundColors);
+    padInfo[trackName].colorIndex = oldPadObject.colorIndex;
+    newTrackDiv.style.background =
+      trackBackgroundColors[oldPadObject.colorIndex];
 
     displayEffectsButton.addEventListener("click", (event) => {
-      console.log("new clicked");
       let effectPanel = event.target.parentNode.nextSibling;
 
       effectPanel.classList.toggle("hide");
@@ -99,7 +100,7 @@ function transformPadToTrack(padInfo, oldPad, hashedTrack, oldPadObject) {
   for (let i = 0; i < 16; i++) {
     let button = document.createElement("button");
     button.className = "sequencer__display__track__button";
-    button.id = `${padInfo.trackName}__${i}`;
+    button.id = `${trackName}__${i}`;
 
     button.innerText = "_";
 
@@ -118,8 +119,18 @@ function transformPadToTrack(padInfo, oldPad, hashedTrack, oldPadObject) {
     });
     newTrackDiv.append(button);
   }
-  sequencerDisplay.append(newTrackDiv);
-  createEffectPanel(newTrackDiv, trackName, inNeedOfHash);
+
+  if (oldPad !== undefined) {
+    allTracks[oldPadObject.colorIndex].parentNode.insertBefore(
+      newTrackDiv,
+      allTracks[oldPadObject.colorIndex]
+    );
+    createEffectPanel(newTrackDiv, trackName);
+  } else {
+    sequencerDisplay.append(newTrackDiv);
+    console.log(trackName);
+    createEffectPanel(newTrackDiv, trackName, padInfo.colorIndex);
+  }
 }
 
 export { trackObject };

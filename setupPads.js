@@ -8,13 +8,14 @@ import {
 } from "./constants.js";
 
 let source;
-let loadedPadsWithSamples = [];
+let loadedPadsWithSamples = {};
 
 export function assignSoundsToPads(bufferList) {
   console.log("aSTP bufferList", bufferList);
 
   for (let i = 0; i < bufferList.length; i++) {
     console.log("assigning", bufferList[i].name + " to pad " + i);
+    bufferList[i].colorIndex = i;
 
     makeLabel(drumPads[i], bufferList[i].name);
 
@@ -122,13 +123,7 @@ export function updateScreen(buffer) {
 
 function createObjectWithPadInfo(buffer) {
   console.log("creating padinfo object");
-  let padObject = { name: buffer.name, buffer };
-  let hashedPad = {};
-  hashedPad[padObject.name] = buffer;
+  loadedPadsWithSamples[buffer.name] = buffer;
 
-  console.log("\nhP\n", hashedPad);
-  loadedPadsWithSamples.push(hashedPad);
-  console.log("pushed object into array\n\n");
+  console.log("pushed object into array\n\n", buffer, loadedPadsWithSamples);
 }
-
-export { loadedPadsWithSamples };
