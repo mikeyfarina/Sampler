@@ -12,15 +12,20 @@ export function loadSamples() {
 export function loadReverbPresets(reverbArray) {
   return new Promise((resolve) => {
     loadAllUrls(reverbArray).then((loadedReverbs) => {
-      for (let i = 0; i < loadedReverbs.length; i++) {
-        let name = reverbArray[i]
-          .split("/")
-          .pop()
-          .replace(".wav", "")
-          .split(".")[0];
-        loadedReverbs[i].name = name;
-      }
+      let i = 0;
+      loadedReverbs.forEach((reverb) => {
+        let name = getNameFromFile(reverbArray[`${i++}`]);
+        reverb.name = name;
+      });
       resolve(loadedReverbs);
     });
   });
+}
+function getNameFromFile(reverbFile) {
+  let reverbName = reverbFile
+    .split("/")
+    .pop()
+    .replace(".wav", "")
+    .split(".")[0];
+  return reverbName;
 }

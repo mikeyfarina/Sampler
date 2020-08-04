@@ -32,7 +32,6 @@ export function replaceTrack(newTrack, oldPad) {
       let trackName = trackNameDiv.innerText;
       if (trackName === oldPadName) {
         let track = trackNameDiv.parentNode;
-        console.log("attempting to remove... ", track);
         removeItemFromTrackEffectInfoHash(trackName);
         track.parentElement.removeChild(track);
       }

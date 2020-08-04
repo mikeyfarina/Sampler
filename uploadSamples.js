@@ -39,12 +39,9 @@ function configFileChange(ev) {
   let parentPad = ev.target.parentNode;
   let parentInput = parentPad.querySelector(".audio-file");
 
-  console.log("pp", parentPad, "pi", parentInput);
-
   parentInput.addEventListener(
     "change",
     (event) => {
-      console.log("Added listener to input");
       uploadFile(event, parentPad, parentInput);
     },
     { once: true }
@@ -56,7 +53,7 @@ function uploadFile(event, parentPad, parentInput) {
     let bufferName = buffer.name;
     let newPad = {};
     newPad[bufferName] = buffer;
-    console.log(newPad);
+
     replaceTrack(newPad, parentPad);
     loadSoundToPad(buffer, parentPad, parentInput);
     //label
@@ -88,12 +85,6 @@ function readFile({ target }) {
 }
 
 function loadSoundToPad(sample, parentPad, parentInput) {
-  console.log(
-    "loading " + sample.name + " to ",
-    parentPad.querySelector("p").innerText,
-    parentPad.parentNode.parentNode
-  );
-
   let i = 0;
   let padIndex;
 
@@ -103,7 +94,6 @@ function loadSoundToPad(sample, parentPad, parentInput) {
     }
     i++;
   });
-  console.log(padIndex);
 
   let oldPad = drumPads[padIndex];
   let addSampleToParentPad = (e) => {

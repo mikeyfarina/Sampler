@@ -35,13 +35,6 @@ export function assignSoundsToPads(bufferList) {
 
       if (e.keyCode === letterKeyCodes[i]) {
         updateScreen(bufferList[i]);
-        console.log(
-          "playing from keys",
-          drumPads[i],
-          e,
-          e.keyCode,
-          letterKeyCodes[i]
-        );
 
         drumPads[i].classList.add("button-active");
 
@@ -68,7 +61,6 @@ export function assignSoundsToPads(bufferList) {
     fileInputs[i].addEventListener(
       "change",
       () => {
-        console.log("removed default sample from pad");
         drumPads[i].removeEventListener(
           "mousedown",
           makeSourceFromBufferAndPlay

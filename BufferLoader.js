@@ -27,7 +27,6 @@ function loadSampleFromUrl(url) {
           resolve(buffer);
         },
         (error) => {
-          console.log(error, url);
           reject(error);
         }
       );

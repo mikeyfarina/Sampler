@@ -77,7 +77,6 @@ function resetSequencer() {
 
     //set playhead back to beat 0 if not th`e`re already
     if (currentNote !== 0) {
-      console.log("current note not 0", currentNote);
       beats[0].style.background = "rgba(72, 128, 255, 1)";
     }
     for (let i = 1; i < 16; i++) {
@@ -109,7 +108,6 @@ function nextNote() {
 }
 
 function scheduleNote(beatNumber, time) {
-  console.log("schedule beat ", beatNumber);
   noteResolution = beatSelector.selectedIndex; //get note res
 
   // push the note on the queue, even if we're not playing.
@@ -121,7 +119,6 @@ function scheduleNote(beatNumber, time) {
   if (noteResolution == 2 && beatNumber % 4) return;
 
   [].forEach.call(seqTracks, (track) => {
-    console.log(track);
     let trackButtons = track.querySelectorAll(
       ".sequencer__display__track__button"
     );
@@ -137,7 +134,7 @@ function scheduleNote(beatNumber, time) {
 }
 
 function playSample(trackInfo, trackBuffer) {
-  console.log("pS tI", trackInfo);
+  console.log("playing track ", trackInfo);
   let source = context.createBufferSource();
   source.buffer = trackBuffer;
 
@@ -145,7 +142,6 @@ function playSample(trackInfo, trackBuffer) {
   reverbSource.buffer = trackInfo.reverbBuffer;
 
   let effectedSource = connectSourceToEffects(trackInfo, source, reverbSource);
-  console.log("eS playSample", effectedSource, trackInfo);
 
   let reverb = effectedSource.reverbObj.reverbSource;
   let eSource = effectedSource.source;
@@ -214,7 +210,6 @@ function draw() {
 
             // we're not playing non-8th 16th notes so dont display
             if (noteResolution == 1 && i % 2) {
-              console.log("nR, beat", noteResolution, i);
               if (i < 4 || (i >= 8 && i < 12)) {
                 note.style.background = "rgba(255, 255, 255, 0.15)";
               } else {
@@ -223,14 +218,12 @@ function draw() {
             }
             // we're not playing non-quarter 8th notes so dont display
             else if (noteResolution == 2 && i % 4) {
-              console.log("nR, beat", noteResolution, i);
               if (i < 4 || (i >= 8 && i < 12)) {
                 note.style.background = "rgba(255, 255, 255, 0.15)";
               } else {
                 note.style.background = "rgba(255, 255, 255, 0.3)";
               }
             } else {
-              console.log("else");
               note.style.background = "rgba(255, 255, 255, .75)";
             }
           }
