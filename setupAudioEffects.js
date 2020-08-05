@@ -83,6 +83,11 @@ export function createEffectPanel(track) {
   effectTestButton.className = "effects-panel__controls__test-button";
   effectTestButton.innerText = "test";
 
+  //make button to reset this tracks effects
+  let effectResetButton = document.createElement("button");
+  effectResetButton.className = "effects-panel__controls__reset-button";
+  effectResetButton.innerText = "reset effects";
+
   //create a pitch shifter and a user input to decide semitones
   let pitchControl = document.createElement("div");
   pitchControl.className = "effects-panel__controls__pitch";
@@ -161,10 +166,10 @@ export function createEffectPanel(track) {
     panInfo.innerText = `Panning: 
       ${
         panInput.value == "0"
-          ? "\n0.0"
+          ? "0.0"
           : panInput.value < 0
-          ? "\nL " + panInput.value
-          : "\n" + panInput.value + " R"
+          ? "L " + panInput.value
+          : "" + panInput.value + " R"
       }`;
   });
 
@@ -220,10 +225,11 @@ export function createEffectPanel(track) {
   filterFreqInput.max = "2500";
   filterFreqInput.step = "1";
 
-  filterFreqInput.className = "effects-panel__controls__filter__input";
+  filterFreqInput.className = "effects-panel__controls__filter__freq-input";
 
   let filterFreqInfo = document.createElement("span");
   filterFreqInfo.innerText = "Freq. 0";
+  filterFreqInfo.className = "effects-panel__controls__filter__freq-info";
 
   filterFreqInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
@@ -400,6 +406,7 @@ export function createEffectPanel(track) {
   let emptyDiv = document.createElement("div");
   //add effects to panel
   effectDiv.append(effectTestButton);
+  effectDiv.append(effectResetButton);
   effectDiv.append(volumeControl);
   effectDiv.append(panControl);
   effectDiv.append(pitchControl);
