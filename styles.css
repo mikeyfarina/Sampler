@@ -292,17 +292,20 @@ input[type="range"] {
 .sequencer__display__track__effects-panel__controls {
   height: 100%;
   display: grid;
-  grid-template-columns: 3% repeat(3, 1fr);
+  grid-template-columns: 5% repeat(3, 1fr);
   grid-template-rows: 1.5fr 2fr;
 }
 .effects-panel__controls__test-button {
   padding: 0;
 }
+.effects-panel__controls__reset-button {
+  grid-area: 2 / 1/ 3 / 2;
+}
 .effects-panel__controls__gain {
   grid-template-rows: 25% 75%;
   align-items: center;
   display: grid;
-
+  grid-area: 1 / 2 / 2 /3;
   align-items: center;
   padding: 2%;
 
@@ -314,6 +317,7 @@ input[type="range"] {
   grid-template-rows: 40% 60%;
   align-items: center;
   display: grid;
+  grid-area: 1 / 3 / 2 /4;
 
   align-items: center;
   padding: 2%;
@@ -326,6 +330,7 @@ input[type="range"] {
   display: grid;
   grid-template-rows: 40% 60%;
   align-items: center;
+  grid-area: 1 / 4 / 2 /5;
 
   padding: 2%;
 
@@ -337,6 +342,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 35% 65%;
   display: grid;
+  grid-area: 2 / 2 / 3 /3;
 
   text-align: left;
   align-items: center;
@@ -350,6 +356,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 40% 60%;
   display: grid;
+  grid-area: 2 / 3 / 3 / 4;
 
   text-align: left;
   align-items: center;
@@ -362,6 +369,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 25% 75%;
   display: grid;
+  grid-area: 2 / 4 / 3 / 5;
 
   text-align: left;
   align-items: center;
@@ -533,7 +541,7 @@ input[type="range"] {
   }
 
   .sequencer__display__track {
-    height: 100%;
+    height: 5.56vh;
   }
 
   .sequencer__display__track div {
