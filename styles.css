@@ -639,6 +639,9 @@ ul.drum-machine__pads li button:active,
     margin-top: 6%;
     min-height: 3.5vh;
   }
+  .sequencer__display {
+    overflow: auto;
+  }
   .sequencer__display__track {
     overflow: auto;
     grid-template-columns: 6% 18% repeat(16, 1fr);
@@ -662,9 +665,6 @@ ul.drum-machine__pads li button:active,
     padding: 1.5%;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 6% repeat(3, 0.5fr) repeat(3, 1.5fr);
-  }
-  .effect-panel-dropdown {
-    transform: translateY(25px);
   }
 
   .effects-panel__controls__gain,
