@@ -414,11 +414,16 @@ input[type="range"] {
 
 /* MEDIA QUERIES */
 
-@media screen and (max-width: 1175px) {
+@media only screen and (max-width: 1175px) {
+  body {
+    height: 100vh;
+    width: 100vw;
+  }
   .instrument-container {
-    height: 100%;
-    max-height: 100vh;
-    max-width: 100vw;
+    padding: 2%;
+    min-height: 97%;
+    max-height: 100%;
+    max-width: 100%;
     overflow: hidden;
     border: none;
     border-radius: 0;
@@ -461,13 +466,15 @@ input[type="range"] {
     grid-area: 1 / 2 / 3 / 3;
     width: 95%;
     grid-gap: 0.3rem 0.4rem;
-    padding: 1vh;
+    padding: 0;
+    margin: 0;
     justify-self: flex-end;
   }
 
   ul.drum-machine__pads li button {
     padding-top: 13.5vh;
     border-radius: 0.2rem;
+    box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.2);
   }
 
   .drum-machine__pads__label {
@@ -486,8 +493,8 @@ input[type="range"] {
     grid-area: 2 / 1 / 3 / 2;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    width: 90%;
-    height: 100%;
+    width: 100%;
+    height: 95%;
     margin: auto;
   }
 
@@ -523,6 +530,7 @@ input[type="range"] {
   }
 
   .sequencer__controls__tempo {
+    margin-top: 8%;
     height: 80%;
     grid-area: 3 / 1 / 4 / 3;
   }
@@ -531,8 +539,9 @@ input[type="range"] {
     background: black;
     overflow-y: auto;
     min-width: 100%;
-    height: 100%;
+    height: 96%;
     margin: 0;
+    margin-top: 3%;
     display: grid;
     border-radius: 4px 4px 9px 9px;
 
@@ -560,22 +569,58 @@ input[type="range"] {
     width: 100%;
   }
 }
-@media screen and (max-width: 710px) {
-  .sequencer__display__track__name {
-    font-size: 1.5vh;
+@media only screen and (min-width: 300px) and (max-width: 710px) {
+  .instrument-container {
+    height: 100vh;
+    padding: 0;
+    margin: 0;
   }
-
-  .sequencer__display__track__button {
-    border: 0.1px grey solid;
+  ul.drum-machine__pads {
+    padding: 0;
+    margin: 0 auto;
+  }
+  .sequencer__controls {
+    margin: 0;
+    padding: 0;
+  }
+  .sequencer__controls button {
+    font-size: 5vw;
+  }
+  .beat-selector {
+    font-size: 3vw;
+  }
+  .drum-machine__screen__title {
+    font-size: 4.3vw;
+    margin-top: 6%;
+    min-height: 3.5vh;
+  }
+  .drum-machine__screen__subtitle {
+    font-size: 3.3vw;
+  }
+  p.drum-machine__pads__label {
+    font-size: 3.5vw;
+  }
+  .sequencer__display__track {
+    grid-template-columns: 6% 18% repeat(16, 1fr);
+  }
+  .sequencer__display__track__button.clicked {
+    border: 1px yellow solid;
+  }
+  .sequencer__display__track__name {
     font-size: 1.8vh;
   }
-
+  .sequencer__display__track__button {
+    border: 0.1px rgba(0, 0, 0, 0.25) solid;
+    font-size: 1.8vh;
+  }
+  .sequencer__display__track__show-effects {
+    padding: 0;
+  }
   .sequencer__display__track__effects-panel__controls {
     padding: 1.5%;
-    height: 30vw;
-    min-height: 20vw;
+    max-width: 100vw;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 10% repeat(3, 1fr);
+    grid-template-rows: 10% repeat(6, 1fr);
   }
 
   .effects-panel__controls__gain,
@@ -599,37 +644,37 @@ input[type="range"] {
   }
 
   .effects-panel__controls__gain {
-    grid-area: 2 / 1 / 3 / 2;
+    grid-area: 2 / 1 / 3 / 3;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
 
   .effects-panel__controls__pan {
-    grid-area: 4 / 1 / 5 / 2;
+    grid-area: 3 / 1 / 4 / 3;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
 
   .effects-panel__controls__pitch {
-    grid-area: 3 / 1 / 4 / 2;
+    grid-area: 4 / 1 / 5 / 3;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
 
   .effects-panel__controls__filter {
-    grid-area: 2 / 2 / 3 / 3;
+    grid-area: 5 / 1 / 6 / 3;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
 
   .effects-panel__controls__delay {
-    grid-area: 3 / 2 / 4 / 3;
+    grid-area: 6 / 1 / 7 / 3;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
 
   .effects-panel__controls__reverb {
-    grid-area: 4 / 2 / 5 / 3;
+    grid-area: 7 / 1 / 8 / 3;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 0.25fr 0.75fr;
   }
