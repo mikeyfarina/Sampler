@@ -416,12 +416,16 @@ input[type="range"] {
 
 @media screen and (max-width: 1175px) {
   .instrument-container {
+    height: 100%;
     max-height: 100vh;
     max-width: 100vw;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
     display: grid;
     background-color: #e8e8e8;
     grid-template-columns: 0.4fr 0.6fr;
-    grid-template-rows: 0.75fr 1.25fr 2fr;
+    grid-template-rows: 0.75fr 1fr 2.25fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
   }
@@ -456,10 +460,9 @@ input[type="range"] {
   ul.drum-machine__pads {
     grid-area: 1 / 2 / 3 / 3;
     width: 95%;
-    margin: auto;
-
     grid-gap: 0.3rem 0.4rem;
-    justify-self: center;
+    padding: 1vh;
+    justify-self: flex-end;
   }
 
   ul.drum-machine__pads li button {
@@ -528,24 +531,20 @@ input[type="range"] {
     background: black;
     overflow-y: auto;
     min-width: 100%;
-    height: 50vh;
+    height: 100%;
     margin: 0;
-
+    display: grid;
     border-radius: 4px 4px 9px 9px;
 
     grid-area: 3 / 1 / 4 / 3;
   }
 
   .sequencer__display__track__name {
-    font-size: 2vw;
+    font-size: 2.3vw;
   }
 
-  .sequencer__display__track {
-    height: 5.56vh;
-  }
-
-  .sequencer__display__track div {
-    flex: 1 0 auto;
+  .sequencer__display__track__button {
+    font-size: 1.8vw;
   }
 
   .hide {
@@ -562,12 +561,23 @@ input[type="range"] {
   }
 }
 @media screen and (max-width: 710px) {
+  .sequencer__display__track__name {
+    font-size: 1.5vh;
+  }
+
+  .sequencer__display__track__button {
+    border: 0.1px grey solid;
+    font-size: 1.8vh;
+  }
+
   .sequencer__display__track__effects-panel__controls {
     padding: 1.5%;
-    height: 30vh;
+    height: 30vw;
+    min-height: 20vw;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 10% repeat(3, 1fr);
   }
+
   .effects-panel__controls__gain,
   .effects-panel__controls__pan,
   .effects-panel__controls__pitch,
@@ -579,37 +589,45 @@ input[type="range"] {
     text-align: left;
     font-size: 2vh;
   }
+
   .effects-panel__controls__test-button {
     grid-area: 1 / 1 / 2 / 2;
   }
+
   .effects-panel__controls__reset-button {
     grid-area: 1 / 2 / 2 / 3;
   }
+
   .effects-panel__controls__gain {
     grid-area: 2 / 1 / 3 / 2;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
+
   .effects-panel__controls__pan {
     grid-area: 4 / 1 / 5 / 2;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
+
   .effects-panel__controls__pitch {
     grid-area: 3 / 1 / 4 / 2;
     grid-template-rows: 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
+
   .effects-panel__controls__filter {
     grid-area: 2 / 2 / 3 / 3;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
+
   .effects-panel__controls__delay {
     grid-area: 3 / 2 / 4 / 3;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 0.4fr 0.6fr;
   }
+
   .effects-panel__controls__reverb {
     grid-area: 4 / 2 / 5 / 3;
     grid-template-rows: 1fr 1fr;
