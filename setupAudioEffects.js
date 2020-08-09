@@ -1,5 +1,5 @@
 import { trackObject } from "./setupSeqTracks.js";
-import { context } from "./constants.js";
+import { context, sequencerDisplay } from "./constants.js";
 import { loadedReverbs } from "./setup.js";
 import { addToTrackEffectInfoHash } from "./hashTable.js";
 
