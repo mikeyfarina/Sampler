@@ -457,8 +457,19 @@ function determinePanDisplay(panValue) {
 //it will need to take the buffer from each track and add effects
 export function connectSourceToEffects(trackInfo, source, reverbSource) {
   //create pan node and set value
-  let panNode = context.createStereoPanner();
-  panNode.pan.value = trackInfo.pan;
+  let panNode;
+  if (context.createStereoPanner) { //if browser supports pan
+    console.log("browser supports pan");
+
+    panNode = context.createStereoPanner();
+    panNode.pan.value = trackInfo.pan;
+  } else {  //pan workaround
+    console.log("browser does not support pan");
+
+    panNode = context.createPanner();
+    panNode.panningModel = 'equalpower';
+    panNode.setPosition(trackInfo.pan, 0, 1 - Math.abs(trackInfo.pan));
+  }  
 
   //create filter and set
   let filterNode = context.createBiquadFilter();
@@ -481,14 +492,16 @@ export function connectSourceToEffects(trackInfo, source, reverbSource) {
   let gainNode = context.createGain();
   gainNode.gain.value = trackInfo.volume;
 
+  console.log("trackInfo", trackInfo, trackInfo.semitones, source);
   //detune sample accordingly before connecting other effects
-  source.detune.value = trackInfo.semitones * 100; //100 cents
-  reverbSource.detune.value = trackInfo.semitones * 100;
+  source.playbackRate.value = 2 ** (trackInfo.semitones / 12);
+  reverbSource.playbackRate.value = 2 ** (trackInfo.semitones / 12);
 
   //set up delay looper
   source.connect(delay).connect(feedback).connect(delay);
   feedback.connect(context.destination);
 
+  console.log(panNode);
   //if reverb is selected,
   if (trackInfo.reverbBuffer) {
     //connect wet reverbed buffer to output
@@ -521,12 +534,13 @@ export function connectSourceToEffects(trackInfo, source, reverbSource) {
 }
 
 function getBPMForDelay(timeSig) {
+  console.log("getting BPM for ", timeSig);
   if (timeSig === "off") {
     return 0;
   }
   let tempo = document.getElementById("tempo").value;
-  let secondsPerBeat = 60.0 / tempo;
+  let quarterNoteDelay = 60.0 / tempo;
 
-  console.log("BPM", eval(timeSig), secondsPerBeat * eval(timeSig));
-  return secondsPerBeat * eval(timeSig);
+  console.log("BPM", timeSig, quarterNoteDelay * eval(timeSig) * 4);
+  return quarterNoteDelay * eval(timeSig) * 4;
 }
