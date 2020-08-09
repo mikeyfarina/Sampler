@@ -681,7 +681,7 @@ ul.drum-machine__pads li button:active,
     overflow: auto;
   }
   .sequencer__display__track-panel-div {
-    display: block;
+    display: contents;
   }
   .displaying-track-effect-div {
     display: flex;
