@@ -1,10 +1,11 @@
 import { trackObject } from "./setupSeqTracks.js";
-import { context, reverbsToLoad } from "./constants.js";
+import { context, reverbsToLoad, sequencerDisplay } from "./constants.js";
 import loadAllUrls from "./BufferLoader.js";
 import { loadedReverbs } from "./setup.js";
 
 let openEffectPanelButtons = [];
 let tracksEffectInfo = [];
+let noOfEffectPanelsOpen = 0;
 
 export function configAudioEffects() {
   //get all open panel buttons
@@ -39,8 +40,27 @@ export function loadReverbPresets(reverbArray) {
   });
 }
 //displays effect panel or hides panel if displayed
-function displayEffectPanel(event) {
+export function displayEffectPanel(event) {
+  let effectPanelTrack = event.target.parentNode;
   let effectPanel = event.target.parentNode.nextSibling;
+  let effectPanelTrackContainerDiv = effectPanelTrack.parentNode;
+
+  let showEffectsButton = effectPanelTrack.querySelector(
+    ".sequencer__display__track__show-effects"
+  );
+
+  effectPanelTrackContainerDiv.classList.toggle("displaying-track-effect-div");
+
+  effectPanelTrack.classList.toggle("displaying-effect-panel");
+
+  if (
+    effectPanelTrack.classList.contains("displaying-effect-panel") &&
+    window.innerWidth < 1175
+  ) {
+    showEffectsButton.innerText = "\u2716"; //bold X
+  } else {
+    showEffectsButton.innerText = "\u21b3"; // arrow down-right
+  }
 
   effectPanel.classList.toggle("hide");
   effectPanel.classList.toggle("effect-panel-dropdown");
@@ -416,8 +436,13 @@ export function createEffectPanel(track) {
   effectDiv.append(reverbControl);
 
   panel.append(effectDiv);
+  let trackAndEffectPanelDiv = document.createElement("div");
+  trackAndEffectPanelDiv.append(track);
+  trackAndEffectPanelDiv.append(panel);
   //attach effect panel to track
-  track.parentNode.insertBefore(panel, track.nextSibling);
+
+  trackAndEffectPanelDiv.classList.add("sequencer__display__track-panel-div");
+  sequencerDisplay.append(trackAndEffectPanelDiv);
 
   //push effect info with listeners to collection array for use in track playback
   tracksEffectInfo.push(trackInfo);

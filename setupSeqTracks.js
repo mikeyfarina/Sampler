@@ -1,7 +1,6 @@
 import { trackBackgroundColors } from "./constants.js";
-import { createEffectPanel } from "./setupAudioEffects.js";
+import { createEffectPanel, displayEffectPanel } from "./setupAudioEffects.js";
 
-let sequencerDisplay = document.querySelector(".sequencer__display");
 let trackObject = [];
 let trackNumber = 0;
 
@@ -30,9 +29,9 @@ export function replaceTrack(newTrack, oldPad) {
     //find old track and remove it
     [].forEach.call(allTrackNames, (trackName) => {
       if (trackName.innerText === oldPadName) {
-        let track = trackName.parentElement;
-        console.log("attempting to remove... ", track.parentElement);
-        track.parentElement.removeChild(track);
+        let trackAndEffectDiv = trackName.parentElement.parentElement;
+        console.log("attempting to remove... ", trackAndEffectDiv);
+        trackAndEffectDiv.parentElement.removeChild(trackAndEffectDiv);
       }
     });
   }
@@ -77,10 +76,7 @@ function transformPadToTrack(padInfo, oldPad) {
 
     displayEffectsButton.addEventListener("click", (event) => {
       console.log("new clicked");
-      let effectPanel = event.target.parentNode.nextSibling;
-
-      effectPanel.classList.toggle("hide");
-      effectPanel.classList.toggle("effect-panel-dropdown");
+      displayEffectPanel(event);
     });
   }
 
@@ -107,7 +103,7 @@ function transformPadToTrack(padInfo, oldPad) {
     });
     newTrackDiv.append(button);
   }
-  sequencerDisplay.append(newTrackDiv);
+  console.log(newTrackDiv);
   createEffectPanel(newTrackDiv);
 }
 
