@@ -458,18 +458,20 @@ function determinePanDisplay(panValue) {
 export function connectSourceToEffects(trackInfo, source, reverbSource) {
   //create pan node and set value
   let panNode;
-  if (context.createStereoPanner) { //if browser supports pan
+  if (context.createStereoPanner) {
+    //if browser supports pan
     console.log("browser supports pan");
 
     panNode = context.createStereoPanner();
     panNode.pan.value = trackInfo.pan;
-  } else {  //pan workaround
+  } else {
+    //pan workaround
     console.log("browser does not support pan");
 
     panNode = context.createPanner();
-    panNode.panningModel = 'equalpower';
+    panNode.panningModel = "equalpower";
     panNode.setPosition(trackInfo.pan, 0, 1 - Math.abs(trackInfo.pan));
-  }  
+  }
 
   //create filter and set
   let filterNode = context.createBiquadFilter();
@@ -498,7 +500,12 @@ export function connectSourceToEffects(trackInfo, source, reverbSource) {
   reverbSource.playbackRate.value = 2 ** (trackInfo.semitones / 12);
 
   //set up delay looper
-  source.connect(delay).connect(feedback).connect(delay);
+  source
+    .connect(delay)
+    .connect(panNode)
+    .connect(filterNode)
+    .connect(feedback)
+    .connect(delay);
   feedback.connect(context.destination);
 
   console.log(panNode);
