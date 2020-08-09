@@ -12,34 +12,91 @@ p {
 }
 
 body {
+  box-sizing: border-box;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
 
-  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 100vh;
+  max-width: 100vw;
   background-color: #89c9ff;
 }
-
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(239, 239, 239);
+  border: 1px rgb(100, 100, 100) solid;
+}
 button:focus {
   outline: 0;
 }
 
-.instructions {
+input[type="range"] {
+  margin: 5% 0;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  border-radius: 5px;
+  height: 0.25rem;
+  border: 1px solid #bdc3c7;
+  background-color: #7c7c7c;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  width: 0.51rem;
+  height: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  background-color: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  width: 0.51rem;
+  height: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.instrument-container {
+  max-height: 60vw;
+  max-width: 96vw;
+  width: 95%;
+  height: 90%;
+  background: #7c7c7c;
+  border: 8px #c4c4c4 solid;
+  border-radius: 20px;
+
   display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+}
 
+.instructions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 98vw;
-  height: 95vh;
+  height: 96vh;
+  margin: auto;
 
-  margin: 0;
-  padding: 0;
-
+  border: 9px black solid;
+  display: grid;
   border-radius: 9px;
   align-items: center;
+  transform: translate(-50%, -50%);
   transition: opacity 350ms linear;
   opacity: 0.95;
   z-index: 1;
-
   position: absolute;
   background: black;
 }
@@ -50,19 +107,20 @@ button:focus {
 }
 
 .drum-machine {
-  max-width: 60vh;
+  max-height: 85%;
+  width: 75%;
   background-color: #e8e8e8;
   padding: 2vw 2.5vw;
-  margin: 4vw;
-  margin-right: 0;
   font-family: "Helvetica Neue";
+  margin: auto;
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
   box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.15);
 }
 
 .drum-machine__screen {
-  max-height: 15%;
+  min-height: 12%;
+
   font-family: "super smash tv";
   background-color: #4880ff;
   color: white;
@@ -94,30 +152,31 @@ button:focus {
 }
 
 .drum-machine__screen__title {
-  min-height: 6.5vh;
-  min-width: 55vh;
-
-  font-size: 6vh;
-  margin-top: 5%;
-  margin-bottom: 2%;
+  min-height: 4.5vh;
+  font-size: 2.5vw;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  text-align: left;
 
   white-space: nowrap;
 }
 
 .drum-machine__screen__subtitle {
-  font-size: 3vh;
+  font-size: 1.5vw;
   min-height: 3vh;
-  margin-top: 2%;
+  margin-top: 1%;
   margin-bottom: 2%;
+  text-align: left;
 
   white-space: nowrap;
 }
 
 ul.drum-machine__pads {
   list-style: none;
+  width: 100%;
 
   padding: 0;
-  margin-top: auto;
+  margin: 0;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -151,7 +210,7 @@ ul.drum-machine__pads li button:active,
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  font-size: 3vh;
+  font-size: 1.5vw;
   color: #4a4a4a;
 }
 
@@ -173,152 +232,31 @@ ul.drum-machine__pads li button:active,
   cursor: pointer;
 }
 
-@media only screen and (min-width: 320px) and (max-width: 1024px) {
-  body {
-    background: #e8e8e8;
-  }
-
-  .start-button {
-    display: none;
-  }
-
-  .drum-machine {
-    max-width: 100%;
-    width: 70vh;
-    min-height: 100%;
-    padding: 0;
-    border: none;
-  }
-
-  .drum-machine__screen {
-    padding: 5%;
-    margin: 3%;
-    margin-bottom: 6%;
-  }
-
-  .drum-machine__screen__title {
-    font-size: 5.5vh;
-  }
-
-  .drum-machine__screen__subtitle {
-    font-size: 3.5vh;
-  }
-
-  ul.drum-machine__pads {
-    margin: 3%;
-    grid-gap: 1.5vw;
-  }
-
-  ul.drum-machine__pads li {
-    max-width: 99%;
-  }
-
-  ul.drum-machine__pads li button {
-    height: 100%;
-    box-shadow: 3px 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  .drum-machine__pads__label {
-    font-size: 3vh;
-    text-overflow: ellipsis;
-  }
-
-  .js-upload-button {
-    background: rgba(0, 0, 0, 0.25);
-    color: white;
-    font-size: 1.2vh;
-    border-radius: 2px 0.4rem;
-    padding: 1vh 2vw;
-    top: 0;
-    right: 0;
-  }
-}
-
-@media only screen and (min-height: 300px) and (max-height: 900px) and (min-width: 320px) and (max-width: 1024px) {
-  .drum-machine {
-    max-height: 100vh;
-    width: 70vh;
-    padding: 2vh;
-  }
-
-  .drum-machine__screen {
-    padding: 3%;
-    margin-top: 2%;
-    margin-bottom: 0;
-  }
-
-  .drum-machine__screen__title {
-    font-size: 8vh;
-  }
-
-  .drum-machine__screen__subtitle {
-    font-size: 4vh;
-  }
-
-  .drum-machine__pads {
-    min-height: 60vh;
-    padding: 3%;
-  }
-
-  .drum-machine__pads__label {
-    font-size: 4vh;
-  }
-}
-
-@media only screen and (min-width: 320px) and (max-width: 480px) {
-  .drum-machine__screen {
-    padding: 3%;
-    margin-top: 6%;
-    margin-bottom: 4%;
-  }
-
-  .drum-machine__screen__title {
-    font-size: 12vw;
-  }
-
-  .drum-machine__screen__subtitle {
-    font-size: 6vw;
-  }
-
-  ul.drum-machine__pads {
-    height: 75vh;
-  }
-
-  ul.drum-machine__pads li button {
-    box-shadow: 3px 1px 3px rgba(0, 0, 0, 0.2);
-  }
-
-  .drum-machine__pads__label {
-    font-size: 5vw;
-    text-overflow: ellipsis;
-  }
-
-  .js-upload-button {
-    font-size: 0.8em;
-  }
-}
-/*!!!!! adjust max-width of effect panels !!!!*/
 /* sequencer styling */
 .sequencer {
+  max-height: 90%;
+  max-width: 60vw;
+  width: 85%;
   font-family: "super smash tv";
   color: #4a4a4a;
   background-color: #e8e8e8;
-  margin-left: 2%;
-  padding: 2%;
+  margin: auto;
+
+  padding: 2vw 1.5vw;
   border: 8px #c4c4c4 solid;
   border-radius: 10px;
-  max-width: 60vw;
+
+  box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.15);
 }
 
 .sequencer__controls {
-  height: 15%;
+  width: 100%;
   display: inline-grid;
-  grid-template-columns: 1fr 0.5fr 0.75fr;
+  grid-template-columns: 0.75fr 0.75fr 0.75fr;
   align-items: center;
 }
 
 .sequencer__controls__buttons {
-  height: 100%;
   width: 100%;
   grid-template-columns: 0.5fr 0.5fr 1fr;
   display: inline-grid;
@@ -326,23 +264,14 @@ ul.drum-machine__pads li button:active,
   font-family: "super smash tv";
 }
 
-.sequencer__controls__buttons__play {
-  height: 100%;
-  font-size: 30px;
-}
-
-.sequencer__controls__buttons__reset {
-  height: 100%;
-  font-size: 30px;
-}
-
-.sequencer__controls__buttons__reset-effects {
-  height: 100%;
-  font-size: 30px;
+.sequencer__controls__buttons button {
+  font-size: 1.5vw;
+  padding: 5% 2%;
 }
 
 .sequencer__controls__tempo {
   display: inline-grid;
+  padding: 2%;
 }
 
 .tempo-info {
@@ -354,19 +283,21 @@ ul.drum-machine__pads li button:active,
   width: 100%;
 }
 
-input[type="range"] {
-  height: 100%;
-  background-color: black;
+.beat-selector {
+  font-size: 1.5vw;
+  margin: 0 10%;
 }
 
-.beat-selector {
-  height: 100%;
-  margin: 0 10%;
+.beat-selector option {
+  font-family: helvetica;
+  padding: 1%;
 }
 
 .sequencer__display {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
+  max-height: 65%;
   margin-top: 4%;
   border-radius: 8px;
   overflow: hidden;
@@ -374,9 +305,10 @@ input[type="range"] {
 
 .sequencer__display__track {
   display: grid;
-  grid-template-columns: 3% 15% repeat(16, 1fr);
-  width: 50vw;
+  grid-template-columns: 5% 15% repeat(16, 1fr);
+
   background: rgba(255, 255, 255, 0.2);
+  flex-direction: column;
 }
 
 .sequencer__display__track__show-effects {
@@ -385,36 +317,41 @@ input[type="range"] {
 }
 
 .sequencer__display__track__effects-panel {
+  max-height: 25vh;
   width: 100%;
-  height: 10vw;
   text-align: center;
   background: lightblue;
   display: flex;
   flex-direction: column;
-  transition: height 50ms ease-in;
 }
 
 .effect-panel-dropdown {
-  transition: height 50ms ease-out;
+  height: 100%;
+  transition: height 100ms ease-out;
 }
 .hide {
   height: 0 !important;
+  transition: height 100ms ease-in;
 }
 
 .sequencer__display__track__effects-panel__controls {
-  height: 100%;
+  max-height: 15vw;
+  height: 15vw;
   display: grid;
-  grid-template-columns: 3% repeat(3, 1fr);
+  grid-template-columns: 5% repeat(3, 1fr);
   grid-template-rows: 1.5fr 2fr;
 }
 .effects-panel__controls__test-button {
   padding: 0;
 }
+.effects-panel__controls__reset-button {
+  border-radius: 0 0 0 8px;
+  grid-area: 2 / 1/ 3 / 2;
+}
 .effects-panel__controls__gain {
   grid-template-rows: 25% 75%;
-  align-items: center;
   display: grid;
-
+  grid-area: 1 / 2 / 2 /3;
   align-items: center;
   padding: 2%;
 
@@ -424,8 +361,8 @@ input[type="range"] {
 
 .effects-panel__controls__pan {
   grid-template-rows: 40% 60%;
-  align-items: center;
   display: grid;
+  grid-area: 1 / 3 / 2 /4;
 
   align-items: center;
   padding: 2%;
@@ -437,7 +374,7 @@ input[type="range"] {
 .effects-panel__controls__pitch {
   display: grid;
   grid-template-rows: 40% 60%;
-  align-items: center;
+  grid-area: 1 / 4 / 2 /5;
 
   padding: 2%;
 
@@ -449,6 +386,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 35% 65%;
   display: grid;
+  grid-area: 2 / 2 / 3 /3;
 
   text-align: left;
   align-items: center;
@@ -462,6 +400,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 40% 60%;
   display: grid;
+  grid-area: 2 / 3 / 3 / 4;
 
   text-align: left;
   align-items: center;
@@ -474,6 +413,7 @@ input[type="range"] {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 25% 75%;
   display: grid;
+  grid-area: 2 / 4 / 3 / 5;
 
   text-align: left;
   align-items: center;
@@ -493,8 +433,6 @@ input[type="range"] {
   align-items: center;
   justify-content: center;
 
-  width: 100%;
-  height: 100%;
   text-align: center;
   font-size: 1.5vw;
   background-color: rgba(255, 255, 255, 0.1);
@@ -516,4 +454,367 @@ input[type="range"] {
   text-align: center;
   color: yellow;
   opacity: 1;
+}
+
+/* MEDIA QUERIES */
+
+@media only screen and (max-width: 1175px) {
+  body {
+    height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+  }
+  .instrument-container {
+    box-sizing: border-box;
+    padding: 1% 2% 3% 2%;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    display: grid;
+    background-color: #e8e8e8;
+    grid-template-columns: 0.4fr 0.6fr;
+    grid-template-rows: 0.3fr 1.3fr 2.4fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+
+  .drum-machine {
+    display: contents;
+    flex-direction: row;
+    margin: 0;
+    max-width: 100%;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .drum-machine__screen {
+    height: 90%;
+    min-height: 8vh;
+    margin-bottom: 10%;
+    border-radius: 9px 0.2rem 0.3rem;
+    align-self: flex-start;
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .drum-machine__screen__title {
+    font-size: 4vw;
+    margin: 2% 0;
+  }
+
+  .drum-machine__screen__subtitle {
+    margin: 0;
+    font-size: 3vw;
+  }
+
+  ul.drum-machine__pads {
+    grid-area: 1 / 2 / 3 / 3;
+    width: 95%;
+    grid-gap: 0.3rem 0.4rem;
+    padding: 0;
+    margin: 0;
+    justify-self: flex-end;
+  }
+
+  ul.drum-machine__pads li button {
+    padding-top: 14vh;
+    border-radius: 0.2rem;
+    box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  p.drum-machine__pads__label {
+    font-size: 2.5vw;
+  }
+
+  .sequencer {
+    display: contents;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sequencer__controls {
+    grid-area: 2 / 1 / 3 / 2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 100%;
+    height: 95%;
+    margin-top: 5%;
+  }
+
+  .sequencer__controls__buttons {
+    display: contents;
+    height: 100%;
+  }
+
+  .beat-selector {
+    grid-area: 2 / 2 / 3 / 3;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    padding: 10%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-appearance: none;
+    font-family: inherit;
+
+    background-color: rgb(239, 239, 239);
+    border: 1px rgb(118, 118, 118) solid;
+    border-radius: 0;
+  }
+
+  .sequencer__controls__buttons button {
+    height: 100%;
+    font-size: 2.2vw;
+    font-family: inherit;
+  }
+  .sequencer__controls__buttons button:active {
+    border: 0.1px black solid;
+  }
+  .sequencer__controls__buttons__play {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .sequencer__controls__buttons__reset {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .sequencer__controls__buttons__reset-effects {
+    grid-area: 2/ 1 / 3 / 2;
+  }
+
+  .sequencer__controls__tempo {
+    background: #c4c4c4;
+    border: 3px #7c7c7c solid;
+    border-radius: 2px;
+    margin-top: 7%;
+    height: 60%;
+    grid-area: 3 / 1 / 4 / 3;
+  }
+
+  #tempo {
+    width: 85%;
+    margin: auto;
+  }
+  .beat-selector {
+    font-size: 3vw;
+  }
+
+  .sequencer__display {
+    min-height: 0;
+    max-height: 100%;
+    background: black;
+    overflow-y: auto;
+    height: 97%;
+    margin-top: 3%;
+    display: grid;
+    border-radius: 4px 4px 9px 9px;
+    grid-area: 3 / 1 / 4 / 3;
+  }
+
+  .sequencer__display__track-panel-div {
+    display: contents;
+  }
+  .sequencer__display__track {
+    height: 100%;
+  }
+  .sequencer__display__track__name {
+    font-size: 1.8vh;
+  }
+
+  .sequencer__display__track__button {
+    border: 1px rgba(0, 0, 0, 0.02) solid;
+    font-size: 1.8vw;
+    padding: 0;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .effect-panel-dropdown {
+    display: flex;
+  }
+
+  .sequencer__display__track__effects-panel {
+    max-height: 100%;
+    width: 100%;
+  }
+  .sequencer__display__track__effects-panel__controls {
+    max-height: 100%;
+    height: 100%;
+  }
+}
+@media only screen and (max-width: 710px) {
+  input[type="range"]::-webkit-slider-thumb {
+    height: 1rem;
+  }
+  .instrument-container {
+    max-height: 100vh;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+  ul.drum-machine__pads {
+    padding: 0;
+    margin: 5% auto;
+    margin-top: 8%;
+  }
+  ul.drum-machine__pads li button {
+    padding-top: 12.5vh;
+  }
+  .sequencer__controls {
+    margin: 0;
+    padding: 0;
+  }
+
+  .drum-machine__screen__title {
+    margin-top: 6%;
+    min-height: 3.5vh;
+  }
+  .sequencer__display {
+    overflow: auto;
+  }
+  .sequencer__display__track-panel-div {
+    display: contents;
+  }
+  .displaying-track-effect-div {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .sequencer__display__track {
+    height: 100%;
+    overflow: auto;
+    grid-template-columns: 6% 18% repeat(16, 1fr);
+  }
+  .sequencer__display__track__button.clicked {
+    border: 1px yellow solid;
+  }
+  .sequencer__display__track__name {
+    font-size: 1.8vh;
+  }
+  .sequencer__display__track__button {
+    border: 1px rgba(0, 0, 0, 0.25) solid;
+    font-size: 1.8vh;
+  }
+  .sequencer__display__track__show-effects {
+    padding: 0;
+  }
+  .effect-panel-dropdown {
+    height: 81%;
+  }
+  .displaying-effect-panel,
+  .effect-panel-dropdown {
+    width: 84%;
+    margin-left: 8%;
+    margin-right: 8%;
+    margin: 8%;
+  }
+  .displaying-effect-panel {
+    grid-template-columns: repeat(18, auto);
+    height: 7%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+  }
+  .displaying-effect-panel > .sequencer__display__track__show-effects {
+    font-size: 4vh;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.25) 100%
+    );
+  }
+  .displaying-effect-panel > .sequencer__display__track__name {
+    padding: 0 2%;
+    font-size: 3vh;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  .sequencer__display__track__effects-panel {
+    position: absolute;
+    top: 7%;
+    right: 0%;
+  }
+  .sequencer__display__track__effects-panel__controls {
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 1.5%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 6% repeat(3, 0.5fr) repeat(3, 1.5fr);
+  }
+
+  .effects-panel__controls__gain,
+  .effects-panel__controls__pan,
+  .effects-panel__controls__pitch,
+  .effects-panel__controls__filter,
+  .effects-panel__controls__delay,
+  .effects-panel__controls__reverb {
+    margin: 0.5%;
+    padding: 1% 3%;
+    text-align: left;
+    font-size: 2.3vh;
+  }
+
+  .effects-panel__controls__test-button {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .effects-panel__controls__reset-button {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .effects-panel__controls__gain {
+    grid-area: 2 / 1 / 3 / 3;
+    grid-template-rows: 1fr;
+    grid-template-columns: 0.4fr 0.6fr;
+  }
+
+  .effects-panel__controls__pan {
+    grid-area: 3 / 1 / 4 / 3;
+    grid-template-rows: 1fr;
+    grid-template-columns: 0.4fr 0.6fr;
+  }
+
+  .effects-panel__controls__pitch {
+    grid-area: 4 / 1 / 5 / 3;
+    grid-template-rows: 1fr;
+    grid-template-columns: 0.4fr 0.6fr;
+  }
+
+  .effects-panel__controls__filter {
+    grid-area: 5 / 1 / 6 / 3;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 0.4fr 0.6fr;
+  }
+
+  .effects-panel__controls__delay {
+    grid-area: 6 / 1 / 7 / 3;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 0.4fr 0.6fr;
+  }
+
+  .effects-panel__controls__reverb {
+    grid-area: 7 / 1 / 8 / 3;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 0.25fr 0.75fr;
+  }
 }

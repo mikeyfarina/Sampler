@@ -1,5 +1,5 @@
 import { trackObject } from "./setupSeqTracks.js";
-import { context } from "./constants.js";
+import { context, sequencerDisplay } from "./constants.js";
 import { loadedReverbs } from "./setup.js";
 import { addToTrackEffectInfoHash } from "./hashTable.js";
 
@@ -20,8 +20,27 @@ export function configAudioEffects() {
 }
 
 //displays effect panel or hides panel if displayed
-function displayEffectPanel(event) {
+export function displayEffectPanel(event) {
+  let effectPanelTrack = event.target.parentNode;
   let effectPanel = event.target.parentNode.nextSibling;
+  let effectPanelTrackContainerDiv = effectPanelTrack.parentNode;
+
+  let showEffectsButton = effectPanelTrack.querySelector(
+    ".sequencer__display__track__show-effects"
+  );
+
+  effectPanelTrackContainerDiv.classList.toggle("displaying-track-effect-div");
+
+  effectPanelTrack.classList.toggle("displaying-effect-panel");
+
+  if (
+    effectPanelTrack.classList.contains("displaying-effect-panel") &&
+    window.innerWidth < 1175
+  ) {
+    showEffectsButton.innerText = "\u2716"; //bold X
+  } else {
+    showEffectsButton.innerText = "\u21b3"; // arrow down-right
+  }
 
   effectPanel.classList.toggle("hide");
   effectPanel.classList.toggle("effect-panel-dropdown");
@@ -46,6 +65,7 @@ export function createEffectPanel(track, trackName) {
     effectedBuffer: null,
   };
   addToTrackEffectInfoHash(trackName, trackInfo);
+
   let panel = document.createElement("div");
   panel.className = "sequencer__display__track__effects-panel";
   panel.classList.add("hide");
@@ -58,6 +78,11 @@ export function createEffectPanel(track, trackName) {
   let effectTestButton = document.createElement("button");
   effectTestButton.className = "effects-panel__controls__test-button";
   effectTestButton.innerText = "test";
+
+  //make button to reset this tracks effects
+  let effectResetButton = document.createElement("button");
+  effectResetButton.className = "effects-panel__controls__reset-button";
+  effectResetButton.innerText = "reset effects";
 
   //create a pitch shifter and a user input to decide semitones
   let pitchControl = document.createElement("div");
@@ -185,10 +210,11 @@ export function createEffectPanel(track, trackName) {
   filterFreqInput.max = "2500";
   filterFreqInput.step = "1";
 
-  filterFreqInput.className = "effects-panel__controls__filter__input";
+  filterFreqInput.className = "effects-panel__controls__filter__freq-input";
 
   let filterFreqInfo = document.createElement("span");
   filterFreqInfo.innerText = "Freq. 0";
+  filterFreqInfo.className = "effects-panel__controls__filter__freq-info";
 
   filterFreqInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
@@ -359,6 +385,7 @@ export function createEffectPanel(track, trackName) {
   let emptyDiv = document.createElement("div");
   //add effects to panel
   effectDiv.append(effectTestButton);
+  effectDiv.append(effectResetButton);
   effectDiv.append(volumeControl);
   effectDiv.append(panControl);
   effectDiv.append(pitchControl);
@@ -368,8 +395,13 @@ export function createEffectPanel(track, trackName) {
   effectDiv.append(reverbControl);
 
   panel.append(effectDiv);
+  let trackAndEffectPanelDiv = document.createElement("div");
+  trackAndEffectPanelDiv.append(track);
+  trackAndEffectPanelDiv.append(panel);
   //attach effect panel to track
-  track.parentNode.insertBefore(panel, track.nextSibling);
+
+  trackAndEffectPanelDiv.classList.add("sequencer__display__track-panel-div");
+  sequencerDisplay.append(trackAndEffectPanelDiv);
 
   //when reset button is clicked
   //reset all effect values in the panel

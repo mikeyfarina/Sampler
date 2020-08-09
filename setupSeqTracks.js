@@ -1,8 +1,7 @@
-import { trackBackgroundColors } from "./constants.js";
-import { createEffectPanel } from "./setupAudioEffects.js";
+import { trackBackgroundColors, sequencerDisplay } from "./constants.js";
+import { createEffectPanel, displayEffectPanel } from "./setupAudioEffects.js";
 import { removeItemFromTrackEffectInfoHash } from "./hashTable.js";
 
-let sequencerDisplay = document.querySelector(".sequencer__display");
 let trackObject = {};
 let trackNumber = 0;
 
@@ -28,6 +27,7 @@ export function replaceTrack(newTrack, oldPad) {
     let allTrackNames = document.querySelectorAll(
       ".sequencer__display__track__name"
     );
+
     [].forEach.call(allTrackNames, (trackNameDiv) => {
       let trackName = trackNameDiv.innerText;
       if (trackName === oldPadName) {
@@ -59,7 +59,6 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
   // sequencer panel setup
 
   // name track
-
   let nameOfTrack = document.createElement("span");
   nameOfTrack.innerText = trackName;
   nameOfTrack.className = "sequencer__display__track__name";
@@ -78,10 +77,7 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
       trackBackgroundColors[oldPadBuffer.colorIndex];
 
     displayEffectsButton.addEventListener("click", (event) => {
-      let effectPanel = event.target.parentNode.nextSibling;
-
-      effectPanel.classList.toggle("hide");
-      effectPanel.classList.toggle("effect-panel-dropdown");
+      displayEffectPanel(event);
     });
   }
 
@@ -108,7 +104,6 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
     });
     newTrackDiv.append(button);
   }
-
   if (oldPad !== undefined) {
     allTracks[oldPadBuffer.colorIndex].parentNode.insertBefore(
       newTrackDiv,

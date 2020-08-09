@@ -69,6 +69,7 @@ const tempoSlider = document.getElementById("tempo");
 const tempoDisplay = document.getElementById("tempo-value");
 
 //display
+const sequencerDisplay = document.querySelector(".sequencer__display");
 const trackBackgroundColors = [
   "#f94144",
   "#f3722c",
@@ -100,5 +101,6 @@ export {
   beatSelector,
   tempoSlider,
   tempoDisplay,
+  sequencerDisplay,
   trackBackgroundColors,
 };
