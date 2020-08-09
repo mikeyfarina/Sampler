@@ -1,5 +1,5 @@
-import { replaceTrack } from "./setupSeqTracks.js";
-import { loadSamples } from "./loadSamples.js";
+import { replaceTrack, trackObject } from "./setupSeqTracks.js";
+import { loadSamples, loadReverbPresets } from "./loadSamples.js";
 import { setupUploadButtons } from "./uploadSamples.js";
 import {
   screenTitle,
@@ -9,8 +9,10 @@ import {
   context,
 } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
-import { configAudioEffects, loadReverbPresets } from "./setupAudioEffects.js";
-let loadedReverbs = [];
+import { configAudioEffects, tracksEffectInfo } from "./setupAudioEffects.js";
+import { trackEffectInfoHashConversion } from "./hashTable.js";
+
+let loadedReverbs = {};
 
 export function init() {
   //give user response on click to know that it is loading
@@ -22,19 +24,25 @@ export function init() {
   let quietBuffer;
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
-    loadedReverbs = loaded;
+    loaded.forEach((reverb) => {
+      loadedReverbs[reverb.name] = reverb;
+    });
     loadSamples()
       .then((arrayOfLoadedPads) => {
-        arrayOfLoadedPads.forEach(function (pad) {
-          replaceTrack(pad);
-        });
+        for (let pad in arrayOfLoadedPads) {
+          let hashedPad = {};
+          hashedPad[pad] = arrayOfLoadedPads[pad];
+          replaceTrack(hashedPad);
+        }
+      })
+      .then(() => {
         setUpSequencer();
         configAudioEffects();
+        setupUploadButtons();
       })
       .then(() => {
         removeInstructionScreen(quietBuffer);
       });
-    setupUploadButtons();
     quickHideAddressBar();
   });
 }

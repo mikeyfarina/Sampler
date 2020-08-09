@@ -4,11 +4,8 @@ import {
   tempoSlider,
   tempoDisplay,
 } from "./constants.js";
-import { trackObject } from "./setupSeqTracks.js";
-import {
-  tracksEffectInfo,
-  connectSourceToEffects,
-} from "./setupAudioEffects.js";
+import { connectSourceToEffects } from "./setupAudioEffects.js";
+import { getTrackEffectInfo } from "./hashTable.js";
 
 let isPlaying = false; // Are we currently playing?
 let current16thNote; // What note is currently last scheduled?
@@ -61,7 +58,6 @@ export function setUpSequencer() {
       }
     );
   })();
-
   requestAnimFrame(draw); // start the drawing loop.
 }
 
@@ -81,7 +77,6 @@ function resetSequencer() {
 
     //set playhead back to beat 0 if not th`e`re already
     if (currentNote !== 0) {
-      console.log("current note not 0", currentNote);
       beats[0].style.background = "rgba(72, 128, 255, 1)";
     }
     for (let i = 1; i < 16; i++) {
@@ -113,7 +108,6 @@ function nextNote() {
 }
 
 function scheduleNote(beatNumber, time) {
-  console.log("schedule beat ", beatNumber);
   noteResolution = beatSelector.selectedIndex; //get note res
 
   // push the note on the queue, even if we're not playing.
@@ -129,32 +123,25 @@ function scheduleNote(beatNumber, time) {
       ".sequencer__display__track__button"
     );
     let name = track.querySelector("span").innerText;
-
-    console.log("tEI, in schedule note", tracksEffectInfo);
-    let trackInfo = tracksEffectInfo.find(
-      (o) => o.trackObjectInfo.trackName === name
-    );
-    console.log("trackInfo iS", trackInfo);
+    let trackEffectInfo = getTrackEffectInfo(name);
+    let buffer = trackEffectInfo.trackBuffer;
 
     if (trackButtons[beatNumber].classList.contains("clicked")) {
-      console.log(
-        `!! playing ${trackInfo} on beat ${beatNumber}\n`,
-        trackInfo.trackBuffer
-      );
-      playSample(trackInfo);
+      console.log(`!! playing ${trackEffectInfo} on beat ${beatNumber}\n`);
+      playSample(trackEffectInfo, buffer);
     }
   });
 }
 
-function playSample(trackInfo) {
+function playSample(trackInfo, trackBuffer) {
+  console.log("playing track ", trackInfo);
   let source = context.createBufferSource();
-  source.buffer = trackInfo.trackObjectInfo.trackBuffer;
+  source.buffer = trackBuffer;
 
   let reverbSource = context.createBufferSource();
   reverbSource.buffer = trackInfo.reverbBuffer;
 
   let effectedSource = connectSourceToEffects(trackInfo, source, reverbSource);
-  console.log("eS playSample", effectedSource, trackInfo);
 
   let reverb = effectedSource.reverbObj.reverbSource;
   let eSource = effectedSource.source;
@@ -175,7 +162,7 @@ function scheduler() {
 }
 
 function play(playButton) {
-  console.log("play", trackObject, isPlaying);
+  console.log("play", isPlaying);
   isPlaying = !isPlaying;
 
   if (isPlaying) {
@@ -223,7 +210,6 @@ function draw() {
 
             // we're not playing non-8th 16th notes so dont display
             if (noteResolution == 1 && i % 2) {
-              console.log("nR, beat", noteResolution, i);
               if (i < 4 || (i >= 8 && i < 12)) {
                 note.style.background = "rgba(255, 255, 255, 0.15)";
               } else {
@@ -232,14 +218,12 @@ function draw() {
             }
             // we're not playing non-quarter 8th notes so dont display
             else if (noteResolution == 2 && i % 4) {
-              console.log("nR, beat", noteResolution, i);
               if (i < 4 || (i >= 8 && i < 12)) {
                 note.style.background = "rgba(255, 255, 255, 0.15)";
               } else {
                 note.style.background = "rgba(255, 255, 255, 0.3)";
               }
             } else {
-              console.log("else");
               note.style.background = "rgba(255, 255, 255, .75)";
             }
           }
@@ -251,23 +235,6 @@ function draw() {
             note.style.background = "rgba(255, 255, 255, 0.15)";
           }
         }
-        /*
-        if (currentNote == i){
-          if (note.classList.contains("clicked")){  
-            note.style.background = "yellow";
-          } else if (currentNote % 4 == 0) {  //cursor if 1/4 beat
-            note.style.background = "#4880ff";
-          } else {
-            note.style.background = "white"; // cursor if not 1/4 beat
-          }
-        } else {
-          if (i < 4 || i >= 8 && i < 12){
-            note.style.background = "gray";
-          } else {
-            note.style.background = "teal";
-          }
-        }
-        */
       }
     }
   }
