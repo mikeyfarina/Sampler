@@ -284,8 +284,9 @@ ul.drum-machine__pads li button:active,
 }
 
 .beat-selector {
-  font-size: 1.5vw;
+  font-size: 1.3vw;
   margin: 0 10%;
+  padding: 3% 0;
 }
 
 .beat-selector option {
