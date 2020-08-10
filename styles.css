@@ -69,8 +69,9 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 .instrument-container {
-  max-height: 60vw;
+  max-height: 65vw;
   max-width: 96vw;
+  padding: 1%;
   width: 95%;
   height: 90%;
   background: #7c7c7c;
@@ -316,7 +317,17 @@ ul.drum-machine__pads li button:active,
   background: rgba(255, 255, 255, 0.1);
   border: 0;
 }
+.sequencer__display__track__button {
+  font-size: 2vw;
+  height: 100%;
+  width: 100%;
 
+  padding: 20% 0;
+  margin: 0;
+
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+}
 .sequencer__display__track__effects-panel {
   height: 10vh;
   width: 100%;
@@ -450,13 +461,6 @@ ul.drum-machine__pads li button:active,
   );
 }
 
-.sequencer__display__track__button {
-  font-size: 1.5vw;
-  background: rgba(255, 255, 255, 0.1);
-  border: 0;
-  padding: 25% 0;
-}
-
 .clicked {
   text-align: center;
   color: yellow;
@@ -471,13 +475,21 @@ ul.drum-machine__pads li button:active,
     max-height: 100vh;
     max-width: 100vw;
   }
+  .instructions {
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+  }
   .instrument-container {
     box-sizing: border-box;
-    padding: 1% 2% 3% 2%;
-    height: 100vh;
+    padding: 2% 2% 3% 2%;
+
+    height: 100%;
     max-height: 100vh;
     width: 100%;
-    max-width: 100%;
+    max-width: 100vw;
+
     overflow: hidden;
     border: none;
     border-radius: 0;
@@ -613,12 +625,13 @@ ul.drum-machine__pads li button:active,
   }
 
   .sequencer__display {
-    min-height: 0;
+    min-height: 98%;
     max-height: 100%;
     background: black;
     overflow-y: auto;
     height: 97%;
     margin-top: 3%;
+    margin-bottom: 1%;
     display: grid;
     border-radius: 4px 4px 9px 9px;
     grid-area: 3 / 1 / 4 / 3;
@@ -631,12 +644,12 @@ ul.drum-machine__pads li button:active,
     height: 100%;
   }
   .sequencer__display__track__name {
-    font-size: 1.8vh;
+    font-size: 2.5vh;
   }
 
   .sequencer__display__track__button {
     border: 1px rgba(0, 0, 0, 0.02) solid;
-    font-size: 1.8vw;
+    font-size: 3vh;
     padding: 0;
   }
 
@@ -653,13 +666,11 @@ ul.drum-machine__pads li button:active,
     width: 100%;
   }
   .sequencer__display__track__effects-panel__controls {
-    grid-template-rows: 0.25fr 0.75fr;
+    grid-template-rows: 1fr 1.5fr;
     max-height: 100%;
     height: 100%;
   }
-  .sequencer__display__track__effects-panel__controls > * {
-    font-size: ;
-  }
+
   .effects-panel__controls__gain,
   .effects-panel__controls__pan,
   .effects-panel__controls__pitch {
@@ -674,7 +685,8 @@ ul.drum-machine__pads li button:active,
     height: 1rem;
   }
   .instrument-container {
-    max-height: 100vh;
+    height: 100vh;
+    width: 100vw;
     padding: 0;
     margin: 0;
     position: relative;
@@ -691,12 +703,28 @@ ul.drum-machine__pads li button:active,
     margin: 0;
     padding: 0;
   }
-
+  .sequencer__controls button {
+    font-size: 2vh;
+  }
+  .sequencer__controls__tempo {
+    height: 90%;
+  }
+  .beat-selector {
+    padding: 5%;
+  }
+  .tempo-info {
+    align-items: center;
+  }
+  .drum-machine__screen {
+    height: 80%;
+    border-radius: 0 2px 2px 2px;
+  }
   .drum-machine__screen__title {
     margin-top: 6%;
     min-height: 3.5vh;
   }
   .sequencer__display {
+    min-height: 0;
     overflow: auto;
   }
   .sequencer__display__track-panel-div {
@@ -729,13 +757,14 @@ ul.drum-machine__pads li button:active,
   }
   .sequencer__display__track__button {
     border: 1px rgba(0, 0, 0, 0.25) solid;
-    font-size: 1.8vh;
+    font-size: 2.5vh;
   }
   .sequencer__display__track__show-effects {
-    padding: 0;
+    width: 100%;
+    height: 100%;
   }
   .effect-panel-dropdown {
-    height: 81%;
+    height: 82%;
   }
   .displaying-effect-panel,
   .effect-panel-dropdown {
@@ -746,7 +775,7 @@ ul.drum-machine__pads li button:active,
   }
   .displaying-effect-panel {
     grid-template-columns: repeat(18, auto);
-    height: 7%;
+    height: 6%;
     position: absolute;
     top: 0%;
     right: 0%;
@@ -773,7 +802,7 @@ ul.drum-machine__pads li button:active,
   }
   .sequencer__display__track__effects-panel {
     position: absolute;
-    top: 7%;
+    top: 6%;
     right: 0%;
     border-radius: 0 0 1vh 1vh;
     overflow: hidden;
@@ -786,11 +815,11 @@ ul.drum-machine__pads li button:active,
     grid-template-rows: 6% repeat(3, 0.5fr) repeat(3, 1fr);
   }
   .effects-panel__controls__test-button {
-    font-size: 3vh;
+    font-size: 2.5vh;
     margin: 0% 0% 2% 0.5%;
   }
   .effects-panel__controls__reset-button {
-    font-size: 3vh;
+    font-size: 2.5vh;
     margin: 0% 0.5% 2% 0%;
     border-radius: 0;
   }
