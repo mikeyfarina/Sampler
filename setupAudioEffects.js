@@ -154,14 +154,13 @@ export function createEffectPanel(track, trackName) {
   panInput.step = "0.1";
 
   let panInfo = document.createElement("span");
-  panInfo.innerText = `Panning: \n0.0`;
+  panInfo.innerText = `Panning: 0.0`;
 
   panInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
     trackInfo.pan = panInput.value;
-    panInfo.innerText = `Panning: 
-      ${determinePanDisplay(trackInfo.pan)}`;
+    panInfo.innerText = `Panning: ` + determinePanDisplay(trackInfo.pan);
   });
 
   panControl.append(panInfo);
