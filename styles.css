@@ -31,6 +31,11 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+nav ul li a {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 button,
 [type="button"],
 [type="reset"],
@@ -670,10 +675,10 @@ ul.drum-machine__pads li button:active,
     max-height: 97%;
     background: black;
     overflow-y: none;
-    height: 95%;
-    margin-top: 4%;
+    height: 94%;
+    margin-top: 3%;
     display: grid;
-    border-radius: 4px 4px 9px 9px;
+    border-radius: 7px 7px 9px 9px;
     grid-area: 3 / 1 / 4 / 3;
   }
 
@@ -731,10 +736,17 @@ ul.drum-machine__pads li button:active,
     margin: 0;
     position: relative;
   }
+  .drum-machine__screen {
+    height: 80%;
+    border-radius: 0 2px 2px 2px;
+  }
+  .drum-machine__screen__title {
+    margin-top: 6%;
+    min-height: 3.5vh;
+  }
   ul.drum-machine__pads {
+    margin: 0 auto;
     padding: 0;
-    margin: 5% auto;
-    margin-top: 8%;
   }
   ul.drum-machine__pads li button {
     padding-top: 12.5vh;
@@ -746,24 +758,21 @@ ul.drum-machine__pads li button:active,
   .sequencer__controls button {
     font-size: 2vh;
   }
+  .sequencer__controls__buttons__reset-effects button {
+    line-height: 100%;
+  }
   .sequencer__controls__tempo {
     height: 90%;
   }
   .beat-selector {
+    font-size: 1.5vh;
     padding: 5%;
   }
   .tempo-info {
     align-items: center;
   }
-  .drum-machine__screen {
-    height: 80%;
-    border-radius: 0 2px 2px 2px;
-  }
-  .drum-machine__screen__title {
-    margin-top: 6%;
-    min-height: 3.5vh;
-  }
   .sequencer__display {
+    height: 100%;
     min-height: 0;
     overflow: auto;
   }
@@ -854,15 +863,6 @@ ul.drum-machine__pads li button:active,
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 6% repeat(3, 0.5fr) repeat(3, 1fr);
   }
-  .effects-panel__controls__test-button {
-    font-size: 2.5vh;
-    margin: 0% 0% 2% 0.5%;
-  }
-  .effects-panel__controls__reset-button {
-    font-size: 2.5vh;
-    margin: 0% 0.5% 2% 0%;
-    border-radius: 0;
-  }
 
   .effects-panel__controls__gain,
   .effects-panel__controls__pan,
@@ -879,10 +879,15 @@ ul.drum-machine__pads li button:active,
 
   .effects-panel__controls__test-button {
     grid-area: 1 / 1 / 2 / 2;
+    font-size: 2.5vh;
+    margin: 0% 0% 2% 0.5%;
   }
 
   .effects-panel__controls__reset-button {
     grid-area: 1 / 2 / 2 / 3;
+    font-size: 2.5vh;
+    margin: 0% 0.5% 2% 0%;
+    border-radius: 0;
   }
 
   .effects-panel__controls__gain {
