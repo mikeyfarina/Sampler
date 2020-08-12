@@ -57,6 +57,7 @@ export function createEffectPanel(track, trackName) {
     pan: 0,
     filterType: "allpass",
     filterFreq: 0,
+    filterQ: 0,
     delayFeedback: 0,
     delayTime: 0,
     reverbWet: 0,
@@ -82,7 +83,7 @@ export function createEffectPanel(track, trackName) {
   //make button to reset this tracks effects
   let effectResetButton = document.createElement("button");
   effectResetButton.className = "effects-panel__controls__reset-button";
-  effectResetButton.innerText = "reset effects";
+  effectResetButton.innerText = "reset";
 
   //create a pitch shifter and a user input to decide semitones
   let pitchControl = document.createElement("div");
@@ -153,14 +154,13 @@ export function createEffectPanel(track, trackName) {
   panInput.step = "0.1";
 
   let panInfo = document.createElement("span");
-  panInfo.innerText = `Panning: \n0.0`;
+  panInfo.innerText = `Panning: 0.0`;
 
   panInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
     trackInfo.pan = panInput.value;
-    panInfo.innerText = `Panning: 
-      ${determinePanDisplay(trackInfo.pan)}`;
+    panInfo.innerText = `Panning: ` + determinePanDisplay(trackInfo.pan);
   });
 
   panControl.append(panInfo);
@@ -207,26 +207,50 @@ export function createEffectPanel(track, trackName) {
   filterFreqInput.type = "range";
   filterFreqInput.value = "0";
   filterFreqInput.min = "50";
-  filterFreqInput.max = "2500";
+  filterFreqInput.max = "15000";
   filterFreqInput.step = "1";
 
   filterFreqInput.className = "effects-panel__controls__filter__freq-input";
 
   let filterFreqInfo = document.createElement("span");
-  filterFreqInfo.innerText = "Freq. 0";
+  filterFreqInfo.innerText = "Freq: 0 Hz";
   filterFreqInfo.className = "effects-panel__controls__filter__freq-info";
 
   filterFreqInput.addEventListener("input", () => {
     trackInfo.isBufferEffected = true;
 
-    filterFreqInfo.innerText = `Freq. ${filterFreqInput.value}`;
+    filterFreqInfo.innerText = `Freq: ${filterFreqInput.value} Hz`;
     trackInfo.filterFreq = filterFreqInput.value;
+  });
+
+  //create a slider for frequency of the filter
+  let filterQInput = document.createElement("input");
+  filterQInput.type = "range";
+  filterQInput.value = "0";
+  filterQInput.min = "1";
+  filterQInput.max = "30";
+  filterQInput.step = "1";
+
+  filterQInput.className = "effects-panel__controls__filter__q-input";
+
+  let filterQInfo = document.createElement("span");
+  filterQInfo.innerText = "Q: 0";
+  filterQInfo.className = "effects-panel__controls__filter__q-info";
+
+  filterQInput.addEventListener("input", () => {
+    trackInfo.isBufferEffected = true;
+
+    filterQInfo.innerText = `Q: ${filterQInput.value}`;
+    trackInfo.filterQ = filterQInput.value;
   });
 
   filterControl.append(filterInfo);
   filterControl.append(filterOptions);
 
+  filterControl.append(filterQInfo);
   filterControl.append(filterFreqInfo);
+
+  filterControl.append(filterQInput);
   filterControl.append(filterFreqInput);
 
   //create delay effect and user input for selecting time
@@ -421,7 +445,9 @@ export function createEffectPanel(track, trackName) {
 
     filterOptions.selectedIndex = 0;
     filterFreqInput.value = 0;
-    filterFreqInfo.innerText = "Freq: 0";
+    filterFreqInfo.innerText = "Freq: 0 Hz";
+    filterQInput.value = 0;
+    filterQInfo.innerText = "Q: 0";
 
     delayOptions.selectedIndex = 0;
     delayFeedbackInput.value = 0;
@@ -457,13 +483,28 @@ function determinePanDisplay(panValue) {
 //it will need to take the buffer from each track and add effects
 export function connectSourceToEffects(trackInfo, source, reverbSource) {
   //create pan node and set value
-  let panNode = context.createStereoPanner();
-  panNode.pan.value = trackInfo.pan;
+  let panNode;
+  if (context.createStereoPanner) {
+    //if browser supports pan
+    console.log("browser supports pan");
 
+    panNode = context.createStereoPanner();
+    panNode.pan.value = trackInfo.pan;
+  } else {
+    //pan workaround
+    console.log("browser does not support pan");
+
+    panNode = context.createPanner();
+    panNode.panningModel = "equalpower";
+    panNode.setPosition(trackInfo.pan, 0, 1 - Math.abs(trackInfo.pan));
+  }
+
+  console.log(trackInfo);
   //create filter and set
   let filterNode = context.createBiquadFilter();
   filterNode.type = trackInfo.filterType;
   filterNode.frequency.value = trackInfo.filterFreq;
+  filterNode.Q.value = trackInfo.filterQ;
 
   //create delay and set value
   let delay = context.createDelay();
@@ -481,16 +522,37 @@ export function connectSourceToEffects(trackInfo, source, reverbSource) {
   let gainNode = context.createGain();
   gainNode.gain.value = trackInfo.volume;
 
+  console.log("trackInfo", trackInfo, trackInfo.semitones, source);
   //detune sample accordingly before connecting other effects
-  source.detune.value = trackInfo.semitones * 100; //100 cents
-  reverbSource.detune.value = trackInfo.semitones * 100;
+  source.playbackRate.value = 2 ** (trackInfo.semitones / 12);
+  reverbSource.playbackRate.value = 2 ** (trackInfo.semitones / 12);
 
   //set up delay looper
-  source.connect(delay).connect(feedback).connect(delay);
+  //source -> pan -> filter -> delay -> feedback -> out
+  //           ^           |
+  //           |-----------|
+  source
+    .connect(panNode)
+    .connect(filterNode)
+    .connect(delay)
+    .connect(feedback)
+    .connect(delay);
   feedback.connect(context.destination);
 
+  console.log(panNode);
   //if reverb is selected,
   if (trackInfo.reverbBuffer) {
+    //if delay is on, delay reverb too
+    if (trackInfo.delayTime !== 0) {
+      reverbSource
+        .connect(wetVolume)
+        .connect(panNode)
+        .connect(filterNode)
+        .connect(delay)
+        .connect(feedback)
+        .connect(delay);
+      feedback.connect(context.destination);
+    }
     //connect wet reverbed buffer to output
     reverbSource.connect(wetVolume);
     wetVolume.connect(panNode);
@@ -521,12 +583,13 @@ export function connectSourceToEffects(trackInfo, source, reverbSource) {
 }
 
 function getBPMForDelay(timeSig) {
+  console.log("getting BPM for ", timeSig);
   if (timeSig === "off") {
     return 0;
   }
   let tempo = document.getElementById("tempo").value;
-  let secondsPerBeat = 60.0 / tempo;
+  let quarterNoteDelay = 60.0 / tempo;
 
-  console.log("BPM", eval(timeSig), secondsPerBeat * eval(timeSig));
-  return secondsPerBeat * eval(timeSig);
+  console.log("BPM", timeSig, quarterNoteDelay * eval(timeSig) * 4);
+  return quarterNoteDelay * eval(timeSig) * 4;
 }

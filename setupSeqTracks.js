@@ -87,7 +87,7 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
     button.className = "sequencer__display__track__button";
     button.id = `${trackName}__${i}`;
 
-    button.innerText = "_";
+    button.innerText = "-";
 
     if (i < 4 || (i >= 8 && i < 12)) {
       button.style.background = "rgba(0, 0, 0, 0.05)";
@@ -95,11 +95,22 @@ function transformPadToTrack(padInfo, oldPad, oldPadBuffer) {
       button.style.background = "rgba(255, 255, 255, 0.15)";
     }
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+      console.log(e);
       if (button.classList.contains("clicked")) {
         button.classList.remove("clicked");
       } else {
         button.classList.add("clicked");
+      }
+    });
+    button.addEventListener("onmouseover", (e) => {
+      console.log("mouseover", e);
+      if (e.which === 1) {
+        if (button.classList.contains("clicked")) {
+          button.classList.remove("clicked");
+        } else {
+          button.classList.add("clicked");
+        }
       }
     });
     newTrackDiv.append(button);
