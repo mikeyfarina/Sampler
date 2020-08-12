@@ -525,7 +525,7 @@ ul.drum-machine__pads li button:active,
     display: grid;
     background-color: #e8e8e8;
     grid-template-columns: 0.4fr 0.6fr;
-    grid-template-rows: 0.5fr 1.5fr 3fr;
+    grid-template-rows: 0.75fr 1.25fr 3fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
   }
@@ -541,9 +541,11 @@ ul.drum-machine__pads li button:active,
   }
 
   .drum-machine__screen {
-    height: 90%;
-    min-height: 6vw;
-    margin-bottom: 10%;
+    height: 95%;
+    margin: 0;
+    margin-bottom: 5%;
+    padding: 0;
+    padding-left: 4%;
     border-radius: 9px 0.2rem 0.3rem;
     align-self: flex-start;
     grid-area: 1 / 1 / 2 / 2;
@@ -561,18 +563,26 @@ ul.drum-machine__pads li button:active,
 
   ul.drum-machine__pads {
     grid-area: 1 / 2 / 3 / 3;
-    width: 95%;
+    width: 98%;
     grid-gap: 0.3rem 0.4rem;
     padding: 0;
+    padding-left: 2%;
     margin: 0;
     justify-self: flex-end;
+    align-items: start;
+    box-sizing: border-box;
   }
 
+  ul.drum-machine__pads li {
+    height: 100%;
+  }
   ul.drum-machine__pads li button {
     max-width: 100%;
-    padding-top: 14vh;
+    padding-top: 0;
+    height: 100%;
     border-radius: 0.2rem;
     box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
   }
 
   p.drum-machine__pads__label {
@@ -592,13 +602,11 @@ ul.drum-machine__pads li button:active,
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     width: 100%;
-    height: 95%;
-    margin-top: 5%;
+    height: 100%;
   }
 
   .sequencer__controls__buttons {
     display: contents;
-    height: 100%;
   }
 
   .beat-selector {
@@ -638,11 +646,13 @@ ul.drum-machine__pads li button:active,
   }
 
   .sequencer__controls__tempo {
+    box-sizing: border-box;
     background: #c4c4c4;
     border: 3px #7c7c7c solid;
     border-radius: 2px;
-    margin: 6% 0;
-    height: 60%;
+    height: 90%;
+    padding: 2% 0;
+    align-self: flex-end;
     grid-area: 3 / 1 / 4 / 3;
   }
 
@@ -651,7 +661,8 @@ ul.drum-machine__pads li button:active,
     margin: auto;
   }
   .beat-selector {
-    font-size: 3vw;
+    text-align: center;
+    font-size: 2.2vw;
   }
 
   .sequencer__display {
