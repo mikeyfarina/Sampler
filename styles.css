@@ -737,7 +737,8 @@ ul.drum-machine__pads li button:active,
     position: relative;
   }
   .drum-machine__screen {
-    height: 80%;
+    padding: 5%;
+    height: 75%;
     border-radius: 0 2px 2px 2px;
   }
   .drum-machine__screen__title {
