@@ -348,6 +348,13 @@ ul.drum-machine__pads li button:active,
   border: 0;
 }
 
+.sequencer__display__track__show-effects:hover {
+  margin: 8%;
+  border-radius: 5px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .sequencer__display__track__button {
   font-size: 1.5vw;
   height: 100%;
