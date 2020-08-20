@@ -1,5 +1,5 @@
 import "./styles.css";
-import { init } from "./setup.js";
+import { init, unlockAudioContext } from "./setup.js";
 import { instructionScreen } from "./constants.js";
 
 let initialized = false;
@@ -9,7 +9,7 @@ instructionScreen.addEventListener(
   "touchstart",
   (e) => {
     e.preventDefault();
-
+    unlockAudioContext();
     if (initialized) {
       return;
     }
@@ -23,6 +23,7 @@ instructionScreen.addEventListener(
 instructionScreen.addEventListener(
   "click",
   () => {
+    unlockAudioContext();
     if (initialized) {
       return;
     }

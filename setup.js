@@ -9,8 +9,7 @@ import {
   context,
 } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
-import { configAudioEffects, tracksEffectInfo } from "./setupAudioEffects.js";
-import { trackEffectInfoHashConversion } from "./hashTable.js";
+import { configAudioEffects } from "./setupAudioEffects.js";
 
 let loadedReverbs = {};
 
@@ -54,16 +53,12 @@ function quickHideAddressBar() {
   }, 1000);
 }
 
-function removeInstructionScreen(quietBuffer) {
+function removeInstructionScreen() {
   instructionScreen.style.opacity = "0";
-
-  let resumeBuffer = context.createBufferSource();
-  resumeBuffer.buffer = quietBuffer;
 
   screenTitle.classList.add("animate-text");
   setTimeout(() => {
     instructionScreen.parentNode.removeChild(instructionScreen);
-    resumeBuffer.start(0);
     screenTitle.innerText = "";
     let textDiv = document.createElement("div");
     textDiv.innerText = "Welcome to sampler";
@@ -77,4 +72,14 @@ function removeInstructionScreen(quietBuffer) {
   }, 350);
 }
 
+//creates and plays empty buffer to unlock audio context on all devices
+export function unlockAudioContext() {
+  let buffer = context.createBuffer(1, 1, 22050); // create empty buffer
+  let source = context.createBufferSource();
+
+  source.buffer = buffer;
+  source.connect(context.destination);
+
+  source.start(0);
+}
 export { loadedReverbs };
