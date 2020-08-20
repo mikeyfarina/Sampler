@@ -223,79 +223,43 @@ function draw() {
       lastNoteBackground = "rgba(255, 255, 255, 0.15)"; //lighter
     }
 
-    console.log(currentNote, lastNoteBackground);
+    console.log(currentNote, lastNoteBackground, noteResolution);
 
     if (note.classList.contains("clicked")) {
       // if clicked
       note.style.background = "yellow";
-      lastNote.style.background = lastNoteBackground;
     } else if (currentNote % 4 == 0) {
       // if quarter note
       note.style.background = "rgba(72, 128, 255, 1)";
-      lastNote.style.background = lastNoteBackground;
-    } else {
+    } else if (noteResolution > 0) {
       //any other note
-      note.style.background = "rgba(255,255,255,.75)";
-      lastNote.style.background = lastNoteBackground;
+      note.style.background = beatDisplayColor(currentNote);
+    } else {
+      note.style.background = "rgba(255, 255, 255, .75)";
     }
-
-    /*for (let i = 0; i < 16; i++) {
-      let note = beats[i];
-      let lastNote = beats[`${i > 0 ? i - 1 : 2}`];
-      //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
-      //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
-      if (currentNote == i) {
-        if (beatColor) {
-          console.log(beatColor);
-          lastNote.style.background = oneAndThreeColor;
-        } else {
-          console.log(beatColor);
-          lastNote.style.background = twoAndFourColor;
-        }
-
-        if (note.classList.contains("clicked")) {
-          // if clicked
-          note.style.background = "yellow";
-        } else if (currentNote % 4 == 0) {
-          // if quarter note
-          note.style.background = "rgba(72, 128, 255, 1)";
-          beatColor = !beatColor; //flip background color
-        } else {
-          note.style.background = "rgba(1, 1, 1, .1)";
-
-          console.log("anyother ");
-          //any other note played
-          // we're not playing non-8th 16th notes so dont display
-          if (noteResolution == 1 && i % 2) {
-            if (i < 4 || (i >= 8 && i < 12)) {
-              note.style.background = "rgba(255, 255, 255, 0.15)";
-            } else {
-              note.style.background = "rgba(255, 255, 255, 0.3)";
-            }
-          }
-          // we're not playing non-quarter 8th notes so dont display
-          else if (noteResolution == 2 && i % 4) {
-            if (i < 4 || (i >= 8 && i < 12)) {
-              note.style.background = "rgba(255, 255, 255, 0.15)";
-            } else {
-              note.style.background = "rgba(255, 255, 255, 0.3)";
-            }
-          } else {
-            note.style.background = "rgba(255, 255, 255, .75)";
-          }
-        }
-      }
-      /* 
-      } else {
-        //all notes not being played
-        if (i < 4 || (i >= 8 && i < 12)) {
-          note.style.background = "rgba(0, 0, 0, 0.05)";
-        } else {
-          note.style.background = "rgba(255, 255, 255, 0.15)";
-        }
-      }
-      */
+    lastNote.style.background = lastNoteBackground;
   }
   // set up to draw again
   requestAnimFrame(draw);
+}
+
+function beatDisplayColor(currentNote) {
+  // we're not playing non-8th 16th notes so dont display
+  if (noteResolution == 1 && currentNote % 2) {
+    if (currentNote <= 4 || (currentNote >= 8 && currentNote <= 12)) {
+      return "rgba(255, 255, 255, 0.05)";
+    } else {
+      return "rgba(255, 255, 255, 0.35)";
+    }
+  }
+  // we're not playing non-quarter 8th notes so dont display
+  else if (noteResolution == 2 && currentNote % 4) {
+    if (currentNote <= 4 || (currentNote >= 8 && currentNote <= 12)) {
+      return "rgba(255, 255, 255, 0.05)";
+    } else {
+      return "rgba(255, 255, 255, 0.35)";
+    }
+  } else {
+    return "rgba(255, 255, 255, .75)";
+  }
 }
