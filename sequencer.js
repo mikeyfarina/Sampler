@@ -66,7 +66,7 @@ function resetSequencer() {
 
   [].forEach.call(seqTracks, (track) => {
     let beats = track.querySelectorAll(".sequencer__display__track__button");
-
+    track.classList.remove("beat-color");
     [].forEach.call(beats, (beat) => {
       //remove clicked beats
       if (beat.classList.contains("clicked")) {
@@ -87,6 +87,7 @@ function resetSequencer() {
     }
   });
 
+  last16thNoteDrawn = 0;
   current16thNote = 0;
 }
 
@@ -169,6 +170,7 @@ function play(playButton) {
 
   if (isPlaying) {
     // start playing
+    last16thNoteDrawn = 0;
     current16thNote = 0;
     nextNoteTime = context.currentTime;
     //kick off scheduling
@@ -182,12 +184,20 @@ function play(playButton) {
 }
 
 function draw() {
+  if (!isPlaying) {
+    last16thNoteDrawn = 0;
+    notesInQueue = [];
+    console.log(last16thNoteDrawn);
+    return;
+  }
+
   let currentNote = last16thNoteDrawn;
   let currentTime = context.currentTime;
 
-  console.log("nIQ", notesInQueue, currentTime, currentNote);
+  console.log("drawing", currentNote, last16thNoteDrawn, notesInQueue);
+  //console.log("nIQ", last16thNoteDrawn, notesInQueue, currentTime, currentNote);
   // We only need to draw if the note has moved.
-  if (last16thNoteDrawn !== currentNote) {
+  if (last16thNoteDrawn != currentNote) {
     return requestAnimFrame(draw);
   }
   while (notesInQueue.length && notesInQueue[0].time < currentTime) {
@@ -196,24 +206,65 @@ function draw() {
   }
   seqTracks = document.querySelectorAll(".sequencer__display__track");
 
-  console.log("drawing");
   last16thNoteDrawn = currentNote;
+  console.log(currentNote, last16thNoteDrawn);
   for (let track of seqTracks) {
+    let lastNoteBackground;
     let beats = track.querySelectorAll(".sequencer__display__track__button");
-    for (let i = 0; i < 16; i++) {
+    let note = beats[currentNote];
+    let lastNote = beats[`${currentNote > 0 ? currentNote - 1 : 15}`];
+
+    if (
+      (last16thNoteDrawn !== 0 && last16thNoteDrawn <= 4) ||
+      (last16thNoteDrawn > 8 && last16thNoteDrawn <= 12)
+    ) {
+      lastNoteBackground = "rgba(0, 0, 0, 0.05)"; //darker
+    } else {
+      lastNoteBackground = "rgba(255, 255, 255, 0.15)"; //lighter
+    }
+
+    console.log(currentNote, lastNoteBackground);
+
+    if (note.classList.contains("clicked")) {
+      // if clicked
+      note.style.background = "yellow";
+      lastNote.style.background = lastNoteBackground;
+    } else if (currentNote % 4 == 0) {
+      // if quarter note
+      note.style.background = "rgba(72, 128, 255, 1)";
+      lastNote.style.background = lastNoteBackground;
+    } else {
+      //any other note
+      note.style.background = "rgba(255,255,255,.75)";
+      lastNote.style.background = lastNoteBackground;
+    }
+
+    /*for (let i = 0; i < 16; i++) {
       let note = beats[i];
+      let lastNote = beats[`${i > 0 ? i - 1 : 2}`];
       //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
       //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
       if (currentNote == i) {
+        if (beatColor) {
+          console.log(beatColor);
+          lastNote.style.background = oneAndThreeColor;
+        } else {
+          console.log(beatColor);
+          lastNote.style.background = twoAndFourColor;
+        }
+
         if (note.classList.contains("clicked")) {
           // if clicked
           note.style.background = "yellow";
         } else if (currentNote % 4 == 0) {
           // if quarter note
           note.style.background = "rgba(72, 128, 255, 1)";
+          beatColor = !beatColor; //flip background color
         } else {
-          //any other note played
+          note.style.background = "rgba(1, 1, 1, .1)";
 
+          console.log("anyother ");
+          //any other note played
           // we're not playing non-8th 16th notes so dont display
           if (noteResolution == 1 && i % 2) {
             if (i < 4 || (i >= 8 && i < 12)) {
@@ -233,6 +284,8 @@ function draw() {
             note.style.background = "rgba(255, 255, 255, .75)";
           }
         }
+      }
+      /* 
       } else {
         //all notes not being played
         if (i < 4 || (i >= 8 && i < 12)) {
@@ -241,7 +294,7 @@ function draw() {
           note.style.background = "rgba(255, 255, 255, 0.15)";
         }
       }
-    }
+      */
   }
   // set up to draw again
   requestAnimFrame(draw);
