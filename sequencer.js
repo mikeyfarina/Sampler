@@ -184,11 +184,26 @@ function play(playButton) {
 }
 
 function draw() {
+  let lastNoteOfPreviousPlay;
   if (!isPlaying) {
+    lastNoteOfPreviousPlay = last16thNoteDrawn;
     last16thNoteDrawn = 0;
     notesInQueue = [];
     console.log(last16thNoteDrawn);
-    return;
+    for (let track of seqTracks) {
+      let beats = track.querySelectorAll(".sequencer__display__track__button");
+      let note = beats[lastNoteOfPreviousPlay];
+      if (
+        lastNoteOfPreviousPlay < 4 ||
+        (lastNoteOfPreviousPlay >= 8 && lastNoteOfPreviousPlay < 12)
+      ) {
+        note.style.background = "rgba(0, 0, 0, 0.05)";
+      } else {
+        note.style.background = "rgba(255, 255, 255, 0.15)";
+      }
+      beats[0].style.background = "rgba(72, 128, 255, 1)";
+    }
+    return; // stop drawing until sequencer plays
   }
 
   let currentNote = last16thNoteDrawn;
