@@ -4,7 +4,10 @@ import {
   tempoSlider,
   tempoDisplay,
 } from "./constants.js";
-import { connectSourceToEffects } from "./setupAudioEffects.js";
+import {
+  connectSourceToEffects,
+  resetTrackEffectsValues,
+} from "./setupAudioEffects.js";
 import { getTrackEffectInfo } from "./hashTable.js";
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -43,17 +46,24 @@ export function setUpSequencer() {
   let playButton = document.querySelector(
     ".sequencer__controls__buttons__play"
   );
-  playButton.addEventListener("click", (ev) => {
-    play(ev.target);
-  });
   let resetButton = document.querySelector(
     ".sequencer__controls__buttons__reset"
   );
+  let resetEffectsButton = document.querySelector(
+    ".sequencer__controls__buttons__reset-effects"
+  );
+  playButton.addEventListener("click", (ev) => {
+    play(ev.target);
+  });
   resetButton.addEventListener("click", () => {
     if (isPlaying) {
       play(playButton);
     }
     resetSequencer();
+  });
+  resetEffectsButton.addEventListener("click", () => {
+    console.log("resetting all effects");
+    resetTrackEffectsValues();
   });
 
   tempoSlider.addEventListener("input", () => {

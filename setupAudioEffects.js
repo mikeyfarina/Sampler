@@ -1,7 +1,11 @@
 import { trackObject } from "./setupSeqTracks.js";
 import { context, sequencerDisplay } from "./constants.js";
 import { loadedReverbs } from "./setup.js";
-import { addToTrackEffectInfoHash } from "./hashTable.js";
+import {
+  getTrackEffectInfo,
+  addToTrackEffectInfoHash,
+  resetTrackEffectHashValues,
+} from "./hashTable.js";
 
 let openEffectPanelButtons = [];
 
@@ -427,13 +431,9 @@ export function createEffectPanel(track, trackName) {
   trackAndEffectPanelDiv.classList.add("sequencer__display__track-panel-div");
   sequencerDisplay.append(trackAndEffectPanelDiv);
 
-  //when reset button is clicked
+  //when track reset button is clicked
   //reset all effect values in the panel
-  let resetEffectsButton = document.querySelector(
-    ".sequencer__controls__buttons__reset-effects"
-  );
-
-  resetEffectsButton.addEventListener("click", () => {
+  effectResetButton.addEventListener("click", () => {
     pitchInput.value = 0;
     pitchInfo.innerText = "Pitch: 0";
 
@@ -457,16 +457,23 @@ export function createEffectPanel(track, trackName) {
     wetInput.value = 0;
     wetInfo.innerText = "Wet: 0.00";
 
-    resetTrackEffectsValues();
+    console.log(trackName);
+    trackInfo = resetTrackEffectHashValues(trackName);
   });
 }
 
-function resetTrackEffectsValues() {
+//reset audio effect info for every track
+export function resetTrackEffectsValues() {
+  let allResetButtons = document.querySelectorAll(
+    ".effects-panel__controls__reset-button"
+  );
+  console.log(allResetButtons);
   //reset effect information for each track to default
-  [].forEach.call(tracksEffectInfo, (track) => {
-    resetTrackEffectsHashValues(track);
+  [].forEach.call(allResetButtons, (button) => {
+    button.click();
   });
 }
+
 function determinePanDisplay(panValue) {
   let display;
   if (panValue == "0") {
