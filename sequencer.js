@@ -41,11 +41,10 @@ let last16thNoteDrawn = -1; // the last "box" we drew on the screen
 let notesInQueue = []; // the notes that have been put into the web audio,
 // and may or may not have played yet. {note, time}
 let seqTracks;
+let playButton;
 
 export function setUpSequencer() {
-  let playButton = document.querySelector(
-    ".sequencer__controls__buttons__play"
-  );
+  playButton = document.querySelector(".sequencer__controls__buttons__play");
   let resetButton = document.querySelector(
     ".sequencer__controls__buttons__reset"
   );
@@ -183,6 +182,7 @@ function play(playButton) {
     last16thNoteDrawn = 0;
     current16thNote = 0;
     nextNoteTime = context.currentTime;
+    playButton.style.background = "#3CB371"; //green
     //kick off scheduling
     scheduler();
     draw();
@@ -190,6 +190,7 @@ function play(playButton) {
   } else {
     window.clearTimeout(timerID);
     playButton.innerText = "play";
+    playButton.style.background = "#ecf0f1";
   }
 }
 
