@@ -96,9 +96,7 @@ export function addListenersToInstructionDrumPadKeys() {
   let padKeys = drumPadGrid.querySelectorAll("li");
 
   padKeys.forEach((key) => {
-    console.log(key, key.innerText);
     document.addEventListener("keydown", (e) => {
-      //if key pressed equals key in the instruction grid,
       if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
         key.style.background = "darkgrey";
         key.style.color = "black";
@@ -108,8 +106,6 @@ export function addListenersToInstructionDrumPadKeys() {
       if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
         key.style.background = "grey";
         key.style.color = "white";
-
-        console.log("removed to ", key);
       }
     });
   });
