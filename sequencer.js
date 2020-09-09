@@ -52,9 +52,18 @@ export function setUpSequencer() {
     ".sequencer__controls__buttons__reset-effects"
   );
   playButton.addEventListener("click", (ev) => {
+    playButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      playButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
     play(ev.target);
   });
   resetButton.addEventListener("click", () => {
+    resetButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      resetButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
+
     if (isPlaying) {
       play(playButton);
     }
@@ -63,6 +72,11 @@ export function setUpSequencer() {
   resetEffectsButton.addEventListener("click", () => {
     console.log("resetting all effects");
     resetTrackEffectsValues();
+
+    resetEffectsButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      resetEffectsButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
   });
 
   tempoSlider.addEventListener("input", () => {
@@ -183,6 +197,7 @@ function play(playButton) {
     current16thNote = 0;
     nextNoteTime = context.currentTime;
     playButton.style.background = "#3CB371"; //green
+    playButton.style.color = "white";
     //kick off scheduling
     scheduler();
     draw();
@@ -191,6 +206,7 @@ function play(playButton) {
     window.clearTimeout(timerID);
     playButton.innerText = "play";
     playButton.style.background = "#ecf0f1";
+    playButton.style.color = "black";
   }
 }
 

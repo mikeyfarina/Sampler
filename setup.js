@@ -14,13 +14,8 @@ import { configAudioEffects } from "./setupAudioEffects.js";
 let loadedReverbs = {};
 
 export function init() {
-  //give user response on click to know that it is loading
-  let loadingText = document.createElement("span");
-  loadingText.innerText = "Loading...";
-  loadingText.classList.add("instructions__text");
-  instructionScreen.append(loadingText);
-
   let quietBuffer;
+  displayLoadingScreen();
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
     loaded.forEach((reverb) => {
@@ -82,4 +77,42 @@ export function unlockAudioContext() {
 
   source.start(0);
 }
+
+//give user response on click to know that it is loading
+function displayLoadingScreen() {
+  let loadInstruction = document.getElementById("click-load");
+  loadInstruction.style.visibility = "hidden";
+
+  let loadingText = document.createElement("span");
+  loadingText.innerText = "Loading...";
+  loadingText.classList.add("instructions__loading-text");
+  instructionScreen.append(loadingText);
+}
+
+export function addListenersToInstructionDrumPadKeys() {
+  let drumPadGrid = document.querySelector(
+    ".instructions__drumpads-help__keys"
+  );
+  let padKeys = drumPadGrid.querySelectorAll("li");
+
+  padKeys.forEach((key) => {
+    console.log(key, key.innerText);
+    document.addEventListener("keydown", (e) => {
+      //if key pressed equals key in the instruction grid,
+      if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
+        key.style.background = "darkgrey";
+        key.style.color = "black";
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
+        key.style.background = "grey";
+        key.style.color = "white";
+
+        console.log("removed to ", key);
+      }
+    });
+  });
+}
+
 export { loadedReverbs };
