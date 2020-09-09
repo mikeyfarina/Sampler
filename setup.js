@@ -9,19 +9,13 @@ import {
   context,
 } from "./constants.js";
 import { setUpSequencer } from "./sequencer.js";
-import { configAudioEffects, tracksEffectInfo } from "./setupAudioEffects.js";
-import { trackEffectInfoHashConversion } from "./hashTable.js";
+import { configAudioEffects } from "./setupAudioEffects.js";
 
 let loadedReverbs = {};
 
 export function init() {
-  //give user response on click to know that it is loading
-  let loadingText = document.createElement("span");
-  loadingText.innerText = "Loading...";
-  loadingText.classList.add("instructions__text");
-  instructionScreen.append(loadingText);
-
   let quietBuffer;
+  displayLoadingScreen();
   loadReverbPresets(reverbsToLoad).then((loaded) => {
     quietBuffer = loaded[9];
     loaded.forEach((reverb) => {
@@ -54,16 +48,12 @@ function quickHideAddressBar() {
   }, 1000);
 }
 
-function removeInstructionScreen(quietBuffer) {
+function removeInstructionScreen() {
   instructionScreen.style.opacity = "0";
-
-  let resumeBuffer = context.createBufferSource();
-  resumeBuffer.buffer = quietBuffer;
 
   screenTitle.classList.add("animate-text");
   setTimeout(() => {
     instructionScreen.parentNode.removeChild(instructionScreen);
-    resumeBuffer.start(0);
     screenTitle.innerText = "";
     let textDiv = document.createElement("div");
     textDiv.innerText = "Welcome to sampler";
@@ -75,6 +65,50 @@ function removeInstructionScreen(quietBuffer) {
       screenTitle.classList.remove("animate-text");
     }, 10000);
   }, 350);
+}
+
+//creates and plays empty buffer to unlock audio context on all devices
+export function unlockAudioContext() {
+  let buffer = context.createBuffer(1, 1, 22050); // create empty buffer
+  let source = context.createBufferSource();
+
+  source.buffer = buffer;
+  source.connect(context.destination);
+
+  source.start(0);
+}
+
+//give user response on click to know that it is loading
+function displayLoadingScreen() {
+  let loadInstruction = document.getElementById("click-load");
+  loadInstruction.style.visibility = "hidden";
+
+  let loadingText = document.createElement("span");
+  loadingText.innerText = "Loading...";
+  loadingText.classList.add("instructions__loading-text");
+  instructionScreen.append(loadingText);
+}
+
+export function addListenersToInstructionDrumPadKeys() {
+  let drumPadGrid = document.querySelector(
+    ".instructions__drumpads-help__keys"
+  );
+  let padKeys = drumPadGrid.querySelectorAll("li");
+
+  padKeys.forEach((key) => {
+    document.addEventListener("keydown", (e) => {
+      if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
+        key.style.background = "darkgrey";
+        key.style.color = "black";
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (String.fromCharCode(e.keyCode).toUpperCase() == key.innerText) {
+        key.style.background = "grey";
+        key.style.color = "white";
+      }
+    });
+  });
 }
 
 export { loadedReverbs };

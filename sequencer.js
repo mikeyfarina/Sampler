@@ -4,7 +4,10 @@ import {
   tempoSlider,
   tempoDisplay,
 } from "./constants.js";
-import { connectSourceToEffects } from "./setupAudioEffects.js";
+import {
+  connectSourceToEffects,
+  resetTrackEffectsValues,
+} from "./setupAudioEffects.js";
 import { getTrackEffectInfo } from "./hashTable.js";
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -38,22 +41,42 @@ let last16thNoteDrawn = -1; // the last "box" we drew on the screen
 let notesInQueue = []; // the notes that have been put into the web audio,
 // and may or may not have played yet. {note, time}
 let seqTracks;
+let playButton;
 
 export function setUpSequencer() {
-  let playButton = document.querySelector(
-    ".sequencer__controls__buttons__play"
-  );
-  playButton.addEventListener("click", (ev) => {
-    play(ev.target);
-  });
+  playButton = document.querySelector(".sequencer__controls__buttons__play");
   let resetButton = document.querySelector(
     ".sequencer__controls__buttons__reset"
   );
+  let resetEffectsButton = document.querySelector(
+    ".sequencer__controls__buttons__reset-effects"
+  );
+  playButton.addEventListener("click", (ev) => {
+    playButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      playButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
+    play(ev.target);
+  });
   resetButton.addEventListener("click", () => {
+    resetButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      resetButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
+
     if (isPlaying) {
       play(playButton);
     }
     resetSequencer();
+  });
+  resetEffectsButton.addEventListener("click", () => {
+    console.log("resetting all effects");
+    resetTrackEffectsValues();
+
+    resetEffectsButton.style.border = "5px #7c7c7c solid";
+    setTimeout(() => {
+      resetEffectsButton.style.border = "5px #c4c4c4 solid";
+    }, 250);
   });
 
   tempoSlider.addEventListener("input", () => {
@@ -66,7 +89,7 @@ function resetSequencer() {
 
   [].forEach.call(seqTracks, (track) => {
     let beats = track.querySelectorAll(".sequencer__display__track__button");
-
+    track.classList.remove("beat-color");
     [].forEach.call(beats, (beat) => {
       //remove clicked beats
       if (beat.classList.contains("clicked")) {
@@ -87,6 +110,7 @@ function resetSequencer() {
     }
   });
 
+  last16thNoteDrawn = 0;
   current16thNote = 0;
 }
 
@@ -169,8 +193,11 @@ function play(playButton) {
 
   if (isPlaying) {
     // start playing
+    last16thNoteDrawn = 0;
     current16thNote = 0;
     nextNoteTime = context.currentTime;
+    playButton.style.background = "#3CB371"; //green
+    playButton.style.color = "white";
     //kick off scheduling
     scheduler();
     draw();
@@ -178,16 +205,41 @@ function play(playButton) {
   } else {
     window.clearTimeout(timerID);
     playButton.innerText = "play";
+    playButton.style.background = "#ecf0f1";
+    playButton.style.color = "black";
   }
 }
 
 function draw() {
+  let lastNoteOfPreviousPlay;
+  if (!isPlaying) {
+    lastNoteOfPreviousPlay = last16thNoteDrawn;
+    last16thNoteDrawn = 0;
+    notesInQueue = [];
+    console.log(last16thNoteDrawn);
+    for (let track of seqTracks) {
+      let beats = track.querySelectorAll(".sequencer__display__track__button");
+      let note = beats[lastNoteOfPreviousPlay];
+      if (
+        lastNoteOfPreviousPlay < 4 ||
+        (lastNoteOfPreviousPlay >= 8 && lastNoteOfPreviousPlay < 12)
+      ) {
+        note.style.background = "rgba(0, 0, 0, 0.05)";
+      } else {
+        note.style.background = "rgba(255, 255, 255, 0.15)";
+      }
+      beats[0].style.background = "rgba(72, 128, 255, 1)";
+    }
+    return; // stop drawing until sequencer plays
+  }
+
   let currentNote = last16thNoteDrawn;
   let currentTime = context.currentTime;
 
-  console.log("nIQ", notesInQueue, currentTime, currentNote);
+  console.log("drawing", currentNote, last16thNoteDrawn, notesInQueue);
+  //console.log("nIQ", last16thNoteDrawn, notesInQueue, currentTime, currentNote);
   // We only need to draw if the note has moved.
-  if (last16thNoteDrawn !== currentNote) {
+  if (last16thNoteDrawn != currentNote) {
     return requestAnimFrame(draw);
   }
   while (notesInQueue.length && notesInQueue[0].time < currentTime) {
@@ -196,53 +248,60 @@ function draw() {
   }
   seqTracks = document.querySelectorAll(".sequencer__display__track");
 
-  console.log("drawing");
   last16thNoteDrawn = currentNote;
+  console.log(currentNote, last16thNoteDrawn);
   for (let track of seqTracks) {
+    let lastNoteBackground;
     let beats = track.querySelectorAll(".sequencer__display__track__button");
-    for (let i = 0; i < 16; i++) {
-      let note = beats[i];
-      //seqTracks[0].children[i+1].style.background = ( currentNote == i ) ?
-      //(( currentNote % 4 == 0 ) ? "#4880ff" : "white" ) : "#7c7c7c";
-      if (currentNote == i) {
-        if (note.classList.contains("clicked")) {
-          // if clicked
-          note.style.background = "yellow";
-        } else if (currentNote % 4 == 0) {
-          // if quarter note
-          note.style.background = "rgba(72, 128, 255, 1)";
-        } else {
-          //any other note played
+    let note = beats[currentNote];
+    let lastNote = beats[`${currentNote > 0 ? currentNote - 1 : 15}`];
 
-          // we're not playing non-8th 16th notes so dont display
-          if (noteResolution == 1 && i % 2) {
-            if (i < 4 || (i >= 8 && i < 12)) {
-              note.style.background = "rgba(255, 255, 255, 0.15)";
-            } else {
-              note.style.background = "rgba(255, 255, 255, 0.3)";
-            }
-          }
-          // we're not playing non-quarter 8th notes so dont display
-          else if (noteResolution == 2 && i % 4) {
-            if (i < 4 || (i >= 8 && i < 12)) {
-              note.style.background = "rgba(255, 255, 255, 0.15)";
-            } else {
-              note.style.background = "rgba(255, 255, 255, 0.3)";
-            }
-          } else {
-            note.style.background = "rgba(255, 255, 255, .75)";
-          }
-        }
-      } else {
-        //all notes not being played
-        if (i < 4 || (i >= 8 && i < 12)) {
-          note.style.background = "rgba(0, 0, 0, 0.05)";
-        } else {
-          note.style.background = "rgba(255, 255, 255, 0.15)";
-        }
-      }
+    if (
+      (last16thNoteDrawn !== 0 && last16thNoteDrawn <= 4) ||
+      (last16thNoteDrawn > 8 && last16thNoteDrawn <= 12)
+    ) {
+      lastNoteBackground = "rgba(0, 0, 0, 0.05)"; //darker
+    } else {
+      lastNoteBackground = "rgba(255, 255, 255, 0.15)"; //lighter
     }
+
+    console.log(currentNote, lastNoteBackground, noteResolution);
+
+    if (note.classList.contains("clicked")) {
+      // if clicked
+      note.style.background = "yellow";
+    } else if (currentNote % 4 == 0) {
+      // if quarter note
+      note.style.background = "rgba(72, 128, 255, 1)";
+    } else if (noteResolution > 0) {
+      //any other note
+      note.style.background = beatDisplayColor(currentNote);
+    } else {
+      note.style.background = "rgba(255, 255, 255, .75)";
+    }
+    lastNote.style.background = lastNoteBackground;
   }
   // set up to draw again
   requestAnimFrame(draw);
+}
+
+function beatDisplayColor(currentNote) {
+  // we're not playing non-8th 16th notes so dont display
+  if (noteResolution == 1 && currentNote % 2) {
+    if (currentNote <= 4 || (currentNote >= 8 && currentNote <= 12)) {
+      return "rgba(255, 255, 255, 0.05)";
+    } else {
+      return "rgba(255, 255, 255, 0.35)";
+    }
+  }
+  // we're not playing non-quarter 8th notes so dont display
+  else if (noteResolution == 2 && currentNote % 4) {
+    if (currentNote <= 4 || (currentNote >= 8 && currentNote <= 12)) {
+      return "rgba(255, 255, 255, 0.05)";
+    } else {
+      return "rgba(255, 255, 255, 0.35)";
+    }
+  } else {
+    return "rgba(255, 255, 255, .75)";
+  }
 }

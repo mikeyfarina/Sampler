@@ -12,13 +12,48 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
+    <link rel="stylesheet" href="reset.css">
   </head>
 
   <body>
     <div class="instructions instructions__visible">
-      <p class="instructions__text">
-        This is the instruction splash screen cover
-      </p>
+      <div class="instructions__title">
+        <span id="title">SAMPLER</span>
+        <span class="drumpads__info" id="click-load">click to load</span>
+      </div>
+      <div class="instructions__drumpads-help">
+        <div class="instructions__drumpads-help__text">
+          <ul>
+            <li class="drumpads__info">tap the drum pads on the drum machine to play samples</li>
+            <li class="drumpads__info">
+              <br>
+              use the upload button to upload custom samples for use on the pads and the sequencer
+            </li>
+          </ul>
+        </div>
+        <div class="pad_keys">
+          <div class="pad_keys__text"><br>You can also use the following keys on your keyboard to play</div>
+          <ul class="instructions__drumpads-help__keys">
+            <li>T</li>
+            <li>Y</li>
+            <li>U</li>
+            <li>F</li>
+            <li>G</li>
+            <li>H</li>
+            <li>V</li>
+            <li>B</li>
+            <li>N</li>
+          </ul>
+        </div>
+      </div>
+      <div class="instructions__sequencer-help">
+        <ul class="instructions__sequencer-help__text">
+          <li>press play to start the sequencer</li>
+          <li><br>use the tempo slider to adjust the rate of playback</li>
+          <li><br>choose various time signatures</li>
+          <li><br>press the &#8627 next to each tracks name to open the audio effects panel</li>
+        </ul>
+      </div>
     </div>
     <div class="instrument-container">
       <div class="drum-machine">

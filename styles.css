@@ -3,6 +3,9 @@
   src: url("./fonts/sstv.ttf");
 }
 
+* {
+  font-family: inherit;
+}
 p {
   margin: 0;
   padding: 0;
@@ -25,12 +28,13 @@ body {
   background-color: #89c9ff;
 }
 select {
-  border: 1px rgb(100, 100, 100) solid;
+  border: 2px #c4c4c4 solid;
   padding: 0 2%;
   box-shadow: none;
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+
 nav ul li a {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -49,8 +53,7 @@ button,
 button:focus {
   outline: 0;
 }
-input[type=""] {
-}
+
 input[type="range"] {
   margin: 5% 0;
   appearance: none;
@@ -100,11 +103,14 @@ input[type="range"]::-moz-range-thumb {
   top: 50%;
   left: 50%;
   width: 98vw;
-  height: 96vh;
+  min-height: 96vh;
+  max-height: 96vh;
   margin: auto;
 
   border: 9px black solid;
   display: grid;
+  grid-template-rows: 0.5fr 5fr 1fr;
+  grid-template-columns: 1fr 1fr;
   border-radius: 9px;
   align-items: center;
   transform: translate(-50%, -50%);
@@ -115,9 +121,107 @@ input[type="range"]::-moz-range-thumb {
   background: black;
 }
 
-.instructions__text {
+.instructions__title {
+  grid-area: 1 / 1 / 2 / 3;
   color: white;
   text-align: center;
+  font-family: "super smash tv";
+  font-size: 6.5vw;
+  margin: 0 auto;
+}
+.instructions__title > span {
+  display: block;
+}
+
+#title {
+  margin-bottom: 0%;
+}
+
+@keyframes loadingpulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  95% {
+    opacity: 1;
+  }
+}
+
+#click-load {
+  margin: 1% auto 2% auto;
+  height: 100%;
+  width: 100%;
+  font-size: 2.2vw;
+  text-align: center;
+  animation: loadingpulse 2s infinite;
+}
+
+.instructions__drumpads-help {
+  align-self: self-start;
+  max-height: 100%;
+}
+.ints-pad__key-enabled {
+  background: white;
+  color: black;
+}
+.instructions__loading-text {
+  grid-area: 3 / 1 / 4 / 3;
+  color: white;
+  font-family: "super smash tv";
+  font-size: 5vw;
+  padding-left: 7%;
+
+  animation: loadingpulse 1s infinite;
+}
+
+.drumpads__info,
+.pad_keys__text {
+  color: white;
+  font-size: 2.85vh;
+  text-align: left;
+  font-family: "super smash tv";
+  margin: 0 12.5%;
+}
+
+.instructions__drumpads-help__keys {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-area: 2 / 1/ 3 /2;
+  grid-gap: 1vw;
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  max-width: 55%;
+  margin: 5% auto 0 auto;
+  padding: 2%;
+}
+
+.instructions__drumpads-help__keys > li {
+  font-family: "helvetica neue";
+  box-sizing: border-box;
+  border: 1px rgb(118, 118, 118) solid;
+  background: grey;
+  color: white;
+  font-size: 5vh;
+
+  width: 100%;
+  padding: 20% 0;
+  border-radius: 8px;
+}
+
+.instructions__sequencer-help {
+  grid-area: 2 / 2 / 3 / 3;
+
+  font-family: "super smash tv";
+  font-size: 3.3vh;
+  padding: 0;
+  text-align: left;
+  align-self: self-start;
+  color: white;
+  margin: 0 12.5%;
 }
 
 .drum-machine {
@@ -291,14 +395,45 @@ ul.drum-machine__pads li button:active,
 .sequencer__controls__buttons button {
   font-size: 1.5vw;
   padding: 5% 2%;
+  line-height: 0.9;
+  box-sizing: border-box;
+  border: 5px #c4c4c4 solid;
+  margin: 0% 0%;
+  color: black;
+}
+
+@keyframes resetwarning {
+  25% {
+    color: rgba(255, 255, 255, 1);
+  }
+  50% {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(234, 84, 85, 1);
+  }
+  65% {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+.sequencer__controls__buttons__reset:hover,
+.sequencer__controls__buttons__reset-effects:hover {
+  animation: resetwarning 2.5s linear infinite;
+}
+.sequencer__controls__buttons__reset button:active,
+.sequencer__controls__buttons__reset-effects button:active {
+  transform: translateY(-1px);
+  background: #dc143c;
+  -webkit-transform: translateY(-1px);
 }
 
 .sequencer__controls__tempo {
-  height: 93%;
+  box-sizing: border-box;
+  height: 100%;
   display: inline-grid;
   padding: 0% 2%;
   background: #ecf0f1;
   border: 5px #7c7c7c solid;
+  outline: none;
 }
 
 .tempo-info {
@@ -311,11 +446,18 @@ ul.drum-machine__pads li button:active,
   width: 100%;
 }
 
+select.beat-selector {
+  box-sizing: border-box;
+  border: 5px #c4c4c4 solid;
+}
 .beat-selector {
   font-size: 1.3vw;
   width: 96%;
   margin: 0 2%;
   height: 100%;
+}
+.beat-selector:active {
+  border: 5px #4880ff solid;
 }
 
 .beat-selector option {
@@ -349,6 +491,9 @@ ul.drum-machine__pads li button:active,
 }
 
 .sequencer__display__track__show-effects:hover {
+  box-sizing: border-box;
+  width: 86%;
+  height: 86%;
   margin: 8%;
   border-radius: 5px;
   cursor: pointer;
@@ -378,6 +523,7 @@ ul.drum-machine__pads li button:active,
 }
 .sequencer__display__track__effects-panel select {
   font-size: 0.8vw;
+  padding: 2% 2%;
 }
 .effect-panel-dropdown {
   display: inherit;
@@ -398,7 +544,7 @@ ul.drum-machine__pads li button:active,
   padding: 0;
 }
 .effects-panel__controls__reset-button {
-  font-size: 1vw;
+  font-size: 0.9vw;
   border-radius: 0 0 0 8px;
   grid-area: 2 / 1/ 3 / 2;
 }
@@ -458,6 +604,7 @@ ul.drum-machine__pads li button:active,
 .effects-panel__controls__filter > input {
   width: 90%;
 }
+
 .effects-panel__controls__delay {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 40% 60%;
@@ -471,6 +618,7 @@ ul.drum-machine__pads li button:active,
   margin: 1%;
   background-color: rgba(211, 211, 211, 0.3);
 }
+
 .effects-panel__controls__reverb {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 25% 75%;
@@ -484,6 +632,7 @@ ul.drum-machine__pads li button:active,
   margin: 1%;
   background-color: rgba(211, 211, 211, 0.3);
 }
+
 .effects-panel__controls__reverb__wet {
   display: grid;
   grid-template-columns: 25% 75%;
@@ -520,11 +669,20 @@ ul.drum-machine__pads li button:active,
     max-width: 100vw;
   }
   .instructions {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     border: none;
     border-radius: 0;
   }
+
+  .instructions__title {
+    font-size: 9vw;
+    margin: 1.5% 0 3% 0;
+  }
+  #click-load {
+    font-size: 3.5vw;
+  }
+
   .instrument-container {
     box-sizing: border-box;
     padding: 2% 2% 3% 2%;
@@ -625,7 +783,7 @@ ul.drum-machine__pads li button:active,
   }
 
   .beat-selector {
-    grid-area: 2 / 2 / 3 / 3;
+    grid-area: 1 / 2 / 2 / 3;
     margin: 0;
     height: 100%;
     width: 100%;
@@ -653,11 +811,11 @@ ul.drum-machine__pads li button:active,
   }
 
   .sequencer__controls__buttons__reset {
-    grid-area: 1 / 2 / 2 / 3;
+    grid-area: 2 / 1 / 3 / 2;
   }
 
   .sequencer__controls__buttons__reset-effects {
-    grid-area: 2/ 1 / 3 / 2;
+    grid-area: 2 / 2 / 3 / 3;
   }
 
   .sequencer__controls__tempo {
@@ -675,9 +833,13 @@ ul.drum-machine__pads li button:active,
     width: 85%;
     margin: auto;
   }
+  .tempo-info {
+    font-size: 2vh;
+  }
   .beat-selector {
     text-align: center;
     font-size: 2.2vw;
+    padding: 0 5%;
   }
 
   .sequencer__display {
@@ -730,6 +892,15 @@ ul.drum-machine__pads li button:active,
     height: 100%;
   }
 
+  .sequencer__display__track__effects-panel__controls span,
+  .sequencer__display__track__effects-panel__controls select {
+    font-size: 2.25vw;
+  }
+
+  .effects-panel__controls__reset-button {
+    font-size: 1.5vw;
+  }
+
   .effects-panel__controls__gain,
   .effects-panel__controls__pan,
   .effects-panel__controls__pitch {
@@ -742,6 +913,30 @@ ul.drum-machine__pads li button:active,
 @media only screen and (max-width: 710px) {
   input[type="range"]::-webkit-slider-thumb {
     height: 1rem;
+  }
+  .instructions__title {
+    font-size: 8vh;
+    margin: 8% 0;
+  }
+  .drumpads__info {
+    font-size: 3.85vh;
+  }
+  .pad_keys {
+    display: none;
+  }
+  #click-load {
+    font-size: 5vw;
+  }
+
+  .pad_keys {
+    display: none;
+  }
+
+  .instructions__sequencer-help__text {
+    font-size: 3.15vh;
+  }
+  .instructions__loading-text {
+    font-size: 8vh;
   }
   .instrument-container {
     height: 100vh;
@@ -766,26 +961,35 @@ ul.drum-machine__pads li button:active,
   ul.drum-machine__pads li button {
     padding-top: 12.5vh;
   }
+
+  p.drum-machine__pads__label {
+    font-size: 3.5vw;
+  }
   .sequencer__controls {
     margin: 0;
     padding: 0;
   }
-  .sequencer__controls button {
+
+  .sequencer__controls__buttons button {
     font-size: 2vh;
-  }
-  .sequencer__controls__buttons__reset-effects button {
-    line-height: 100%;
+    border: 3px #c4c4c4 solid;
   }
   .sequencer__controls__tempo {
     height: 90%;
   }
   .beat-selector {
-    font-size: 1.5vh;
-    padding: 5%;
+    font-size: 3vw;
+    padding: 2% 5%;
   }
+
+  select.beat-selector {
+    border: 3px #c4c4c4 solid;
+  }
+
   .tempo-info {
     align-items: center;
   }
+
   .sequencer__display {
     height: 100%;
     min-height: 0;
@@ -826,6 +1030,12 @@ ul.drum-machine__pads li button:active,
   .sequencer__display__track__show-effects {
     width: 100%;
     height: 100%;
+  }
+  .sequencer__display__track__show-effects:hover {
+    border-radius: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
   }
   .effect-panel-dropdown {
     height: 82%;
@@ -877,6 +1087,14 @@ ul.drum-machine__pads li button:active,
     padding: 1.5%;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 6% repeat(3, 0.5fr) repeat(3, 1fr);
+  }
+
+  .sequencer__display__track__effects-panel select {
+    font-size: 3.5vw;
+  }
+
+  .sequencer__display__track__effects-panel__controls span {
+    font-size: 4vw;
   }
 
   .effects-panel__controls__gain,
@@ -940,9 +1158,10 @@ ul.drum-machine__pads li button:active,
   .instrument-container {
     background: #e8e8e8;
     height: 100%;
+    width: 100%;
     max-height: 100%;
     max-width: 100%;
-    padding: 0 10%;
+    padding: 0;
     max-height: 100vh;
     max-width: 100vw;
     border-radius: 0;
