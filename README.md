@@ -11,21 +11,17 @@
 - Sequencer
 - Effect section within Sequencer allows for each track to have unique effects applied
 - have pads be triggered by keyboard presses as well
-
-## Currently:
-
-- working on drum machine screen to display various messages
+- drum machine screen displays various messages
   - title
     - welcome to the sampler screen that welcomes user and scrolls away
     - playing *sound*
   - subtitle
     - loaded ____ sample
-- create instruction screen to help users
-
+- instruction screen to help users
+- reformatted data structure used by sequencer for effect data to increase efficiency
+- adapted screen and functionality to mobile devices
+- Cleaned UI
+ 
 ## todo:
-
-- reformat data structure used by sequencer for effect data to increase efficiency
-- adapting screen and functionality to mobile devices
 - Tap Tempo?
-- Clean UI
 - Audio file wavelength editor (SliceX)?
